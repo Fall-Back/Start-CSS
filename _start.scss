@@ -123,6 +123,10 @@ $anchor-border-bottom--hover: 1px solid lighten($anchor-text-color--hover, 30%) 
 
 
 
+$body-padding: $fallback--base-rem-space-unit !default;
+
+
+
 
 $fieldset-border-width: $base-border-width !default;
 //$fieldset-border: $fieldset-border-width solid $form-element-border-color !default; - AK: style and colour set globally
@@ -337,7 +341,7 @@ html {
 body {
     font-size: ($fallback--base-font-size / 16px * 1em);
     line-height: $fallback--base-rem-space-unit;
-    padding: $fallback--base-rem-space-unit;
+    padding: $body-padding;
 
 
     -height: 100%;
