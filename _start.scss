@@ -213,7 +213,7 @@ $pre-margin-bottom: $fallback--base-rem-space-unit !default;
 $pre-code-padding: calc-rem-from-px(($fallback--base-line-height * 2 - 16px) / 2) ($fallback--base-rem-space-unit / 2) !default;
 //$pre-code-padding: ($fallback--base-rem-space-unit / 2);
 
-$small-font-size: 75% !default;
+$small-font-size: 80% !default;
 
 
 
@@ -231,6 +231,14 @@ $textarea-resize: vertical !default;
 
 
 $video-background-color: #333;
+
+// Selections:
+$selection-text-color: #ffffff;
+$selection-background-color: #b3d4fc;
+$selection-text-shadow: none;
+
+
+
 // Attempt to organise 'normalisation' by tag.
 // All elements are listed, but elements that are non-visual or obsolete are commented out, as are
 // elements where no styles are applied.
@@ -376,6 +384,8 @@ a[href] {
         border-bottom: $anchor-border-bottom--hover;
         outline: 0;
     }
+    
+    touch-action: manipulation; // S: Remove the tapping delay from clickable elements
 }
 
     a[href][rel="external"]::after {
@@ -394,10 +404,14 @@ a[href] {
 abbr {
     cursor: help; // I
 
-    // N: Address styling not present in IE 8/9/10/11, Safari, and Chrome.
+    /**
+     * N1. Remove the bottom border in Firefox 39-.
+     * N2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
+     */
     &[title] {
-        border-bottom: 1px dotted;
-        text-decoration: none; // AK: because Firefox uses text-decoration resulting in a double-line.
+        border-bottom: none; /* N1 */
+        text-decoration: underline; /* N2 */
+        text-decoration: underline dotted; /* N2 */
     }
 }
 
@@ -430,7 +444,25 @@ audio {
     }
 }
 
-//b {}
+/*
+    AK: Not sure why the following two rules can't be combined, but they're separate in Normalize
+    so leaving them as-is for now.
+*/
+
+/**
+ * N: Prevent the duplicate application of `bolder` by the next rule in Safari 6.
+ */
+b {
+    font-weight: inherit;
+}
+
+/**
+ * N: Add the correct font weight in Chrome, Edge, and Safari.
+ */
+b {
+    font-weight: bolder;
+}
+
 //base {}
 //--basefont {}--
 //bdi {}
@@ -461,7 +493,7 @@ blockquote {
 
 @mixin button($color: $button-color, $bg-color: $button-background-color, $bg-color--state-1: $button-background-color--state-1) {
     display: inline-block; // AK. IE9 needs this.
-	overflow: visible; // S: Internet Explorer 11-
+	overflow: visible; // S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE.
     background-color: $bg-color; // S
     color: $color; // S
     //color: inherit; // S
@@ -469,7 +501,7 @@ blockquote {
 	font-style: inherit; // S
 	font-weight: inherit; // S
     min-height: $form-element-min-height; // S
-    text-transform: none; // [N0]
+    text-transform: none; // [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE.
     //-webkit-appearance: button; // [N2]
     -webkit-appearance: none; // AK
     cursor: pointer; // [N3]
@@ -486,11 +518,24 @@ blockquote {
     padding-right: $button-h-padding;
     
     vertical-align: baseline;
+    
+    touch-action: manipulation; // S: Remove the tapping delay from clickable elements
 
-    // Remove inner padding and border in Firefox 4+.
+    /**
+     * Remove the inner border and padding in Firefox.
+     */
+
     &::-moz-focus-inner {
-        border: 0;
-        padding: 0;
+      border: 0;
+      padding: 0;
+    }
+
+    /**
+     * Restore the focus styles unset by the previous rule.
+     */
+
+    &:-moz-focusring {
+      outline: 1px dotted ButtonText;
     }
 
     &:hover,
@@ -664,6 +709,7 @@ hr {
     border-bottom: $hr-border;
     margin-top: $hr-margin-top;
     margin-bottom: $hr-margin-bottom;
+    overflow: visible; /* N: Show the overflow in Edge and IE. */
 }
 
 //^html {}
@@ -681,7 +727,7 @@ iframe {
 //  are dropped into a page as-is. Safer alternative to using `display: block;`.
 img {
 	vertical-align: $media-element-vertical-align; // S, I3
-    border: 0; // N: Remove border when inside `a` element in IE 8/9/10.
+    border-style: none; // N: Remove the border on images inside links in IE 10-.
     max-width: 100%; // [I1]
     font-style: italic; // [I2]
 
@@ -730,30 +776,48 @@ input {
 
     vertical-align: top;
     
-    // Remove inner padding and border in Firefox 4+.
+    touch-action: manipulation; // S: Remove the tapping delay from clickable elements
+    
+    /**
+     * Remove the inner border and padding in Firefox.
+     */
     &::-moz-focus-inner {
-        border: 0;
-        padding: 0;
+      border: 0;
+      padding: 0;
+    }
+
+    /**
+     * Restore the focus styles unset by the previous rule.
+     */
+    &:-moz-focusring {
+      outline: 1px dotted ButtonText;
     }
 
 
 }
 
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
+/**
+ * N1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
+ *     controls in Android 4.
+ * N2. Correct the inability to style clickable types in iOS.
+ */
+
+
+html [type="button"], /* [M1] */
+[type="reset"],
+[type="submit"] {
     @include button;
 }
 
 
-input[type="file"] {
+[type="file"] {
     //line-height: inherit !important;
     cursor: pointer;
     padding: 0;
 }
 
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) {
-    input[type="file"] {
+    [type="file"] {
         padding-left: $input-h-padding;
     }
 
@@ -763,7 +827,7 @@ input[type="file"] {
     line-height: inherit;
 }*/
 
-input[type=file]::-ms-value {
+[type=file]::-ms-value {
     background: #fff;
     border: 0;
 }
@@ -779,7 +843,7 @@ input[type=file]::-moz-focus-inner {
 */
 // Temp experiments:
 
-input[type=file]::-ms-browse {
+[type=file]::-ms-browse {
     overflow: visible;
     background-color: $ui-color--base;
     color: #fff;
@@ -802,7 +866,7 @@ input[type=file]::-ms-browse {
 
   }
 
-input[type=file]::-webkit-file-upload-button {
+[type=file]::-webkit-file-upload-button {
     overflow: visible;
     background-color: $ui-color--base;
     color: #fff;
@@ -825,8 +889,8 @@ input[type=file]::-webkit-file-upload-button {
     border-style: solid;
 }
 
-input[type=checkbox],
-input[type=radio] {
+[type=checkbox],
+[type=radio] {
     vertical-align: baseline;
     min-height: auto;
     /*
@@ -834,6 +898,34 @@ input[type=radio] {
     */
     border: 0;
     background: transparent;    
+}
+
+/**
+ * N: Correct the cursor style of increment and decrement buttons in Chrome.
+ */
+
+[type="number"]::-webkit-inner-spin-button,
+[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+
+/**
+ * Correct the odd appearance of search inputs in Chrome and Safari.
+ */
+
+[type="search"] {
+  -webkit-appearance: textfield;
+}
+
+/**
+ * N: Remove the inner padding and cancel buttons in Chrome on OS X and
+ * Safari on OS X.
+ */
+
+[type="search"]::-webkit-search-cancel-button,
+[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
 }
 
 //ins {}
@@ -855,21 +947,30 @@ label {
     vertical-align: baseline;
 }
 
-// N:
-// 1. Correct `color` not being inherited in IE 8/9/10/11.
-// 2. Remove padding so people aren't caught out if they zero out fieldsets.
-legend {
-    //border: 0; // 1
-    //padding: 0; // 2
+/**
+ * N1. Correct the text wrapping in Edge and IE.
+ * N2. Correct the color inheritance from `fieldset` elements in IE.
+ * N3. Remove the padding so developers are not caught out when they zero out
+ *    `fieldset` elements in all browsers.
+ */
 
+legend {
+    //box-sizing: border-box; /* N1 */
+    color: inherit; /* N2 */
+    display: table; /* N1 */
+    max-width: 100%; /* N1 */
+    //padding: 0; /* N3 */
+    white-space: normal; /* N1 */
+    
     padding: 0 $legend-h-padding; // AK
     font-weight: bold; // AK
     border-width: $legend-border-width; // AK
     margin-top: -$legend-border-width; // AK - offset border
     margin-bottom: $fieldset-border-width; // AK - offset border
-    // Note $fieldset-border-width used deliberately - this is account for the fact that fieldset
+    // Note $fieldset-border-width used deliberately - this is to account for the fact that fieldset
     // top border width is ignored if there's a legend to the spacing is wrong.
 }
+
 
 li {
     margin-left:  $fallback--base-rem-space-unit * 1.5;
@@ -1029,6 +1130,9 @@ select {
     //padding-right: $input-h-padding;
     margin: ($fallback--base-rem-space-unit / 8) 0;
     vertical-align: top; // AK: For FF
+    
+    touch-action: manipulation; // S: Remove the tapping delay from clickable elements
+    
     //margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue
 
     // S:
@@ -1091,7 +1195,26 @@ small {
 //--spacer {}--
 //span {}
 //--strike {}--
-//strong {}
+
+/*
+    AK: Not sure why the following two rules can't be combined, but they're separate in Normalize
+    so leaving them as-is for now.
+*/
+
+/**
+ * N: Prevent the duplicate application of `bolder` by the next rule in Safari 6.
+ */
+strong {
+    font-weight: inherit;
+}
+
+/**
+ * N: Add the correct font weight in Chrome, Edge, and Safari.
+ */
+strong {
+    font-weight: bolder;
+}
+
 //!style {}
 
 //
@@ -1189,6 +1312,8 @@ textarea {
     //margin-bottom: ($fallback--base-rem-space-unit / 6);
     
     vertical-align: top; // AK: Keep labels at the top of the container.
+    
+    touch-action: manipulation; // S: Remove the tapping delay from clickable elements
 }
 
 //tfoot {}
@@ -1235,6 +1360,24 @@ video {
 //wbr {}
 //--xmp {}--
 
+[tabindex] {
+    touch-action: manipulation; // S: Remove the tapping delay from clickable elements
+}
+
+
+// specify the background color, font color, and drop shadow of text selections
+
+::-moz-selection {
+	background-color: $selection-background-color;
+	color: $selection-text-color;
+	text-shadow: $selection-text-shadow;
+}
+
+::selection {
+	background-color: $selection-background-color;
+	color: $selection-text-color;
+	text-shadow: $selection-text-shadow;
+}
 
 /*------------------------------------------------------------------------------------------------*\
 
