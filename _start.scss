@@ -459,11 +459,11 @@ blockquote {
 // 3. Improve usability and consistency of cursor style between image-type
 //    `input` and others.
 
-@mixin button {
+@mixin button($color: $button-color, $bg-color: $button-background-color, $bg-color--state-1: $button-background-color--state-1) {
     display: inline-block; // AK. IE9 needs this.
 	overflow: visible; // S: Internet Explorer 11-
-    background-color: $button-background-color; // S
-    color: $button-color; // S
+    background-color: $bg-color; // S
+    color: $color; // S
     //color: inherit; // S
 	font-family: inherit; // S
 	font-style: inherit; // S
@@ -496,7 +496,7 @@ blockquote {
     &:hover,
     &:active,
     &:focus {
-        background-color: $button-background-color--state-1;
+        background-color: $bg-color--state-1;
     }
 }
 
