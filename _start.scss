@@ -1410,6 +1410,7 @@ video {
 // S: specify the style of visually hidden yet accessible elements
 
 [hidden][aria-hidden="false"] {
+    display: inline;
     border: 0;
     clip: rect(0 0 0 0);
     height: 1px;
