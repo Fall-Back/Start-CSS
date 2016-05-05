@@ -119,7 +119,7 @@ $anchor-text-color: $ui-color--base !default;
 $anchor-text-color--hover: darken($anchor-text-color, 15%) !default;
 $anchor-text-decoration: none !default;
 $anchor-border-bottom: 1px solid lighten($anchor-text-color, 30%) !default;
-$anchor-border-bottom--hover: 1px solid lighten($anchor-text-color--hover, 30%) !default;
+$anchor-border-bottom--hover: 2px solid lighten($anchor-text-color--hover, 30%) !default;
 
 
 
