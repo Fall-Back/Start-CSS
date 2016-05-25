@@ -206,7 +206,7 @@ $media-element-vertical-align: middle !default;
 
 
 
-$pre-background-color: lighten($ui-color--base, 50%) !default;
+$pre-background-color: lighten($ui-color--base, 65%) !default;
 $pre-margin-bottom: $fallback--base-rem-space-unit !default;
 //$pre-margin-bottom: calc-rem-from-px($fallback--base-line-height / 2 + ($fallback--base-line-height - 16px));
 // Note top/bottom padding takes into account scrollbar height:
@@ -234,7 +234,7 @@ $video-background-color: #333;
 
 // Selections:
 $selection-text-color: #ffffff;
-$selection-background-color: #b3d4fc;
+$selection-background-color: $ui-color--base;
 $selection-text-shadow: none;
 
 
@@ -915,7 +915,7 @@ input[type=file]::-moz-focus-inner {
  */
 
 [type="search"] {
-  -webkit-appearance: textfield;
+  -webkit-appearance: none;
 }
 
 /**
