@@ -124,6 +124,7 @@ $anchor-border-bottom--hover: 2px solid lighten($anchor-text-color--hover, 30%) 
 
 
 $body-padding: $fallback--base-rem-space-unit !default;
+$body-min-width: 250px !default;
 
 
 
@@ -354,6 +355,7 @@ body {
 
     -height: 100%;
     min-height: 100%;
+    min-width: $body-min-width;
 }
 
 
