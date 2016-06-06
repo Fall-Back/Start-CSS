@@ -357,6 +357,9 @@ body {
     -height: 100%;
     min-height: 100%;
     min-width: $body-min-width;
+    
+    // This ensures that absolutely positioned child elements expand to the full height of the body.
+    position: relative;
 }
 
 
