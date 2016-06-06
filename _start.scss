@@ -236,7 +236,7 @@ $video-background-color: #333;
 
 // Selections:
 $selection-text-color: #ffffff;
-$selection-background-color: $ui-color--base;
+$selection-background-color: lighten($ui-color--base, 30%) !default;
 $selection-text-shadow: none;
 
 
@@ -357,6 +357,8 @@ body {
     -height: 100%;
     min-height: 100%;
     min-width: $body-min-width;
+    
+    position: relative;
 }
 
 
