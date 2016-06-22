@@ -72,7 +72,7 @@
 	padding-top: calc-rem-from-px($padding - $border-width);
 	padding-left: calc-rem-from-px($padding - $border-width);
 	padding-right: calc-rem-from-px($padding - $border-width);
-    
+
     &::after {
         display: block;
         content: "";
@@ -314,7 +314,7 @@ html {
 
     -webkit-text-size-adjust: 100%; // [I4] N2, S4
         -ms-text-size-adjust: 100%; // [I4] N2, S4
-    
+
     -moz-osx-font-smoothing: grayscale; // [I5]
      -webkit-font-smoothing: antialiased; // [I5]
 
@@ -370,7 +370,7 @@ body {
     -height: 100%;
     min-height: 100%;
     min-width: $body-min-width;
-    
+
     // This ensures that absolutely positioned child elements expand to the full height of the body.
     position: relative;
 }
@@ -390,15 +390,15 @@ a:link a:visited a:hover a:active a:focus
  * S1. Remove the gray background on active links in IE 10.
  * S2. Remove the gaps in underlines in iOS 8+ and Safari 8+.
  */
- 
+
 a[href] {
     color: $anchor-text-color;
     background-color: transparent; /* S1 */
     text-decoration: $anchor-text-decoration; // S
     -webkit-text-decoration-skip: objects; /* S2 */
-    
+
     border-bottom: $anchor-border-bottom;
-    
+
     padding-bottom: $fallback--base-rem-space-unit / 12;
 
     // N: Improve readability of focused elements when they are also in an active/hover state.
@@ -410,7 +410,7 @@ a[href] {
         border-bottom: $anchor-border-bottom--hover;
         outline-width: 0;
     }
-    
+
     // S: Remove the tapping delay from clickable elements
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
@@ -533,9 +533,9 @@ blockquote {
     padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($button-border-width);
     padding-left: $button-h-padding;
     padding-right: $button-h-padding;
-    
+
     vertical-align: baseline;
-    
+
     // S: Remove the tapping delay from clickable elements
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
@@ -630,7 +630,7 @@ dt {
 
 fieldset {
     margin-bottom: $fallback--base-rem-space-unit;
-    
+
     @include bordered(calc-px-from-rem($fieldset-padding), $fieldset-border-width);
 }
 
@@ -794,11 +794,11 @@ input {
     //margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue
 
     vertical-align: top;
-    
+
     // S: Remove the tapping delay from clickable elements
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
-    
+
     /**
      * Remove the inner border and padding in Firefox.
      */
@@ -918,7 +918,7 @@ input[type=file]::-moz-focus-inner {
         IE9 adds the border and background:
     */
     border: 0;
-    background: transparent;    
+    background: transparent;
 }
 
 /**
@@ -991,7 +991,7 @@ legend {
     max-width: 100%; /* N1 */
     //padding: 0; /* N3 */
     white-space: normal; /* N1 */
-    
+
     padding: 0 $legend-h-padding; // AK
     font-weight: bold; // AK
     border-width: $legend-border-width; // AK
@@ -1160,11 +1160,11 @@ select {
     //padding-right: $input-h-padding;
     margin: ($fallback--base-rem-space-unit / 8) 0;
     vertical-align: top; // AK: For FF
-    
+
     // S: Remove the tapping delay from clickable elements
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
-    
+
     //margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue
 
     // S:
@@ -1271,7 +1271,7 @@ sup {
 svg {
     // H, S
     vertical-align: $media-element-vertical-align;
-    
+
     fill: currentColor; /* S1 (@UNTESTED)*/
 }
     // N: Correct overflow not hidden in IE 9/10/11.
@@ -1340,9 +1340,9 @@ textarea {
     margin-bottom: 0; /* 3 */
     //margin-bottom: ($fallback--base-rem-space-unit / 8);
     //margin-bottom: ($fallback--base-rem-space-unit / 6);
-    
+
     vertical-align: top; // AK: Keep labels at the top of the container.
-    
+
     // S: Remove the tapping delay from clickable elements
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
@@ -1378,15 +1378,15 @@ video {
     //display: inline-block;  // N: Correct `inline-block` display not defined in IE 8/9.
     display: block; // AK: allow video to center if container larger than video.
     margin: 0 auto;
-    
+
 	//vertical-align: $media-element-vertical-align; // Video is now a block so no need for this
-    
+
     max-width: 100%; // Sc
     height: auto; // Sc
     background-color: $video-background-color;
     //width: 100%;
-    
-    
+
+
 }
 
 //wbr {}
@@ -1446,7 +1446,7 @@ video {
 [hidden][aria-hidden="false"] {
     clip: rect(0 0 0 0);
     position: absolute;
-    
+
     /*display: inline;
     border: 0;
     height: 1px;
@@ -1459,7 +1459,7 @@ video {
 	&:active {
         clip: auto;
         position: static;
-        
+
         /*height: auto;
         margin: 0;
         overflow: visible;
