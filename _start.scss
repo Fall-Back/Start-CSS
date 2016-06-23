@@ -269,16 +269,16 @@ $selection-text-shadow: none;
 // INUIT
 // High-, page-level styling.
 
-// I1. Set the default `font-size` and `line-height` for the entire project,
-//    sourced from our default variables. The `font-size` is calculated to exist
-//    in ems, the `line-height` is calculated to exist unitlessly.
+// --I1. Set the default `font-size` and `line-height` for the entire project,
+//     sourced from our default variables. The `font-size` is calculated to exist
+//     in ems, the `line-height` is calculated to exist unitlessly.--
 // I2. Force scrollbars to always be visible to prevent awkward 'jumps' when
-//    navigating between pages that do/do not have enough content to produce
-//    scrollbars naturally.
-// I3. Ensure the page always fills at least the entire height of the viewport.
+//     navigating between pages that do/do not have enough content to produce
+//     scrollbars naturally.
+// --I3. Ensure the page always fills at least the entire height of the viewport.--
 // I4. Prevent certain mobile browsers from automatically zooming fonts.
 // I5. Fonts on OSX will look more consistent with other systems that do not
-//    render text using sub-pixel anti-aliasing.
+//     render text using sub-pixel anti-aliasing (use with care!).
 
 // NORMALISE
 // N1. Set default font family to sans-serif.
@@ -292,33 +292,31 @@ $selection-text-shadow: none;
  * S4. Prevent font size adjustments after orientation changes in IE and iOS.
  */
 html {
-    //font-size: ($inuit-base-font-size / 16px) * 1em; // [I1]
-    //line-height: $inuit-base-line-height / $inuit-base-font-size; // [I1]
 
-    color: $fallback--base-text-color; // I, S
-    background-color: $fallback--base-background-color; // I, S
+    color: $fallback--base-text-color; /* I, S */
+    background-color: $fallback--base-background-color; /* I, S */
     border-color: $ui-color--base;
 
 
-    overflow-y: scroll; // [I2] S
-    //min-height: 100%; //[I3]
+    overflow-y: scroll; /* I2 S */
 
 
 
-    -moz-box-sizing: border-box; // S1, Sc, I
-         box-sizing: border-box; // S1, Sc, I
+
+    -moz-box-sizing: border-box; /* S1, Sc, I */
+         box-sizing: border-box; /* S1, Sc, I */
 
     cursor: default; /* S2 */
 
-    font-family: $fallback--base-font-family; //sans-serif; N1
+    font-family: $fallback--base-font-family; /* sans-serif; N1 */
 
-    -webkit-text-size-adjust: 100%; // [I4] N2, S4
-        -ms-text-size-adjust: 100%; // [I4] N2, S4
+    -webkit-text-size-adjust: 100%; /* I4, N2, S4 */
+        -ms-text-size-adjust: 100%; /* I4, N2, S4 */
 
-    -moz-osx-font-smoothing: grayscale; // [I5]
-     -webkit-font-smoothing: antialiased; // [I5]
+    -moz-osx-font-smoothing: grayscale; /* I5 */
+     -webkit-font-smoothing: antialiased; /* I5 */
 
-    text-rendering: optimizeLegibility; // S
+    text-rendering: optimizeLegibility; /* S */
 
     height: 100%;
 
@@ -326,10 +324,10 @@ html {
 
 
 * {
-	font-size: inherit; // S
-	line-height: inherit; // S
-    margin:  0; // S
-    padding: 0; // S
+	font-size: inherit; /* S */
+	line-height: inherit; /* S */
+    margin:  0; /* S */
+    padding: 0; /* S */
 }
 
 
@@ -340,24 +338,24 @@ html {
 *,
 ::before,
 ::after {
-    background-repeat: no-repeat; /* 1 */
+    background-repeat: no-repeat; /* S1 */
 
-    -moz-box-sizing: inherit; // S Sc I
-         box-sizing: inherit; // S2 Sc I
+    -moz-box-sizing: inherit; /* S Sc I */
+         box-sizing: inherit; /* S2 Sc I */
 
-    -webkit-font-smoothing: inherit; // Sc
+    -webkit-font-smoothing: inherit; /* Sc */
 
-    border-style: solid; // S
-	border-width: 0; // S
+    border-style: solid; /* S */
+	border-width: 0; /* S */
 
-    border-color: inherit; //AK
+    border-color: inherit; /* AK */
 }
 
 
 ::before,
 ::after {
-	text-decoration: inherit; // S
-	vertical-align: inherit; // S
+	text-decoration: inherit; /* S */
+	vertical-align: inherit; /* S */
 }
 
 
@@ -371,7 +369,7 @@ body {
     min-height: 100%;
     min-width: $body-min-width;
 
-    // This ensures that absolutely positioned child elements expand to the full height of the body.
+    /* This ensures that absolutely positioned child elements expand to the full height of the body. */
     position: relative;
 }
 
@@ -385,7 +383,7 @@ body {
 /*
 a:link a:visited a:hover a:active a:focus
 */
-// [N1] Remove the gray background color from active links in IE 10.
+/* [N1] Remove the gray background color from active links in IE 10. */
 /**
  * S1. Remove the gray background on active links in IE 10.
  * S2. Remove the gaps in underlines in iOS 8+ and Safari 8+.
@@ -394,15 +392,15 @@ a:link a:visited a:hover a:active a:focus
 a[href] {
     color: $anchor-text-color;
     background-color: transparent; /* S1 */
-    text-decoration: $anchor-text-decoration; // S
+    text-decoration: $anchor-text-decoration; /* S */
     -webkit-text-decoration-skip: objects; /* S2 */
 
     border-bottom: $anchor-border-bottom;
 
     padding-bottom: $fallback--base-rem-space-unit / 12;
 
-    // N: Improve readability of focused elements when they are also in an active/hover state.
-    // AK added focus and extra styels.
+    /* N: Improve readability of focused elements when they are also in an active/hover state. */
+    /* AK added focus and extra styels. */
     &:hover,
     &:active,
     &:focus {
@@ -411,7 +409,7 @@ a[href] {
         outline-width: 0;
     }
 
-    // S: Remove the tapping delay from clickable elements
+    /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
 }
@@ -430,7 +428,7 @@ a[href] {
 
 
 abbr {
-    cursor: help; // I
+    cursor: help; /* I */
 
     /**
      * N1. Remove the bottom border in Firefox 39-.
@@ -463,12 +461,12 @@ aside {
 }
 
 audio {
-    display: inline-block; // N: Correct `inline-block` display not defined in IE 8/9.
-	vertical-align: $media-element-vertical-align; // S
+    display: inline-block; /* N: Correct `inline-block` display not defined in IE 8/9. */
+	vertical-align: $media-element-vertical-align; /* S */
 
     &:not([controls]) {
-        display: none; // S: Chrome 44-, iOS 8+, Safari 9+
-        height: 0; // N
+        display: none; /* S: Chrome 44-, iOS 8+, Safari 9+ */
+        height: 0; /* N */
     }
 }
 
@@ -509,23 +507,23 @@ blockquote {
 //    `input` and others.
 
 @mixin button($color: $button-color, $bg-color: $button-background-color, $bg-color--state-1: $button-background-color--state-1) {
-    display: inline-block; // AK. IE9 needs this.
-	overflow: visible; // S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE.
-    background-color: $bg-color; // S
-    color: $color; // S
-    //color: inherit; // S
-	font-family: inherit; // S
-	font-style: inherit; // S
-	font-weight: inherit; // S
-    min-height: $form-element-min-height; // S
-    text-transform: none; // [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE.
-    //-webkit-appearance: button; // [N2]
-    -webkit-appearance: none; // AK
-    cursor: pointer; // [N3]
+    display: inline-block; /* AK. IE9 needs this. */
+	overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
+    background-color: $bg-color; /* S */
+    color: $color; /* S */
+    /* color: inherit; // S */
+	font-family: inherit; /* S */
+	font-style: inherit; /* S */
+	font-weight: inherit; /* S */
+    min-height: $form-element-min-height; /* S */
+    text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
+    /* -webkit-appearance: button; // [N2] */
+    -webkit-appearance: none; /* AK */
+    cursor: pointer; /* [N3] */
 
-    //padding: ($fallback--base-rem-space-unit / 8) $button-h-padding;
+    /* padding: ($fallback--base-rem-space-unit / 8) $button-h-padding; */
     margin: ($fallback--base-rem-space-unit / 8) 0;
-    //margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue
+    /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
     border-width: $button-border-width;
     border-radius: $button-radius;
 
@@ -536,7 +534,7 @@ blockquote {
 
     vertical-align: baseline;
 
-    // S: Remove the tapping delay from clickable elements
+    /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
 
@@ -569,7 +567,7 @@ button {
 }
 
 canvas {
-    display: inline-block;  // N: Correct `inline-block` display not defined in IE 8/9.
+    display: inline-block;  /* N: Correct `inline-block` display not defined in IE 8/9. */
 	vertical-align: $media-element-vertical-align;
 }
 
@@ -584,10 +582,10 @@ caption {
 // cite {}
 
 code {
-	font-family: $monospace-font-family, monospace; // S, N
-    font-size: 1em; // N: Address odd `em`-unit font size rendering in all browsers.
+	font-family: $monospace-font-family, monospace; /* S, N */
+    font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
 
-    line-height: 0; // AK: Prevent the element increasing the line-height of the parent.
+    line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
 }
 
 //!col {}
@@ -604,10 +602,10 @@ dd {
 //del {}
 
 details {
-	display: block; // N: IE 10/11
+	display: block; /* N: IE 10/11 */
 }
 
-// N: Address styling not present in Safari and Chrome.
+/* N: Address styling not present in Safari and Chrome. */
 dfn {
 	font-style: italic;
 }
@@ -719,8 +717,8 @@ h6 {
 }
 
 hr {
-	//box-sizing: content-box;
-    //height: 0;
+	/* box-sizing: content-box; */
+    /* height: 0; */
     height: 0;
     border-top: none;
     border-left: none;
@@ -745,18 +743,20 @@ iframe {
 // I3. Setting `vertical-align` removes the whitespace that appears under `img` elements when they
 //  are dropped into a page as-is. Safer alternative to using `display: block;`.
 img {
-	vertical-align: $media-element-vertical-align; // S, I3
-    border-style: none; // N: Remove the border on images inside links in IE 10-.
-    max-width: 100%; // [I1]
-    font-style: italic; // [I2]
+	vertical-align: $media-element-vertical-align; /* S, I3 */
+    border-style: none; /* N: Remove the border on images inside links in IE 10-. */
+    max-width: 100%; /* [I1] */
+    font-style: italic; /* [I2] */
 
-    // I1. Google Maps breaks if `max-width: 100%` acts upon it; use their selector to remove the
-    // effects.
-    // I2. If a `width` and/or `height` attribute have been explicitly defined, let's not make the
-    // image fluid.
-    .gm-style &, // [I1]
-    &[width], // [I2]
-    &[height] {  // [I2]
+    /**
+     * I1. Google Maps breaks if `max-width: 100%` acts upon it; use their selector to remove the 
+     *     effects.
+     * I2. If a `width` and/or `height` attribute have been explicitly defined, let's not make the 
+     *     image fluid.
+     */
+    .gm-style &, /* [I1] */
+    &[width], /* [I2] */
+    &[height] {  /* [I2] */
         max-width: none;
     }
 }
@@ -768,18 +768,18 @@ img {
  * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
  */
 input {
-    //color: inherit; // N1
-    //font: inherit; // N2
-    //margin: 0; // N3
+    /* color: inherit; // N1 */
+    /* font: inherit; // N2 */
+    /* margin: 0; // N3 */
     color: inherit;
-	font-family: inherit; // S
-	font-style: inherit; // S
-	font-weight: inherit; // S
+	font-family: inherit; /* S */
+	font-style: inherit; /* S */
+	font-weight: inherit; /* S */
 
-    min-height: $form-element-min-height; // ~S
-    // AK: mainly for IE
+    min-height: $form-element-min-height; /* ~S */
+    /* AK: mainly for IE */
 
-    //-webkit-border-radius: 0; // S: iOS 8+ // AK not needed as radius declared below.
+    /* -webkit-border-radius: 0; // S: iOS 8+ // AK not needed as radius declared below. */
 
     background-color: $input-background-color;
 
@@ -791,11 +791,11 @@ input {
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
     margin: ($fallback--base-rem-space-unit / 8) 0;
-    //margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue
+    /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
 
     vertical-align: top;
 
-    // S: Remove the tapping delay from clickable elements
+    /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
 
@@ -832,7 +832,7 @@ html [type="button"], /* [M1] */
 
 
 [type="file"] {
-    //line-height: inherit !important;
+    /* line-height: inherit !important; */
     cursor: pointer;
     padding: 0;
 }
@@ -963,9 +963,9 @@ input[type=file]::-moz-focus-inner {
 //--isindex {}--
 
 kbd {
-	font-family: $monospace-font-family, monospace; // S, N
-    font-size: 1em; // N: Address odd `em`-unit font size rendering in all browsers.
-    line-height: 0; // AK: Prevent the element increasing the line-height of the parent.
+	font-family: $monospace-font-family, monospace; /* S, N */
+    font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
+    line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
 }
 
 //keygen {}
@@ -973,7 +973,7 @@ kbd {
 label {
 	font-weight: bold;
     cursor: pointer;
-    //vertical-align: middle;
+    /* vertical-align: middle; */
     vertical-align: baseline;
 }
 
@@ -985,20 +985,20 @@ label {
  */
 
 legend {
-    //box-sizing: border-box; /* N1 */
+    /* box-sizing: border-box; /* N1 */ */
     color: inherit; /* N2 */
     display: table; /* N1 */
     max-width: 100%; /* N1 */
-    //padding: 0; /* N3 */
+    /* padding: 0; /* N3 */ */
     white-space: normal; /* N1 */
 
-    padding: 0 $legend-h-padding; // AK
-    font-weight: bold; // AK
-    border-width: $legend-border-width; // AK
-    margin-top: -$legend-border-width; // AK - offset border
-    margin-bottom: $fieldset-border-width; // AK - offset border
-    // Note $fieldset-border-width used deliberately - this is to account for the fact that fieldset
-    // top border width is ignored if there's a legend to the spacing is wrong.
+    padding: 0 $legend-h-padding; /* AK */
+    font-weight: bold; /* AK */
+    border-width: $legend-border-width; /* AK */
+    margin-top: -$legend-border-width; /* AK - offset border */
+    margin-bottom: $fieldset-border-width; /* AK - offset border */
+    /* Note $fieldset-border-width used deliberately - this is to account for the fact that fieldset
+       top border width is ignored if there's a legend to the spacing is wrong. */
 }
 
 
@@ -1039,7 +1039,7 @@ mark {
 //--multicol {}--
 
 nav {
-	display: block; // N
+	display: block; /* N */
 }
 
 //--nobr {}--
@@ -1056,19 +1056,19 @@ ol {
 }
 
 optgroup {
-	color: inherit; //  N, S
-	font-family: inherit; //  N, S
-	font-style: inherit; //  N, S
+	color: inherit; /*  N, S */
+	font-family: inherit; /*  N, S */
+	font-style: inherit; /*  N, S */
 
-    // N: Don't inherit the `font-weight` (applied by a rule above).
-    // NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
+    /* N: Don't inherit the `font-weight` (applied by a rule above). */
+    /* NOTE: the default cannot safely be changed in Chrome and Safari on OS X. */
     font-weight: bold;
 }
 
 option {
-	cursor: pointer; // Sc
-    min-height: $fallback--base-rem-space-unit; // AK
-    padding-top: 3px; // AK: help v-center text.
+	cursor: pointer; /* Sc */
+    min-height: $fallback--base-rem-space-unit; /* AK */
+    padding-top: 3px; /* AK: help v-center text. */
 }
 
 //output {}
@@ -1085,11 +1085,11 @@ p {
 // could be adjusted with a class. Could maybe make this default configurable but leave as it is
 // for now as it's likely that a poem would need a complete re-style (e.g. fonts etc.).
 pre {
-    font-family: $monospace-font-family, monospace; // S, N
-    font-size: 1em; // N: Address odd `em`-unit font size rendering in all browsers.
-    //overflow: auto; // N: Contain overflow in all browsers. S: Internet Explorer 11-
+    font-family: $monospace-font-family, monospace; /* S, N */
+    font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
+    /* overflow: auto; // N: Contain overflow in all browsers. S: Internet Explorer 11- */
     overflow-y: auto;
-    overflow-x: scroll; // AK: Keep scrollbar visible to maintain vertical rhythm.
+    overflow-x: scroll; /* AK: Keep scrollbar visible to maintain vertical rhythm. */
     margin-bottom: $pre-margin-bottom;
     background-color: $pre-background-color;
 
@@ -1101,8 +1101,8 @@ pre {
 }
 
 progress {
-	display: inline-block; // S: Internet Explorer 11-, Windows Phone 8.1+
-    vertical-align: $media-element-vertical-align; // N: Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
+	display: inline-block; /* S: Internet Explorer 11-, Windows Phone 8.1+ */
+    vertical-align: $media-element-vertical-align; /* N: Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera. */
 }
 
 //q {}
@@ -1113,16 +1113,16 @@ progress {
 //s {}
 
 samp {
-    font-family: $monospace-font-family, monospace; //* S, N
-    font-size: 1em; // N: Address odd `em`-unit font size rendering in all browsers.
+    font-family: $monospace-font-family, monospace; /* * S, N */
+    font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
 
-    line-height: 0; // AK: Prevent the element increasing the line-height of the parent.
+    line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
 }
 
 //!script {}
 
 section {
-	display: block; // N
+	display: block; /* N */
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -1131,47 +1131,47 @@ section {
 // All other form control elements do not inherit `text-transform` values.
 //  Correct `select` style inheritance in Firefox.
 select {
-	cursor: pointer; // Sc
-    //background-color: $form-element-background-color; // S
+	cursor: pointer; /* Sc */
+    /* background-color: $form-element-background-color; // S */
 
-    // AK: height because min-height doesn't change the expand button height in FF:
-	height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 4); // ~S
+    /* AK: height because min-height doesn't change the expand button height in FF: */
+	height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 4); /* ~S */
     line-height: $fallback--base-rem-space-unit;
 
-    text-transform: none; // N1
+    text-transform: none; /* N1 */
 
 
-    //color: inherit; // N1
-    //font: inherit; // N2
-    //margin: 0; // N3
+    /* color: inherit; // N1 */
+    /* font: inherit; // N2 */
+    /* margin: 0; // N3 */
     color: inherit;
-	font-family: inherit; // S
-	font-style: inherit; // S
-	font-weight: inherit; // S
+	font-family: inherit; /* S */
+	font-style: inherit; /* S */
+	font-weight: inherit; /* S */
 
     background-color: $input-background-color;
 
     border-width: $input-border-width;
     border-radius: $input-radius;
 
-    //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
-    //padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
+    /* padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width); */
+    /* padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width); */
     padding-left: $input-h-padding;
-    //padding-right: $input-h-padding;
+    /* padding-right: $input-h-padding; */
     margin: ($fallback--base-rem-space-unit / 8) 0;
-    vertical-align: top; // AK: For FF
+    vertical-align: top; /* AK: For FF */
 
-    // S: Remove the tapping delay from clickable elements
+    /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
 
-    //margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue
+    /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
 
-    // S:
-    //-moz-appearance: none;    // Firefox 35+
-	//-webkit-appearance: none; // Chrome 45+
+    /* S: */
+    /* -moz-appearance: none;    // Firefox 35+ */
+	/* -webkit-appearance: none; // Chrome 45+ */
 
-	// Expand button style for IE. (not sure yet as alterntive means it's more similar to Chrome)
+	/* Expand button style for IE. (not sure yet as alterntive means it's more similar to Chrome) */
     /*&::-ms-expand {
 		//display: none;        // Edge 12+, Internet Explorer 11-
         background-color: $ui-color--base;
@@ -1194,10 +1194,10 @@ select {
     }
 
 	&::-ms-value {
-		color: currentColor;  // Edge 12+, Internet Explorer 11-
+		color: currentColor;  /* Edge 12+, Internet Explorer 11- */
 	}
 
-    // Remove inner padding and border in Firefox 4+.
+    /* Remove inner padding and border in Firefox 4+. */
     &::-moz-focus-inner {
         border: 0;
         padding: 0;
@@ -1219,8 +1219,8 @@ select[multiple] {
 //shadow {}
 
 small {
-	font-size: $small-font-size; // All browsers
-    line-height: 0; // AK: Prevent the element increasing the line-height of the parent.
+	font-size: $small-font-size; /* All browsers */
+    line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
 }
 
 //!source {}
@@ -1249,11 +1249,11 @@ sub {
 }
 
 summary {
-    // S: Firefox 40+, Internet Explorer 11-, Windows Phone 8.1+
-    // N: Correct `block` display not defined for `details` or `summary` in IE 10/11
+    /* S: Firefox 40+, Internet Explorer 11-, Windows Phone 8.1+ */
+    /* N: Correct `block` display not defined for `details` or `summary` in IE 10/11 */
 	display: block;
 
-    cursor: pointer; // AK
+    cursor: pointer; /* AK */
 }
 
 // N: Prevent `sup` affecting `line-height` in all browsers.
@@ -1269,7 +1269,7 @@ sup {
  * S1: Change the fill color to match the text color in all browsers (opinionated).
  */
 svg {
-    // H, S
+    /* H, S */
     vertical-align: $media-element-vertical-align;
 
     fill: currentColor; /* S1 (@UNTESTED)*/
@@ -1280,16 +1280,16 @@ svg {
     }
 
 table {
-    border-collapse: collapse; // N
-    border-spacing: 0; // N
+    border-collapse: collapse; /* N */
+    border-spacing: 0; /* N */
 
     border: $table-border;
     background-color: $table-background-color;
-    //margin-top: -$table-border-width;
+    /* margin-top: -$table-border-width; */
     margin-bottom: $fallback--base-rem-space-unit - calc-rem-from-px($table-border-width);
 
     width: 100%;
-    // @TODO - possibly make this configurable to be 'natural' width but centered instead.
+    /* @TODO - possibly make this configurable to be 'natural' width but centered instead. */
 }
 
 //tbody {}
@@ -1297,7 +1297,7 @@ td {
     border: $table-border;
     padding-top: $table-cell-padding;
     padding-right: $table-cell-padding;
-    //@include calc(padding-bottom, '#{$table-cell-padding} - #{$table-border-width}');
+    /* @include calc(padding-bottom, '#{$table-cell-padding} - #{$table-border-width}'); */
     padding-bottom: $table-cell-padding - calc-rem-from-px($table-border-width);
     padding-left: $table-cell-padding;
 }
@@ -1354,7 +1354,7 @@ th {
     border: $table-border;
     padding-top: $table-cell-padding;
     padding-right: $table-cell-padding;
-    //@include calc(padding-bottom, '#{$table-cell-padding} - #{$table-border-width}');
+    /* @include calc(padding-bottom, '#{$table-cell-padding} - #{$table-border-width}'); */
     padding-bottom: $table-cell-padding - calc-rem-from-px($table-border-width);
     padding-left: $table-cell-padding;
 }
@@ -1375,16 +1375,16 @@ ul {
 //var {}
 
 video {
-    //display: inline-block;  // N: Correct `inline-block` display not defined in IE 8/9.
-    display: block; // AK: allow video to center if container larger than video.
+    /* display: inline-block;  // N: Correct `inline-block` display not defined in IE 8/9. */
+    display: block; /* AK: allow video to center if container larger than video. */
     margin: 0 auto;
 
-	//vertical-align: $media-element-vertical-align; // Video is now a block so no need for this
+	/* vertical-align: $media-element-vertical-align; // Video is now a block so no need for this */
 
-    max-width: 100%; // Sc
-    height: auto; // Sc
+    max-width: 100%; /* Sc */
+    height: auto; /* Sc */
     background-color: $video-background-color;
-    //width: 100%;
+    /* width: 100%; */
 
 
 }
@@ -1393,7 +1393,7 @@ video {
 //--xmp {}--
 
 [tabindex] {
-    // S: Remove the tapping delay from clickable elements
+    /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
 }
@@ -1438,7 +1438,7 @@ video {
 
 // N: Address `[hidden]` styling not present in IE 8/9/10.
 [hidden] {
-	display: none; // S: Internet Explorer 10-
+	display: none; /* S: Internet Explorer 10- */
 }
 
 // S: specify the style of visually hidden yet accessible elements
@@ -1485,8 +1485,8 @@ video {
 
 .clearfix:before,
 .clearfix:after {
-    content: " "; // 1
-    display: table; // 2
+    content: " "; /* 1 */
+    display: table; /* 2 */
 }
 
 .clearfix:after {
