@@ -105,6 +105,7 @@ $max-main-line-length: 50em !default;
 
 
 $form-element-border-color: darken($fallback--base-ui-color, 10%) !default;
+$form-element-border-style: solid !default;
 $form-element-background-color: $fallback--base-ui-color !default;
 $form-element-background-color--state-1: lighten($fallback--base-ui-color, 10%) !default;
 //$form-element-background-color: transparent !default;
@@ -154,6 +155,7 @@ $legend-h-padding: $fallback--base-rem-space-unit / 4 !default;
 
 $button-h-padding: $fallback--base-rem-space-unit / 4 !default;
 $button-radius: $form-element-radius !default;
+$button-border-colour: $form-element-border-color !default;
 $button-border-width: $base-border-width !default;
 //$button-border-width: 0 !default;
 $button-color: #fff !default;
@@ -164,6 +166,7 @@ $button-background-color--state-1: $form-element-background-color--state-1 !defa
 //$button-h-padding: $fallback--base-rem-space-unit / 4 !default;
 $input-h-padding: $fallback--base-rem-space-unit / 4 !default;
 $input-radius: $form-element-radius !default;
+$input-border-colour: $form-element-border-color !default;
 $input-border-width: $base-border-width !default;
 //$input-border-width: 0 !default;
 $input-background-color: #fff !default;
@@ -256,9 +259,10 @@ $selection-text-shadow: none;
 // Key:
 // NX = Normalise reference
 // IX = Inuit reference
-// S  = Sanitize
+// SX  = Sanitize
 // Sc = Scut
 // H  = HTML5BP
+// AX = My own additions
 
 /*------------------------------------------------------------------------------------------------*\
 
@@ -266,36 +270,30 @@ $selection-text-shadow: none;
 
 \*------------------------------------------------------------------------------------------------*/
 
-// INUIT
-// High-, page-level styling.
+/*
+  --I1. Set the default `font-size` and `line-height` for the entire project,
+        sourced from our default variables. The `font-size` is calculated to exist
+        in ems, the `line-height` is calculated to exist unitlessly.--
+    I2. Force scrollbars to always be visible to prevent awkward 'jumps' when
+        navigating between pages that do/do not have enough content to produce
+        scrollbars naturally.
+    --I3. Ensure the page always fills at least the entire height of the viewport.--
+    I4. Prevent certain mobile browsers from automatically zooming fonts.
+    I5. Fonts on OSX will look more consistent with other systems that do not
+        render text using sub-pixel anti-aliasing (use with care!).
 
-// --I1. Set the default `font-size` and `line-height` for the entire project,
-//     sourced from our default variables. The `font-size` is calculated to exist
-//     in ems, the `line-height` is calculated to exist unitlessly.--
-// I2. Force scrollbars to always be visible to prevent awkward 'jumps' when
-//     navigating between pages that do/do not have enough content to produce
-//     scrollbars naturally.
-// --I3. Ensure the page always fills at least the entire height of the viewport.--
-// I4. Prevent certain mobile browsers from automatically zooming fonts.
-// I5. Fonts on OSX will look more consistent with other systems that do not
-//     render text using sub-pixel anti-aliasing (use with care!).
-
-// NORMALISE
-// N1. Set default font family to sans-serif.
-// N2. Prevent iOS and IE text size adjust after device orientation change,
-//    without disabling user zoom.
-
-/** SANITIZE
- * S1. Add border box sizing in all browsers (opinionated).
- * S2. Add the default cursor in all browsers (opinionated).
- * --S3. Add a flattened line height in all browsers (opinionated).--
- * S4. Prevent font size adjustments after orientation changes in IE and iOS.
- */
+    S1. Add border box sizing in all browsers (opinionated).
+    S2. Add the default cursor in all browsers (opinionated).
+  --S3. Add a flattened line height in all browsers (opinionated).--
+    S4. Prevent font size adjustments after orientation changes in IE and iOS.
+    S5. Change the default font family in all browsers (opinionated).
+*/
 html {
 
-    color: $fallback--base-text-color; /* I, S */
-    background-color: $fallback--base-background-color; /* I, S */
-    border-color: $ui-color--base;
+    color: $fallback--base-text-color; /* I */
+    background-color: $fallback--base-background-color; /* I */
+
+    
 
 
     overflow-y: scroll; /* I2 S */
@@ -308,15 +306,16 @@ html {
 
     cursor: default; /* S2 */
 
-    font-family: $fallback--base-font-family; /* sans-serif; N1 */
+    font-family: $fallback--base-font-family; /* S5 */
 
-    -webkit-text-size-adjust: 100%; /* I4, N2, S4 */
-        -ms-text-size-adjust: 100%; /* I4, N2, S4 */
+        -ms-text-size-adjust: 100%; /* I4, S4 */
+    -webkit-text-size-adjust: 100%; /* I4, S4 */
+    
 
     -moz-osx-font-smoothing: grayscale; /* I5 */
      -webkit-font-smoothing: antialiased; /* I5 */
 
-    text-rendering: optimizeLegibility; /* S */
+    /* text-rendering: optimizeLegibility; /* S: Removed: text-rendering due to performance issues */
 
     height: 100%;
 
@@ -331,31 +330,35 @@ html {
 }
 
 
-/**
- * S1. Remove repeating backgrounds in all browsers (opinionated).
- * S2. Add box sizing inheritence in all browsers (opinionated).
- */
+/*
+    S1. Remove repeating backgrounds in all browsers (opinionated).
+    S2. Add box sizing inheritence in all browsers (opinionated).
+    
+    A1. Supporting FF8+ due to Mustard Cut so including for completeness.
+*/
 *,
 ::before,
 ::after {
     background-repeat: no-repeat; /* S1 */
 
-    -moz-box-sizing: inherit; /* S Sc I */
+    -moz-box-sizing: inherit; /* A1 */
          box-sizing: inherit; /* S2 Sc I */
 
     -webkit-font-smoothing: inherit; /* Sc */
 
-    border-style: solid; /* S */
-	border-width: 0; /* S */
-
-    border-color: inherit; /* AK */
+    /*border-style: inherit; /* AK */
+	/*border-width: 0; /* AK */
+    border-color: $ui-color--base; /* AK1 */
 }
 
-
+/*
+    S1. Add text decoration inheritance in all browsers (opinionated).
+    S1. Add vertical alignment inheritence in all browsers (opinionated).
+*/
 ::before,
 ::after {
-	text-decoration: inherit; /* S */
-	vertical-align: inherit; /* S */
+	text-decoration: inherit; /* S1 */
+	vertical-align: inherit; /* S2 */
 }
 
 
@@ -416,6 +419,7 @@ a[href] {
 
     a[href][rel="external"]::after {
         border-color: transparent  currentColor;
+        border-style: $form-element-border-style;
         border-width: 0 0.4em 0.4em 0;
         content: "";
         display: inline-block;
@@ -524,6 +528,8 @@ blockquote {
     /* padding: ($fallback--base-rem-space-unit / 8) $button-h-padding; */
     margin: ($fallback--base-rem-space-unit / 8) 0;
     /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
+    border-color: $button-border-colour;
+    border-style: $form-element-border-style;
     border-width: $button-border-width;
     border-radius: $button-radius;
 
@@ -785,6 +791,8 @@ input {
 
     border-width: $input-border-width;
     border-radius: $input-radius;
+    border-color: $input-border-colour;
+    border-style: $form-element-border-style;
 
     padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
     padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
@@ -876,9 +884,10 @@ input[type=file]::-moz-focus-inner {
     cursor: pointer;
     margin: 0 0 0 -2px;
     border-width: $input-border-width;
+    border-color: $input-border-colour;
+    border-style: $form-element-border-style;
     border-top-right-radius: $input-radius;
     border-bottom-right-radius: $input-radius;
-    border-color: $ui-color--base;
     /* padding-top: 0.125rem; */
     /* padding-bottom: 0.125rem; */
     padding-left: $input-h-padding;
@@ -900,9 +909,10 @@ input[type=file]::-moz-focus-inner {
     cursor: pointer;
     margin: 0px 0 0 -2px;
     border-width: $input-border-width;
+    border-color: $input-border-colour;
+    border-style: $form-element-border-style;
     border-top-left-radius: $input-radius;
     border-bottom-left-radius: $input-radius;
-    border-color: $ui-color--base;
     /* padding-top: 0.125rem; */
     /* padding-bottom: 0.125rem; */
     padding-left: $input-h-padding;
@@ -985,11 +995,11 @@ label {
  */
 
 legend {
-    /* box-sizing: border-box; /* N1 */ */
+    /* box-sizing: border-box; /* N1 */
     color: inherit; /* N2 */
     display: table; /* N1 */
     max-width: 100%; /* N1 */
-    /* padding: 0; /* N3 */ */
+    /* padding: 0; /* N3 */
     white-space: normal; /* N1 */
 
     padding: 0 $legend-h-padding; /* AK */
@@ -1153,6 +1163,8 @@ select {
 
     border-width: $input-border-width;
     border-radius: $input-radius;
+    border-color: $input-border-colour;
+    border-style: $form-element-border-style;
 
     /* padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width); */
     /* padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width); */
@@ -1331,6 +1343,8 @@ textarea {
 
     border-width: $input-border-width;
     border-radius: $input-radius;
+    border-color: $input-border-colour;
+    border-style: $form-element-border-style;
 
     //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
     //padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
