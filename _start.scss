@@ -296,6 +296,8 @@ $selection-text-shadow: none;
 */
 html {
 
+    height: 100%; /* A1 */
+
     color: $fallback--base-text-color; /* I */
     background-color: $fallback--base-background-color; /* I */
 
@@ -319,7 +321,7 @@ html {
 
     /* text-rendering: optimizeLegibility; /* S: Removed: text-rendering due to performance issues */
 
-    height: 100%; /* A1 */
+    
 
 }
 
