@@ -277,7 +277,7 @@ $selection-text-shadow: none;
     I2. Force scrollbars to always be visible to prevent awkward 'jumps' when
         navigating between pages that do/do not have enough content to produce
         scrollbars naturally.
-    --I3. Ensure the page always fills at least the entire height of the viewport.--
+  --I3. Ensure the page always fills at least the entire height of the viewport.--
     I4. Prevent certain mobile browsers from automatically zooming fonts.
     I5. Fonts on OSX will look more consistent with other systems that do not
         render text using sub-pixel anti-aliasing (use with care!).
@@ -287,18 +287,20 @@ $selection-text-shadow: none;
   --S3. Add a flattened line height in all browsers (opinionated).--
     S4. Prevent font size adjustments after orientation changes in IE and iOS.
     S5. Change the default font family in all browsers (opinionated).
+
+    A1. `min-height` _should_ be what we want here (as declared in inuits css), except that
+        `min-height` doesn't works as expected; child elements set to `(min-)height: 100%;` won't
+        increase their height - they'll only do that if the parent has `height: 100%;`.
+        This can lead to situations where sometimes elements (and thus their visible decoration) do
+        not stretch to be tall enough for their content (because they're limited to 100% height).
 */
 html {
 
     color: $fallback--base-text-color; /* I */
     background-color: $fallback--base-background-color; /* I */
 
-    
-
 
     overflow-y: scroll; /* I2 S */
-
-
 
 
     -moz-box-sizing: border-box; /* S1, Sc, I */
@@ -310,14 +312,14 @@ html {
 
         -ms-text-size-adjust: 100%; /* I4, S4 */
     -webkit-text-size-adjust: 100%; /* I4, S4 */
-    
+
 
     -moz-osx-font-smoothing: grayscale; /* I5 */
      -webkit-font-smoothing: antialiased; /* I5 */
 
     /* text-rendering: optimizeLegibility; /* S: Removed: text-rendering due to performance issues */
 
-    height: 100%;
+    height: 100%; /* A1 */
 
 }
 
@@ -333,7 +335,7 @@ html {
 /*
     S1. Remove repeating backgrounds in all browsers (opinionated).
     S2. Add box sizing inheritence in all browsers (opinionated).
-    
+
     A1. Supporting FF8+ due to Mustard Cut so including for completeness.
 */
 *,
@@ -464,8 +466,11 @@ aside {
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
+/*
+    N1. Add the correct display in IE 9-.
+*/
 audio {
-    display: inline-block; /* N: Correct `inline-block` display not defined in IE 8/9. */
+    display: inline-block; /* N1 */
 	vertical-align: $media-element-vertical-align; /* S */
 
     &:not([controls]) {
@@ -572,8 +577,11 @@ button {
     @include button;
 }
 
+/*
+    N1. Add the correct display in IE 9-.
+*/
 canvas {
-    display: inline-block;  /* N: Correct `inline-block` display not defined in IE 8/9. */
+    display: inline-block;  /* N1. */
 	vertical-align: $media-element-vertical-align;
 }
 
@@ -755,9 +763,9 @@ img {
     font-style: italic; /* [I2] */
 
     /**
-     * I1. Google Maps breaks if `max-width: 100%` acts upon it; use their selector to remove the 
+     * I1. Google Maps breaks if `max-width: 100%` acts upon it; use their selector to remove the
      *     effects.
-     * I2. If a `width` and/or `height` attribute have been explicitly defined, let's not make the 
+     * I2. If a `width` and/or `height` attribute have been explicitly defined, let's not make the
      *     image fluid.
      */
     .gm-style &, /* [I1] */
@@ -971,11 +979,13 @@ input[type=file]::-moz-focus-inner {
 //ins {}
 
 //--isindex {}--
-
+/*
+    A1. Prevent the element increasing the line-height of the parent.
+*/
 kbd {
 	font-family: $monospace-font-family, monospace; /* S, N */
     font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
-    line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
+    line-height: 0; /* A1 */
 }
 
 //keygen {}
@@ -1091,28 +1101,41 @@ p {
 //picture {}
 //--plaintext {}--
 
-// Note: code is the most probable use for a `<pre>` tag. Other uses may occur (e.g. poem) but these
-// could be adjusted with a class. Could maybe make this default configurable but leave as it is
-// for now as it's likely that a poem would need a complete re-style (e.g. fonts etc.).
-pre {
-    font-family: $monospace-font-family, monospace; /* S, N */
-    font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
-    /* overflow: auto; // N: Contain overflow in all browsers. S: Internet Explorer 11- */
-    overflow-y: auto;
-    overflow-x: scroll; /* AK: Keep scrollbar visible to maintain vertical rhythm. */
-    margin-bottom: $pre-margin-bottom;
-    background-color: $pre-background-color;
+/*
+    Note: code is the most probable use for a `<pre>` tag. Other uses may occur (e.g. poem) but t
+    these could be adjusted with a class. Could maybe make this default configurable but leave as it
+    is for now as it's likely that a poem would need a complete re-style (e.g. fonts etc.).
 
-    & code {
+    N1. Correct the inheritance and scaling of font size in all browsers.
+    N2. Correct the odd `em` font sizing in all browsers.
+
+    A1. Keep scrollbar visible to maintain vertical rhythm.
+*/
+pre {
+    font-family: $monospace-font-family, monospace; /* N1 */
+    font-size: 1em; /* N2 */
+    overflow-y: auto; /* A1 */
+    overflow-x: scroll; /* A1 */
+    margin-bottom: $pre-margin-bottom; /* A */
+    background-color: $pre-background-color; /* A */
+
+
+}
+    pre code {
         display: inline-block;
-        line-height: 22px;
+        line-height: 22px; /* Need to calculate this! */
         padding:  $pre-code-padding;
     }
-}
 
+
+/*
+    N1. Add the correct vertical alignment in Chrome, Firefox, and Opera.
+
+    S1. Internet Explorer 11-, Windows Phone 8.1+
+*/
 progress {
-	display: inline-block; /* S: Internet Explorer 11-, Windows Phone 8.1+ */
-    vertical-align: $media-element-vertical-align; /* N: Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera. */
+	display: inline-block; /* S1 */
+    vertical-align: $media-element-vertical-align; /* N1 */
 }
 
 //q {}
@@ -1388,19 +1411,19 @@ ul {
 
 //var {}
 
+/*
+    A1. Allow video to center if container larger than video.
+*/
 video {
-    /* display: inline-block;  // N: Correct `inline-block` display not defined in IE 8/9. */
-    display: block; /* AK: allow video to center if container larger than video. */
-    margin: 0 auto;
+    display: block; /* A1 */
+    margin: 0 auto; /* A1 */
 
 	/* vertical-align: $media-element-vertical-align; // Video is now a block so no need for this */
 
     max-width: 100%; /* Sc */
     height: auto; /* Sc */
-    background-color: $video-background-color;
-    /* width: 100%; */
 
-
+    background-color: $video-background-color; /* A */
 }
 
 //wbr {}
