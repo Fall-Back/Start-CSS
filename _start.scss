@@ -126,6 +126,7 @@ $anchor-border-bottom--hover: 2px solid lighten($anchor-text-color--hover, 30%) 
 
 
 $body-padding: $fallback--base-rem-space-unit !default;
+$body-margin: 0 !default;
 $body-min-width: 250px !default;
 $body-max-width: none !default;
 
@@ -371,6 +372,7 @@ body {
     font-size: ($fallback--base-font-size / 16px * 1em);
     line-height: $fallback--base-rem-space-unit;
     padding: $body-padding;
+    margin: $body-margin;
 
 
     -height: 100%;
