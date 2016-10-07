@@ -353,7 +353,11 @@ html {
     -webkit-font-smoothing: inherit; /* Sc */
 
     /*border-style: inherit; /* AK */
-	/*border-width: 0; /* AK */
+    // This had been commented out, but I can't remember why. I think I read it was detremental
+    // but I can't rember on what. Possible Google Maps or similar.
+    // However, removing it is detremental to many other FallBack patterns so reinstating it for now
+    // until I can specify borders on those elements explicity.
+	border-width: 0; /* AK */
     border-color: $ui-color--base; /* AK1 */
 }
 
