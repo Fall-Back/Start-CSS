@@ -69,6 +69,8 @@
 // Expects PX for both args.
 @mixin bordered($padding, $border-width) {
     border-width: $border-width;
+	border-style: solid;
+	border-color: $ui-color--base;
 	padding-top: calc-rem-from-px($padding - $border-width);
 	padding-left: calc-rem-from-px($padding - $border-width);
 	padding-right: calc-rem-from-px($padding - $border-width);
@@ -858,7 +860,8 @@ html [type="button"], /* [M1] */
 
 
 [type="file"] {
-    /* line-height: inherit !important; */
+    /* V-center the text in FF: */
+	line-height: $form-element-min-height - calc-rem-from-px(($input-border-width * 2));
     cursor: pointer;
     padding: 0;
 }
