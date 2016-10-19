@@ -105,6 +105,21 @@ $monospace-font-family: monospace !default;
 //$max-main-line-length: 0 !default;
 $max-main-line-length: 50em !default;
 
+/* Global focus style: */
+$focus-outline-style: 1px dotted #000 !default;
+
+$text-input-focus-shadow: 0 0 3px 0 $ui-color--base inset !default;
+$text-input-focus-border: false !default;
+
+@mixin text-input-focus() {
+	@if $text-input-focus-shadow != false {
+        box-shadow: $text-input-focus-shadow;
+    }
+	@if $text-input-focus-border != false {
+        border: $text-input-focus-border;
+    }
+}
+
 
 $form-element-border-color: darken($fallback--base-ui-color, 10%) !default;
 $form-element-border-style: solid !default;
@@ -583,6 +598,10 @@ blockquote {
     &:focus {
         background-color: $bg-color--state-1;
     }
+	
+	&:focus {
+		outline: $focus-outline-style;
+	}
 }
 
 button {
@@ -845,6 +864,10 @@ input {
 
 }
 
+input:not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type="progess"]):focus {
+    @include text-input-focus();
+}
+
 /**
  * N1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
  *     controls in Android 4.
@@ -852,7 +875,7 @@ input {
  */
 
 
-html [type="button"], /* [M1] */
+html [type="button"], /* [N1] */
 [type="reset"],
 [type="submit"] {
     @include button;
@@ -881,16 +904,17 @@ html [type="button"], /* [M1] */
     background: #fff;
     border: 0;
 }
-/*
-input[type=file] > input[type=button],
-input[type=file] > input[type=button]::-moz-focus-inner,
-input[type=file]::-moz-focus-inner {
-    background: #f00;
+
+//input[type=file] > input[type=button]::-moz-focus-inner 
+::-moz-focus-inner {
     border: 0;
     padding: 0;
     margin: 0;
 }
-*/
+input[type=file]:-moz-focusring {
+    outline: 1px dotted #f00;
+}
+
 // Temp experiments:
 
 [type=file]::-ms-browse {
@@ -1252,6 +1276,10 @@ select {
     }
 }
 
+select:focus {
+	@include text-input-focus();
+}
+
 // FF
 @supports (-moz-appearance: meterbar) {
     select {
@@ -1396,6 +1424,10 @@ textarea {
     // S: Remove the tapping delay from clickable elements
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
+}
+
+textarea:focus {
+	@include text-input-focus();
 }
 
 //tfoot {}

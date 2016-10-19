@@ -91,9 +91,11 @@ p.subtitle {
 /* CUSTOM INPUTS: RADIOS AND CHECKBOXES */
 
 /* Hide the real inputs: */
+/* (note this method is important to persist accessiblity and keyboard navigation) */
 .custom-input[type="checkbox"],
 .custom-input[type="radio"] {
-    display: none;
+	position: absolute;
+	opacity: 0;
 }
 
 /* Prepare for positioning the pseudo-elements: */
@@ -112,6 +114,10 @@ p.subtitle {
    padding-left: 1.5em;
 }
 
+.custom-input:focus + .custom-input-label::before {
+	outline: $focus-outline-style;
+}
+
 /* Common psuedo-element styles: */
 .custom-input[type="checkbox"] + .custom-input-label::before,
 .custom-input[type="radio"] + .custom-input-label::before {
@@ -121,7 +127,7 @@ p.subtitle {
     height: 1rem;
     background: #ccc;
     border-radius: 2px;
-    /*margin-right: 0.5rem;*/
+
     position: absolute;
     left: 0;
     top: 0;
@@ -149,11 +155,8 @@ p.subtitle {
 
     position: absolute;
     left: 0.22em;
-
-    /*top: 0.4em;
-    transform: rotate(-50deg);*/
-
     top: 50%;
+	
     -webkit-transform: translate(0px, -80%) rotate(-50deg);
     -ms-transform: translate(0px, -80%) rotate(-50deg);
     transform: translate(0px, -80%) rotate(-50deg);
@@ -170,17 +173,13 @@ p.subtitle {
 /* Adjustments for end (right) alignment: */
 .custom-input--align-end[type="checkbox"] + .custom-input-label,
 .custom-input--align-end[type="radio"] + .custom-input-label {
-    /*-webkit-flex-direction: row-reverse;
-    -ms-flex-direction: row-reverse;
-    flex-direction: row-reverse;*/
     padding-left: 0;
     padding-right: 1.5em;
 }
 
+
 .custom-input--align-end[type="checkbox"] + .custom-input-label::before,
 .custom-input--align-end[type="radio"] + .custom-input-label::before {
-    /*margin-right: 0;
-    margin-left: 0.5rem;*/
     left: auto;
     right: 0;
 }
