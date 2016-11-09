@@ -1332,6 +1332,24 @@ summary {
     cursor: pointer; /* AK */
 }
 
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	
+	details > summary::before {
+		content: '\25BA';
+		font-family: serif;
+		font-size: 0.75em;
+		display: inline-block;
+		vertical-align: top;
+		margin-right: 0.5em;
+	}
+
+	details[open] > summary::before {
+		transform: rotate(90deg);
+	}
+ 
+
 // N: Prevent `sup` affecting `line-height` in all browsers.
 sup {
     font-size: 75%;
