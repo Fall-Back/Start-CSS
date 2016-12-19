@@ -1332,6 +1332,7 @@ summary {
     cursor: pointer; /* AK */
 }
 
+	/* AK: Normalise summary appearance: (note IE support issue )*/
 	summary::-webkit-details-marker {
 		display: none;
 	}
