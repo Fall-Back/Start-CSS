@@ -1032,6 +1032,10 @@ label {
     cursor: pointer;
     /* vertical-align: middle; */
     vertical-align: baseline;
+	
+    /* S: Remove the tapping delay from clickable elements */
+    -ms-touch-action: manipulation; /* S: IE10 */
+    touch-action: manipulation;
 }
 
 /**
@@ -1328,6 +1332,10 @@ summary {
     /* S: Firefox 40+, Internet Explorer 11-, Windows Phone 8.1+ */
     /* N: Correct `block` display not defined for `details` or `summary` in IE 10/11 */
 	display: block;
+	
+    /* S: Remove the tapping delay from clickable elements */
+    -ms-touch-action: manipulation; /* S: IE10 */
+    touch-action: manipulation;
 
     cursor: pointer; /* AK */
 }
