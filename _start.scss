@@ -512,6 +512,8 @@ audio {
  */
 b {
     font-weight: bolder;
+	// Prevent increase in line-height:
+	line-height: normal;
 }
 
 //base {}
@@ -1328,6 +1330,8 @@ small {
  */
 strong {
     font-weight: bolder;
+	// Prevent increase in line-height:
+	line-height: normal;
 }
 
 //!style {}
