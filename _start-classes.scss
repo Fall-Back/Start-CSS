@@ -130,7 +130,11 @@ p.subtitle {
 
     position: absolute;
     left: 0;
-    top: 0;
+    top: 50%;
+	
+    -webkit-transform: translate(0px, -53%);
+    -ms-transform: translate(0px, -53%);
+    transform: translate(0px, -53%);
     
 }
 

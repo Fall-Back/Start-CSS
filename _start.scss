@@ -69,11 +69,11 @@
 // Expects PX for both args.
 @mixin bordered($padding, $border-width) {
     border-width: $border-width;
-	border-style: solid;
-	border-color: $ui-color--base;
-	padding-top: calc-rem-from-px($padding - $border-width);
-	padding-left: calc-rem-from-px($padding - $border-width);
-	padding-right: calc-rem-from-px($padding - $border-width);
+    border-style: solid;
+    border-color: $ui-color--base;
+    padding-top: calc-rem-from-px($padding - $border-width);
+    padding-left: calc-rem-from-px($padding - $border-width);
+    padding-right: calc-rem-from-px($padding - $border-width);
 
     &::after {
         display: block;
@@ -112,10 +112,10 @@ $text-input-focus-shadow: 0 0 3px 0 $ui-color--base inset !default;
 $text-input-focus-border: false !default;
 
 @mixin text-input-focus() {
-	@if $text-input-focus-shadow != false {
+    @if $text-input-focus-shadow != false {
         box-shadow: $text-input-focus-shadow;
     }
-	@if $text-input-focus-border != false {
+    @if $text-input-focus-border != false {
         border: $text-input-focus-border;
     }
 }
@@ -346,8 +346,8 @@ html {
 
 
 * {
-	font-size: inherit; /* S */
-	line-height: inherit; /* S */
+    font-size: inherit; /* S */
+    line-height: inherit; /* S */
     margin:  0; /* S */
     padding: 0; /* S */
 }
@@ -374,7 +374,7 @@ html {
     // but I can't rember on what. Possible Google Maps or similar.
     // However, removing it is detremental to many other FallBack patterns so reinstating it for now
     // until I can specify borders on those elements explicity.
-	//border-width: 0; /* AK */
+    //border-width: 0; /* AK */
     //border-color: $ui-color--base; /* AK1 */
 }
 
@@ -384,8 +384,8 @@ html {
 */
 ::before,
 ::after {
-	text-decoration: inherit; /* S1 */
-	vertical-align: inherit; /* S2 */
+    text-decoration: inherit; /* S1 */
+    vertical-align: inherit; /* S2 */
 }
 
 
@@ -484,12 +484,12 @@ address {
 //!area {}
 
 article {
-	display: block;
+    display: block;
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
 aside {
-	display: block;
+    display: block;
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -498,7 +498,7 @@ aside {
 */
 audio {
     display: inline-block; /* N1 */
-	vertical-align: $media-element-vertical-align; /* S */
+    vertical-align: $media-element-vertical-align; /* S */
 
     &:not([controls]) {
         display: none; /* S: Chrome 44-, iOS 8+, Safari 9+ */
@@ -544,13 +544,13 @@ blockquote {
 
 @mixin button($color: $button-color, $bg-color: $button-background-color, $bg-color--state-1: $button-background-color--state-1) {
     display: inline-block; /* AK. IE9 needs this. */
-	overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
+    overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
     background-color: $bg-color; /* S */
     color: $color; /* S */
     /* color: inherit; // S */
-	font-family: inherit; /* S */
-	font-style: inherit; /* S */
-	font-weight: inherit; /* S */
+    font-family: inherit; /* S */
+    font-style: inherit; /* S */
+    font-weight: inherit; /* S */
     min-height: $form-element-min-height; /* S */
     text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
     /* -webkit-appearance: button; // [N2] */
@@ -598,10 +598,10 @@ blockquote {
     &:focus {
         background-color: $bg-color--state-1;
     }
-	
-	&:focus {
-		outline: $focus-outline-style;
-	}
+    
+    &:focus {
+        outline: $focus-outline-style;
+    }
 }
 
 button {
@@ -613,11 +613,11 @@ button {
 */
 canvas {
     display: inline-block;  /* N1. */
-	vertical-align: $media-element-vertical-align;
+    vertical-align: $media-element-vertical-align;
 }
 
 caption {
-	font-weight: bold;
+    font-weight: bold;
     padding: $table-caption-padding;
     background-color: $table-caption-background-color;
     color: $table-caption-text-color;
@@ -627,7 +627,7 @@ caption {
 // cite {}
 
 code {
-	font-family: $monospace-font-family, monospace; /* S, N */
+    font-family: $monospace-font-family, monospace; /* S, N */
     font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
 
     line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
@@ -647,12 +647,12 @@ dd {
 //del {}
 
 details {
-	display: block; /* N: IE 10/11 */
+    display: block; /* N: IE 10/11 */
 }
 
 /* N: Address styling not present in Safari and Chrome. */
 dfn {
-	font-style: italic;
+    font-style: italic;
 }
 
 //dialog {}
@@ -687,18 +687,18 @@ fieldset {
         }
 
 figcaption {
-	display: block;
+    display: block;
 }
 
 figure {
-	display: block;
+    display: block;
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
 //--font {}--
 
 footer {
-	display: block;
+    display: block;
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -711,12 +711,12 @@ form {
 //!head {}
 
 header {
-	display: block;
+    display: block;
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
 hgroup {
-	display: block;
+    display: block;
 }
 
 h1 {
@@ -762,7 +762,7 @@ h6 {
 }
 
 hr {
-	/* box-sizing: content-box; */
+    /* box-sizing: content-box; */
     /* height: 0; */
     height: 0;
     border-top: none;
@@ -788,7 +788,7 @@ iframe {
 // I3. Setting `vertical-align` removes the whitespace that appears under `img` elements when they
 //  are dropped into a page as-is. Safer alternative to using `display: block;`.
 img {
-	vertical-align: $media-element-vertical-align; /* S, I3 */
+    vertical-align: $media-element-vertical-align; /* S, I3 */
     border-style: none; /* N: Remove the border on images inside links in IE 10-. */
     max-width: 100%; /* [I1] */
     font-style: italic; /* [I2] */
@@ -817,11 +817,10 @@ input {
     /* font: inherit; // N2 */
     /* margin: 0; // N3 */
     color: inherit;
-	font-family: inherit; /* S */
-	font-style: inherit; /* S */
-	font-weight: inherit; /* S */
+    font-family: inherit; /* S */
+    font-style: inherit; /* S */
+    font-weight: inherit; /* S */
 
-    min-height: $form-element-min-height; /* ~S */
     /* AK: mainly for IE */
 
     /* -webkit-border-radius: 0; // S: iOS 8+ // AK not needed as radius declared below. */
@@ -837,8 +836,7 @@ input {
     padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
-    margin: ($fallback--base-rem-space-unit / 8) 0;
-    /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
+
 
     vertical-align: top;
 
@@ -868,6 +866,27 @@ input:not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type=
     @include text-input-focus();
 }
 
+input:not([type="checkbox"]):not([type="radio"]) {
+    min-height: $form-element-min-height; /* ~S */
+    margin: ($fallback--base-rem-space-unit / 8) 0;
+    /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
+}
+
+input[type=checkbox],
+input[type=radio] {
+    /* Vertical centering via line-height/vertical align not satisfactory: */
+    vertical-align: top;
+    -webkit-transform: translateY(40%);
+        -ms-transform: translateY(40%);
+            transform: translateY(40%);
+   
+    /*
+        IE9 adds the border and background:
+    */
+    border: 0;
+    background: transparent;
+}
+
 /**
  * N1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
  *     controls in Android 4.
@@ -884,11 +903,12 @@ html [type="button"], /* [N1] */
 
 [type="file"] {
     /* V-center the text in FF: */
-	line-height: $form-element-min-height - calc-rem-from-px(($input-border-width * 2));
+    line-height: $form-element-min-height - calc-rem-from-px(($input-border-width * 2));
     cursor: pointer;
     padding: 0;
 }
 
+/* IE 9 (I think): */
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) {
     [type="file"] {
         padding-left: $input-h-padding;
@@ -943,6 +963,8 @@ input[type=file]:-moz-focusring {
 
 [type=file]::-webkit-file-upload-button {
     overflow: visible;
+    vertical-align: top;
+    box-sizing: border-box;
     background-color: $ui-color--base;
     color: #fff;
     font-family: inherit;
@@ -952,29 +974,21 @@ input[type=file]:-moz-focusring {
     text-transform: none;
     -webkit-appearance: none;
     cursor: pointer;
-    margin: 0px 0 0 -2px;
-    border-width: $input-border-width;
+    margin: 0 0 0 -2px;
+    border-width: 0 $input-border-width 0 0;
     border-color: $input-border-colour;
     border-style: $form-element-border-style;
     border-top-left-radius: $input-radius;
     border-bottom-left-radius: $input-radius;
-    /* padding-top: 0.125rem; */
-    /* padding-bottom: 0.125rem; */
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    padding-top: 0;
+    padding-bottom: 0;
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
     border-style: solid;
 }
 
-[type=checkbox],
-[type=radio] {
-    vertical-align: baseline;
-    min-height: auto;
-    /*
-        IE9 adds the border and background:
-    */
-    border: 0;
-    background: transparent;
-}
 
 /**
  * N: Correct the cursor style of increment and decrement buttons in Chrome.
@@ -991,8 +1005,8 @@ input[type=file]:-moz-focusring {
  * 2. Correct the outline style in Safari.
  */
 [type="search"] {
-	-webkit-appearance: textfield; /* 1 */
-	outline-offset: -2px; /* 2 */
+    -webkit-appearance: textfield; /* 1 */
+    outline-offset: -2px; /* 2 */
 }
 
 /**
@@ -1009,8 +1023,8 @@ input[type=file]:-moz-focusring {
  * S: Correct the text style on placeholders in Chrome, Edge, and Safari.
  */
 ::-webkit-input-placeholder {
-	color: inherit;
-	opacity: .54;
+    color: inherit;
+    opacity: .54;
 }
 
 //ins {}
@@ -1020,7 +1034,7 @@ input[type=file]:-moz-focusring {
     A1. Prevent the element increasing the line-height of the parent.
 */
 kbd {
-	font-family: $monospace-font-family, monospace; /* S, N */
+    font-family: $monospace-font-family, monospace; /* S, N */
     font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
     line-height: 0; /* A1 */
 }
@@ -1028,11 +1042,12 @@ kbd {
 //keygen {}
 
 label {
-	font-weight: bold;
+    display: inline-block;
+    font-weight: bold;
     cursor: pointer;
-    /* vertical-align: middle; */
-    vertical-align: baseline;
-	
+    //vertical-align: middle;
+    //vertical-align: baseline;
+    
     /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
@@ -1076,7 +1091,7 @@ li {
 //--listing {}--
 // N: Correct `block` display not defined for `main` in IE 11.
 main {
-	display: block;
+    display: block;
     @if $max-main-line-length > 0 {
         max-width: $max-main-line-length;
         margin-left: auto;
@@ -1100,7 +1115,7 @@ mark {
 //--multicol {}--
 
 nav {
-	display: block; /* N */
+    display: block; /* N */
 }
 
 //--nobr {}--
@@ -1109,7 +1124,7 @@ nav {
 //noscript {}
 
 object {
-	vertical-align: $media-element-vertical-align;
+    vertical-align: $media-element-vertical-align;
 }
 
 ol {
@@ -1117,9 +1132,9 @@ ol {
 }
 
 optgroup {
-	color: inherit; /*  N, S */
-	font-family: inherit; /*  N, S */
-	font-style: inherit; /*  N, S */
+    color: inherit; /*  N, S */
+    font-family: inherit; /*  N, S */
+    font-style: inherit; /*  N, S */
 
     /* N: Don't inherit the `font-weight` (applied by a rule above). */
     /* NOTE: the default cannot safely be changed in Chrome and Safari on OS X. */
@@ -1127,7 +1142,7 @@ optgroup {
 }
 
 option {
-	cursor: pointer; /* Sc */
+    cursor: pointer; /* Sc */
     min-height: $fallback--base-rem-space-unit; /* AK */
     padding-top: 3px; /* AK: help v-center text. */
 }
@@ -1164,7 +1179,7 @@ pre {
 }
     pre code {
         display: inline-block;
-        line-height: 22px; /* Need to calculate this! */
+        line-height: 1rem; /* Need to calculate this! */
         padding:  $pre-code-padding;
     }
 
@@ -1175,7 +1190,7 @@ pre {
     S1. Internet Explorer 11-, Windows Phone 8.1+
 */
 progress {
-	display: inline-block; /* S1 */
+    display: inline-block; /* S1 */
     vertical-align: $media-element-vertical-align; /* N1 */
 }
 
@@ -1196,7 +1211,7 @@ samp {
 //!script {}
 
 section {
-	display: block; /* N */
+    display: block; /* N */
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -1205,11 +1220,11 @@ section {
 // All other form control elements do not inherit `text-transform` values.
 //  Correct `select` style inheritance in Firefox.
 select {
-	cursor: pointer; /* Sc */
+    cursor: pointer; /* Sc */
     /* background-color: $form-element-background-color; // S */
 
     /* AK: height because min-height doesn't change the expand button height in FF: */
-	height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 4); /* ~S */
+    height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 4); /* ~S */
     line-height: $fallback--base-rem-space-unit;
 
     text-transform: none; /* N1 */
@@ -1219,9 +1234,9 @@ select {
     /* font: inherit; // N2 */
     /* margin: 0; // N3 */
     color: inherit;
-	font-family: inherit; /* S */
-	font-style: inherit; /* S */
-	font-weight: inherit; /* S */
+    font-family: inherit; /* S */
+    font-style: inherit; /* S */
+    font-weight: inherit; /* S */
 
     background-color: $input-background-color;
 
@@ -1245,22 +1260,22 @@ select {
 
     /* S: */
     /* -moz-appearance: none;    // Firefox 35+ */
-	/* -webkit-appearance: none; // Chrome 45+ */
+    /* -webkit-appearance: none; // Chrome 45+ */
 
-	/* Expand button style for IE. (not sure yet as alterntive means it's more similar to Chrome) */
+    /* Expand button style for IE. (not sure yet as alterntive means it's more similar to Chrome) */
     /*&::-ms-expand {
-		//display: none;        // Edge 12+, Internet Explorer 11-
+        //display: none;        // Edge 12+, Internet Explorer 11-
         background-color: $ui-color--base;
         color: #fff;
         border: 0;
         margin-left: $input-h-padding;
         padding-left: $input-h-padding;
         padding-right: $input-h-padding;
-	}
+    }
 
     &::-ms-expand:hover {
-		background-color: $button-background-color--state-1;
-	}*/
+        background-color: $button-background-color--state-1;
+    }*/
     &::-ms-expand {
         background-color: transparent;
         color: #000;
@@ -1269,9 +1284,9 @@ select {
         padding-right: $input-h-padding;
     }
 
-	&::-ms-value {
-		color: currentColor;  /* Edge 12+, Internet Explorer 11- */
-	}
+    &::-ms-value {
+        color: currentColor;  /* Edge 12+, Internet Explorer 11- */
+    }
 
     /* Remove inner padding and border in Firefox 4+. */
     &::-moz-focus-inner {
@@ -1281,7 +1296,7 @@ select {
 }
 
 select:focus {
-	@include text-input-focus();
+    @include text-input-focus();
 }
 
 // FF
@@ -1299,7 +1314,7 @@ select[multiple] {
 //shadow {}
 
 small {
-	font-size: $small-font-size; /* All browsers */
+    font-size: $small-font-size; /* All browsers */
     line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
 }
 
@@ -1331,8 +1346,8 @@ sub {
 summary {
     /* S: Firefox 40+, Internet Explorer 11-, Windows Phone 8.1+ */
     /* N: Correct `block` display not defined for `details` or `summary` in IE 10/11 */
-	display: block;
-	
+    display: block;
+    
     /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
@@ -1340,23 +1355,23 @@ summary {
     cursor: pointer; /* AK */
 }
 
-	/* AK: Normalise summary appearance: (note IE support issue )*/
-	summary::-webkit-details-marker {
-		display: none;
-	}
-	
-	details > summary::before {
-		content: '\25BA';
-		font-family: serif;
-		font-size: 0.75em;
-		display: inline-block;
-		vertical-align: top;
-		margin-right: 0.5em;
-	}
+    /* AK: Normalise summary appearance: (note IE support issue )*/
+    summary::-webkit-details-marker {
+        display: none;
+    }
+    
+    details > summary::before {
+        content: '\25BA';
+        font-family: serif;
+        font-size: 0.75em;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 0.5em;
+    }
 
-	details[open] > summary::before {
-		transform: rotate(90deg);
-	}
+    details[open] > summary::before {
+        transform: rotate(90deg);
+    }
  
 
 // N: Prevent `sup` affecting `line-height` in all browsers.
@@ -1421,9 +1436,9 @@ textarea {
     overflow: auto; // N, S: Edge 12+, Internet Explorer 11- // AK without this it acts like overflow: scroll.
 
     color: inherit;
-	font-family: inherit; // S
-	font-style: inherit; // S
-	font-weight: inherit; // S
+    font-family: inherit; // S
+    font-style: inherit; // S
+    font-weight: inherit; // S
 
     //min-height: $form-element-min-height * 2; // ~S
     min-height: $fallback--base-rem-space-unit * 3.5 - calc-rem-from-px($input-border-width * 2); // ~S
@@ -1454,7 +1469,7 @@ textarea {
 }
 
 textarea:focus {
-	@include text-input-focus();
+    @include text-input-focus();
 }
 
 //tfoot {}
@@ -1490,7 +1505,7 @@ video {
     display: block; /* A1 */
     margin: 0 auto; /* A1 */
 
-	/* vertical-align: $media-element-vertical-align; // Video is now a block so no need for this */
+    /* vertical-align: $media-element-vertical-align; // Video is now a block so no need for this */
 
     max-width: 100%; /* Sc */
     height: auto; /* Sc */
@@ -1511,15 +1526,15 @@ video {
 // specify the background color, font color, and drop shadow of text selections
 
 ::-moz-selection {
-	background-color: $selection-background-color;
-	color: $selection-text-color;
-	text-shadow: $selection-text-shadow;
+    background-color: $selection-background-color;
+    color: $selection-text-color;
+    text-shadow: $selection-text-shadow;
 }
 
 ::selection {
-	background-color: $selection-background-color;
-	color: $selection-text-color;
-	text-shadow: $selection-text-shadow;
+    background-color: $selection-background-color;
+    color: $selection-text-color;
+    text-shadow: $selection-text-shadow;
 }
 
 /*------------------------------------------------------------------------------------------------*\
@@ -1529,25 +1544,25 @@ video {
 \*------------------------------------------------------------------------------------------------*/
 
 [aria-busy="true"] {
-	cursor: progress;
+    cursor: progress;
 }
 
 // S: specify the pointer cursor of trigger elements
 
 [aria-controls] {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 // S: specify the unstyled cursor of disabled, not-editable, or otherwise inoperable elements
 [disabled],
 [aria-disabled] {
-	cursor: default;
+    cursor: default;
 }
 
 
 // N: Address `[hidden]` styling not present in IE 8/9/10.
 [hidden] {
-	display: none; /* S: Internet Explorer 10- */
+    display: none; /* S: Internet Explorer 10- */
 }
 
 // S: specify the style of visually hidden yet accessible elements
@@ -1564,8 +1579,8 @@ video {
     padding: 0;
     width: 1px;*/
 
-	&:focus,
-	&:active {
+    &:focus,
+    &:active {
         clip: auto;
         position: static;
 
@@ -1573,7 +1588,7 @@ video {
         margin: 0;
         overflow: visible;
         width: auto;*/
-	}
+    }
 }
 
 
