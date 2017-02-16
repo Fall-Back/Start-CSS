@@ -234,7 +234,6 @@ $pre-background-color: lighten($ui-color--base, 55%) !default;
 $pre-margin-bottom: $fallback--base-rem-space-unit !default;
 //$pre-margin-bottom: calc-rem-from-px($fallback--base-line-height / 2 + ($fallback--base-line-height - 16px));
 // Note top/bottom padding takes into account scrollbar height:
-$pre-code-padding: calc-rem-from-px(($fallback--base-line-height * 2 - 16px) / 2) ($fallback--base-rem-space-unit / 2) !default;
 //$pre-code-padding: ($fallback--base-rem-space-unit / 2);
 
 $small-font-size: 80% !default;
@@ -1181,8 +1180,8 @@ pre {
 }
     pre code {
         display: inline-block;
-        line-height: 1rem; /* Need to calculate this! */
-        padding:  $pre-code-padding;
+        line-height: 1.5rem;
+        padding: $pre-code-padding;
     }
 
 
