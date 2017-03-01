@@ -907,6 +907,9 @@ html [type="button"], /* [N1] */
     line-height: $form-element-min-height - calc-rem-from-px(($input-border-width * 2));
     cursor: pointer;
     padding: 0;
+    /* On smaller devices the width of these inputs can force horizontal scrolling. */
+    /* Max-width doesn't work to solve this, but may be needed to restrict width on larger screens */
+    width: 100%;
 }
 
 /* IE 9 (I think): */
