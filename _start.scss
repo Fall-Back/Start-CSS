@@ -231,8 +231,10 @@ $media-element-vertical-align: middle !default;
 
 
 $pre-background-color: lighten($ui-color--base, 55%) !default;
-$pre-margin-bottom: $fallback--base-rem-space-unit !default;
-//$pre-margin-bottom: calc-rem-from-px($fallback--base-line-height / 2 + ($fallback--base-line-height - 16px));
+//$pre-margin-bottom: $fallback--base-rem-space-unit !default;
+$pre-margin-bottom: calc-rem-from-px(17px, true);
+// (margin to account for scrollbar, we can check for touch in most browsers and change this
+// or use custom scrollbars = see `pre` below)
 // Note top/bottom padding takes into account scrollbar height:
 $pre-code-padding: ($fallback--base-rem-space-unit / 2);
 
@@ -1178,8 +1180,6 @@ pre {
     overflow-x: scroll; /* A1 */
     margin-bottom: $pre-margin-bottom; /* A */
     background-color: $pre-background-color; /* A */
-
-
 }
     pre code {
         display: inline-block;
