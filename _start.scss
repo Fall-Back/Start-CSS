@@ -66,21 +66,28 @@
 
 //@debug calc-px-from-rem(1.5rem);
 
-// Expects PX for both args.
 @mixin bordered($padding, $border-width) {
     border-width: $border-width;
     border-style: solid;
     border-color: $ui-color--base;
-    padding-top: calc-rem-from-px($padding - $border-width);
-    padding-left: calc-rem-from-px($padding - $border-width);
-    padding-right: calc-rem-from-px($padding - $border-width);
+    //padding-top: calc-rem-from-px($padding - $border-width);
+    //padding-left: calc-rem-from-px($padding - $border-width);
+    //padding-right: calc-rem-from-px($padding - $border-width);
+    padding-top:   -moz-calc(#{$padding} - #{$border-width});
+    padding-top:        calc(#{$padding} - #{$border-width});
+    padding-left:  -moz-calc(#{$padding} - #{$border-width});
+    padding-left:       calc(#{$padding} - #{$border-width});
+    padding-right: -moz-calc(#{$padding} - #{$border-width});
+    padding-right:      calc(#{$padding} - #{$border-width});
 
     &::after {
         display: block;
         content: "";
         height: 0;
         margin-top: -$border-width;
-        margin-bottom: calc-rem-from-px($padding - $border-width);
+        //margin-bottom: calc-rem-from-px($padding - $border-width);
+        //margin-bottom: calc(#{$padding} - #{$border-width});
+        margin-bottom: $padding;
     }
 }
 
@@ -126,7 +133,8 @@ $form-element-border-style: solid !default;
 $form-element-background-color: $fallback--base-ui-color !default;
 $form-element-background-color--state-1: lighten($fallback--base-ui-color, 10%) !default;
 //$form-element-background-color: transparent !default;
-$form-element-min-height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 4) !default;
+//$form-element-min-height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 4) !default;
+$form-element-min-height: $fallback--base-rem-space-unit * 1.25 !default;
 $form-element-radius: 3px !default;
 
 
@@ -568,8 +576,10 @@ blockquote {
     border-width: $button-border-width;
     border-radius: $button-radius;
 
-    padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($button-border-width);
-    padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($button-border-width);
+    //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($button-border-width);
+    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    //padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($button-border-width);
+    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
     padding-left: $button-h-padding;
     padding-right: $button-h-padding;
 
@@ -677,7 +687,8 @@ dt {
 fieldset {
     margin-bottom: $fallback--base-rem-space-unit;
 
-    @include bordered(calc-px-from-rem($fieldset-padding), $fieldset-border-width);
+    //@include bordered(calc-px-from-rem($fieldset-padding), $fieldset-border-width);
+    @include bordered($fieldset-padding, $fieldset-border-width);
 }
 
     fieldset fieldset {
@@ -835,8 +846,10 @@ input {
     border-color: $input-border-colour;
     border-style: $form-element-border-style;
 
-    padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
-    padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
+    //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
+    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    //padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
+    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
 
@@ -1312,7 +1325,11 @@ select:focus {
 
 select[multiple] {
     height: auto;
-    margin: ($fallback--base-rem-space-unit / 8) 0 ($fallback--base-rem-space-unit / 3.42857142857) 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: ($fallback--base-rem-space-unit / 8);
+    //margin-bottom: ($fallback--base-rem-space-unit / 3.42857142857);
+    margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2});
 }
 
 //shadow {}

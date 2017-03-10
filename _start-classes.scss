@@ -14,7 +14,8 @@
     }
 
 .bordered {
-    @include bordered($fallback--base-line-height, $base-border-width);
+    //@include bordered($fallback--base-line-height, $base-border-width);
+    @include bordered($fallback--base-rem-space-unit, $base-border-width);
 }
 
 
@@ -25,7 +26,8 @@
     //@include bordered($fallback--base-line-height, 1px);
     //border: 1px solid transparent;
     
-    @include bordered($fallback--base-line-height, 0);
+    //@include bordered($fallback--base-line-height, 0);
+    @include bordered($fallback--base-rem-space-unit, 0);
     display: inline-block;
     width: 100%;
 }
