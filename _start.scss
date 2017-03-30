@@ -241,7 +241,7 @@ $media-element-vertical-align: middle !default;
 
 $pre-background-color: lighten($ui-color--base, 55%) !default;
 //$pre-margin-bottom: $fallback--base-rem-space-unit !default;
-$pre-margin-bottom: calc-rem-from-px(17px, true);
+$pre-margin-bottom: calc-rem-from-px(($fallback--base-line-height * 2) - 17px);
 // (margin to account for scrollbar, we can check for touch in most browsers and change this
 // or use custom scrollbars = see `pre` below)
 // Note top/bottom padding takes into account scrollbar height:
@@ -260,7 +260,6 @@ $table-caption-text-color: #fff !default;
 $table-caption-padding: $table-cell-padding !default;
 
 $textarea-resize: vertical !default;
-
 
 
 
