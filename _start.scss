@@ -228,8 +228,9 @@ $h6-height:  $fallback--base-rem-space-unit;
 $h6-font-variant: small-caps;
 
 $hr-border-width: $base-border-width !default;
-$hr-border: $fieldset-border-width solid $ui-color--base !default;
-$hr-margin-top: calc-rem-from-px($hr-border-width, true);
+$hr-border: $hr-border-width solid $ui-color--base !default;
+//$hr-margin-top: calc-rem-from-px($hr-border-width, true);
+$hr-margin-top: -$hr-border-width;
 $hr-margin-bottom: $fallback--base-rem-space-unit;
 
 
