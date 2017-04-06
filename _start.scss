@@ -55,7 +55,7 @@
     // 1.5rem  + 0rem = 1.5rem | 1.5 + 0rem = 1.5rem (add unit if necessary)
     // 1.5rem / 1rem = 1 (strip unit)
     // 1.5 * 16px = 24px
-    $value: ((($rem + 0rem) / 1rem) * 16px);
+    $value: ((($rem + 0rem) / 1rem) * $fallback--root-font-size);
 
     @if $negative {
         $value: -#{$value};
@@ -130,11 +130,13 @@ $text-input-focus-border: false !default;
 
 $form-element-border-color: darken($fallback--base-ui-color, 10%) !default;
 $form-element-border-style: solid !default;
+$form-element-border-width: $base-border-width !default;
 $form-element-background-color: $fallback--base-ui-color !default;
 $form-element-background-color--state-1: lighten($fallback--base-ui-color, 10%) !default;
 //$form-element-background-color: transparent !default;
 //$form-element-min-height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 4) !default;
-$form-element-min-height: $fallback--base-rem-space-unit * 1.25 !default;
+//$form-element-min-height: $fallback--base-rem-space-unit * 1.25 !default;
+$form-element-min-height: ($fallback--base-rem-space-unit * 1.25) - calc-rem-from-px(($form-element-border-width * 2)) !default;
 $form-element-radius: 3px !default;
 
 
@@ -194,7 +196,7 @@ $button-background-color--state-1: $form-element-background-color--state-1 !defa
 $input-h-padding: $fallback--base-rem-space-unit / 4 !default;
 $input-radius: $form-element-radius !default;
 $input-border-colour: $form-element-border-color !default;
-$input-border-width: $base-border-width !default;
+$input-border-width: $form-element-border-width !default;
 //$input-border-width: 0 !default;
 $input-background-color: #fff !default;
 //$input-background-color: $form-element-background-color !default;
@@ -339,6 +341,9 @@ html {
     cursor: default; /* S2 */
 
     font-family: $fallback--base-font-family; /* S5 */
+    @if ($fallback--root-font-size != 16px) {
+        font-size: $fallback--root-font-size;
+    }
 
         -ms-text-size-adjust: 100%; /* I4, S4 */
     -webkit-text-size-adjust: 100%; /* I4, S4 */
@@ -399,7 +404,7 @@ html {
 
 
 body {
-    font-size: ($fallback--base-font-size / 16px * 1em);
+    font-size: ($fallback--base-font-size / $fallback--root-font-size * 1em);
     line-height: $fallback--base-rem-space-unit;
     padding: $body-padding;
     margin: $body-margin;
@@ -919,12 +924,16 @@ html [type="button"], /* [N1] */
 
 [type="file"] {
     /* V-center the text in FF: */
-    line-height: $form-element-min-height - calc-rem-from-px(($input-border-width * 2));
+    line-height: $form-element-min-height;
     cursor: pointer;
     padding: 0;
     /* On smaller devices the width of these inputs can force horizontal scrolling. */
     /* Max-width doesn't work to solve this, but may be needed to restrict width on larger screens */
     width: 100%;
+    // IE and Edge behave differently (both to other browsers and each other) and so min-height 
+    // and line-height settings don't seem consistent.
+    // Using height explictly for now.
+    height: $form-element-min-height + calc-rem-from-px(($form-element-border-width * 2));
 }
 
 /* IE 9 (I think): */
@@ -989,7 +998,7 @@ input[type=file]:-moz-focusring {
     font-family: inherit;
     font-style: inherit;
     font-weight: inherit;
-    height: 1.75rem;
+    height: $form-element-min-height;
     text-transform: none;
     -webkit-appearance: none;
     cursor: pointer;
@@ -1163,8 +1172,15 @@ optgroup {
 option {
     cursor: pointer; /* Sc */
     min-height: $fallback--base-rem-space-unit; /* AK */
-    padding-top: 3px; /* AK: help v-center text. */
+    //height: $fallback--base-rem-space-unit; /* AK */
+    //padding-top: 3px; /* AK: help v-center text. */
+    
+    // This v-centers the text in FF and Chrome. Edge doesn't apply this but looks ok regardless.
+    // Just IE11 to sort out?
+    display: flex;
+    align-items: center;
 }
+
 
 //output {}
 
