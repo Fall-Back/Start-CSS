@@ -4,21 +4,23 @@
     Design for use with the basic [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
     IE 9+, FF 8+, Opera 12, [Chrome 29+, Android ~4.4+]
     Chrome 29+, Opera 16+, Safari 6.1+, iOS 7+, Android ~4.4+
-*/
-/*
+
+    Notes:
+    
+    -moz-calc because this supports FF8+ and I like to thorough.
+    
+    
     Resources:
     * http://www.smashingmagazine.com/2012/12/css-baseline-the-good-the-bad-and-the-ugly/
     * https://24ways.org/2006/compose-to-a-vertical-rhythm
-*/
 
-/*
     NOTE TO SELF.
     Where borders are concened, probably best to leave margins alone and use padding to maintain
     baseline-grid. After all, if there's a border, there will have to be padding too.
 
-*/
-
-/*
+    
+    
+    
     REM -> PX multiplier
     1.5/PX*16
     1px = $fallback--base-rem-space-unit / 24
@@ -73,10 +75,18 @@
     //padding-top: calc-rem-from-px($padding - $border-width);
     //padding-left: calc-rem-from-px($padding - $border-width);
     //padding-right: calc-rem-from-px($padding - $border-width);
+    // Opera Mini needs this:
+    padding-top:   #{$padding};
     padding-top:   -moz-calc(#{$padding} - #{$border-width});
     padding-top:        calc(#{$padding} - #{$border-width});
+    
+    // Opera Mini needs this:
+    padding-left:  #{$padding};
     padding-left:  -moz-calc(#{$padding} - #{$border-width});
     padding-left:       calc(#{$padding} - #{$border-width});
+    
+    // Opera Mini needs this:
+    padding-right: #{$padding};
     padding-right: -moz-calc(#{$padding} - #{$border-width});
     padding-right:      calc(#{$padding} - #{$border-width});
 
@@ -136,7 +146,9 @@ $form-element-background-color--state-1: lighten($fallback--base-ui-color, 10%) 
 //$form-element-background-color: transparent !default;
 //$form-element-min-height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 4) !default;
 //$form-element-min-height: $fallback--base-rem-space-unit * 1.25 !default;
-$form-element-min-height: ($fallback--base-rem-space-unit * 1.25) - calc-rem-from-px(($form-element-border-width * 2)) !default;
+//$form-element-min-height: ($fallback--base-rem-space-unit * 1.25) - calc-rem-from-px(($form-element-border-width * 2)) !default;
+$form-element-min-height: ($fallback--base-rem-space-unit * 1.25);// - calc-rem-from-px(($form-element-border-width * 2)) !default;
+//$form-element-min-height: 0;
 $form-element-radius: 3px !default;
 
 
@@ -526,8 +538,8 @@ audio {
  */
 b {
     font-weight: bolder;
-	// Prevent increase in line-height:
-	line-height: normal;
+    // Prevent increase in line-height:
+    line-height: normal;
 }
 
 //base {}
@@ -559,7 +571,9 @@ blockquote {
 //    `input` and others.
 
 @mixin button($color: $button-color, $bg-color: $button-background-color, $bg-color--state-1: $button-background-color--state-1) {
-    display: inline-block; /* AK. IE9 needs this. */
+    //display: inline-block; /* AK. IE9 needs this. */
+    //display: inline-flex;
+    //align-items: center;
     overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
     background-color: $bg-color; /* S */
     color: $color; /* S */
@@ -567,24 +581,38 @@ blockquote {
     font-family: inherit; /* S */
     font-style: inherit; /* S */
     font-weight: inherit; /* S */
-    min-height: $form-element-min-height; /* S */
+
+    // Sort out the hight of buttons. At 12px spacing, should be 30px high with 3px top/bottom
+    // margin.
+    // Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
+    // FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
+    
+    line-height: calc(#{$form-element-min-height} - #{$input-border-width * 2});
+    //min-height: calc(#{$form-element-min-height} - #{$input-border-width * 2});
+
+
     text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
     /* -webkit-appearance: button; // [N2] */
     -webkit-appearance: none; /* AK */
     cursor: pointer; /* [N3] */
 
-    /* padding: ($fallback--base-rem-space-unit / 8) $button-h-padding; */
     margin: ($fallback--base-rem-space-unit / 8) 0;
-    /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
     border-color: $button-border-colour;
     border-style: $form-element-border-style;
     border-width: $button-border-width;
     border-radius: $button-radius;
 
-    //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($button-border-width);
-    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
-    //padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($button-border-width);
-    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    // Opera Mini needs this:
+    //padding-top: #{$fallback--base-rem-space-unit / 8};
+    //padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    //padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    // Opera Mini needs this:
+    //padding-bottom: #{$fallback--base-rem-space-unit / 8};
+    //padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    //padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    
+    padding-top: 0;
+    padding-bottom: 0;
     padding-left: $button-h-padding;
     padding-right: $button-h-padding;
 
@@ -593,15 +621,6 @@ blockquote {
     /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
-
-    /**
-     * Remove the inner border and padding in Firefox.
-     */
-
-    &::-moz-focus-inner {
-      border: 0;
-      padding: 0;
-    }
 
     /**
      * Restore the focus styles unset by the previous rule.
@@ -624,6 +643,31 @@ blockquote {
 
 button {
     @include button;
+}
+
+// Opera Mini:
+_:-o-prefocus, :root button {
+    line-height: $fallback--base-rem-space-unit !important;
+}
+
+// Old FF:
+/*
+    Remove the inner border and padding in Firefox and fix height.
+    
+    Early FF doesn't correctly apply the box sizing to inputs (buttons?)
+    Adding margin to -moz-focus-inner helps to force the correct height.
+    It doesn't have any effect in newer FF.
+    It ceases to have an effect from around FF54 onwards? Dev edition.
+    The correct box sizing is applied from FF30 onwards.
+*/
+button::-moz-focus-inner {
+    margin: 2px 0;
+}
+
+@supports (-moz-appearance:none) and (background-blend-mode:difference,normal) {
+    button::-moz-focus-inner {
+        margin: 0;
+    }
 }
 
 /*
@@ -852,8 +896,12 @@ input {
     border-style: $form-element-border-style;
 
     //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
+    // Opera Mini needs this:
+    padding-top: #{$fallback--base-rem-space-unit / 8};
     padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
     //padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
+    // Opera Mini needs this:
+    padding-bottom: #{$fallback--base-rem-space-unit / 8};
     padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
@@ -869,19 +917,29 @@ input {
      * Remove the inner border and padding in Firefox.
      */
     &::-moz-focus-inner {
-      border: 0;
-      padding: 0;
+        border: 0;
+        padding: 0;
     }
 
     /**
      * Restore the focus styles unset by the previous rule.
      */
     &:-moz-focusring {
-      outline: 1px dotted ButtonText;
+        outline: 1px dotted ButtonText;
     }
 
 
 }
+
+/*
+    Remove the inner border and padding in Firefox and fix height.
+*/
+::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
 
 input:not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type="progess"]):focus {
     @include text-input-focus();
@@ -908,23 +966,25 @@ input[type=radio] {
     background: transparent;
 }
 
-/**
- * N1. Prevent a WebKit bug where (2) destroys native `audio` and `video`
- *     controls in Android 4.
- * N2. Correct the inability to style clickable types in iOS.
- */
 
 
-html [type="button"], /* [N1] */
+[type="button"],
 [type="reset"],
 [type="submit"] {
     @include button;
 }
 
+// IE10 makes the line-height massive with calc, but doesn't appear to need it anyway:
+[type="button"],
+[type="reset"], 
+[type="submit"] {
+    line-height:1\9;
+}
+
 
 [type="file"] {
     /* V-center the text in FF: */
-    line-height: $form-element-min-height;
+    //line-height: $form-element-min-height;
     cursor: pointer;
     padding: 0;
     /* On smaller devices the width of these inputs can force horizontal scrolling. */
@@ -933,7 +993,7 @@ html [type="button"], /* [N1] */
     // IE and Edge behave differently (both to other browsers and each other) and so min-height 
     // and line-height settings don't seem consistent.
     // Using height explictly for now.
-    height: $form-element-min-height + calc-rem-from-px(($form-element-border-width * 2));
+    //height: $form-element-min-height + calc-rem-from-px(($form-element-border-width * 2));
 }
 
 /* IE 9 (I think): */
@@ -998,7 +1058,7 @@ input[type=file]:-moz-focusring {
     font-family: inherit;
     font-style: inherit;
     font-weight: inherit;
-    height: $form-element-min-height;
+    //height: $form-element-min-height;
     text-transform: none;
     -webkit-appearance: none;
     cursor: pointer;
@@ -1176,7 +1236,7 @@ option {
     //padding-top: 3px; /* AK: help v-center text. */
     
     // This v-centers the text in FF and Chrome. Edge doesn't apply this but looks ok regardless.
-    // Just IE11 to sort out?
+    // Just IE9-11 to sort out?
     display: flex;
     align-items: center;
 }
@@ -1365,8 +1425,8 @@ small {
  */
 strong {
     font-weight: bolder;
-	// Prevent increase in line-height:
-	line-height: normal;
+    // Prevent increase in line-height:
+    line-height: normal;
 }
 
 //!style {}
@@ -1455,6 +1515,8 @@ td {
     padding-top: $table-cell-padding;
     padding-right: $table-cell-padding;
     /* @include calc(padding-bottom, '#{$table-cell-padding} - #{$table-border-width}'); */
+    // Opera Mini needs this:
+    padding-bottom: $table-cell-padding;
     padding-bottom: $table-cell-padding - calc-rem-from-px($table-border-width);
     padding-left: $table-cell-padding;
 }
@@ -1479,7 +1541,7 @@ textarea {
     font-style: inherit; // S
     font-weight: inherit; // S
 
-    //min-height: $form-element-min-height * 2; // ~S
+    ////min-height: $form-element-min-height * 2; // ~S
     min-height: $fallback--base-rem-space-unit * 3.5 - calc-rem-from-px($input-border-width * 2); // ~S
     // AK: mainly for IE
 
@@ -1518,6 +1580,8 @@ th {
     padding-top: $table-cell-padding;
     padding-right: $table-cell-padding;
     /* @include calc(padding-bottom, '#{$table-cell-padding} - #{$table-border-width}'); */
+    // Opera Mini needs this:
+    padding-bottom: $table-cell-padding;
     padding-bottom: $table-cell-padding - calc-rem-from-px($table-border-width);
     padding-left: $table-cell-padding;
 }
