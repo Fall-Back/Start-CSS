@@ -7,7 +7,7 @@
 
     Notes:
     
-    -moz-calc because this supports FF8+ and I like to thorough.
+    -moz-calc because this supports FF8+ and I like to be thorough.
     
     
     Resources:
@@ -18,23 +18,6 @@
     Where borders are concened, probably best to leave margins alone and use padding to maintain
     baseline-grid. After all, if there's a border, there will have to be padding too.
 
-    
-    
-    
-    REM -> PX multiplier
-    1.5/PX*16
-    1px = $fallback--base-rem-space-unit / 24
-    2px = $fallback--base-rem-space-unit / 12
-    3px = $fallback--base-rem-space-unit / 8
-    4px = $fallback--base-rem-space-unit / 6
-    5px = $fallback--base-rem-space-unit / 4.8
-    6px = $fallback--base-rem-space-unit / 4
-    7px = $fallback--base-rem-space-unit / 3.42857142857
-    8px = $fallback--base-rem-space-unit / 3
-    9px = $fallback--base-rem-space-unit / 2.66666666667
-    10px = $fallback--base-rem-space-unit / 2.4
-    11px = $fallback--base-rem-space-unit / 2.18181818182
-    12px = $fallback--base-rem-space-unit / 2
 
 */
 
@@ -131,8 +114,11 @@ $text-input-focus-border: false !default;
 @mixin text-input-focus() {
     @if $text-input-focus-shadow != false {
         box-shadow: $text-input-focus-shadow;
+        // Remove Chromes focus outline:
+        outline: 0;
     }
     @if $text-input-focus-border != false {
+        // Remove Chromes focus outline:
         border: $text-input-focus-border;
     }
 }
@@ -214,6 +200,12 @@ $input-background-color: #fff !default;
 //$input-background-color: $form-element-background-color !default;
 $input-background-color--state-1: $form-element-background-color--state-1 !default;
 
+// File inputs' natural width varies between browers and is too wide for smaller screens.
+// The only way to get it to collapse on smaller screens is to speciify `width: 100%;` but this
+// isn't great on larger screens, so setting a `max-width` solves this and produces a consistent
+// width across browsers.
+// Overrisde this with your preferred width or `false`:
+$input-file-max-width: 18.5em;
 
 
 
@@ -906,7 +898,10 @@ input {
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
 
-
+    // Allow inputs to contract to avoid braking containers:
+    max-width: 100%;
+    
+    
     vertical-align: top;
 
     /* S: Remove the tapping delay from clickable elements */
@@ -990,10 +985,22 @@ input[type=radio] {
     /* On smaller devices the width of these inputs can force horizontal scrolling. */
     /* Max-width doesn't work to solve this, but may be needed to restrict width on larger screens */
     width: 100%;
+    @if $input-file-max-width != false {
+        max-width: $input-file-max-width;
+    }
     // IE and Edge behave differently (both to other browsers and each other) and so min-height 
     // and line-height settings don't seem consistent.
     // Using height explictly for now.
     //height: $form-element-min-height + calc-rem-from-px(($form-element-border-width * 2));
+    
+    // Make sure button corners aren't visisible:
+    overflow: hidden;
+}
+
+// This helps avoid white 'bleed-through' between containing element and the pseudo-elements in
+// IE 10-11:
+_:-ms-input-placeholder, :root [type="file"] {
+    background-color: $ui-color--base;
 }
 
 /* IE 9 (I think): */
@@ -1001,17 +1008,12 @@ input[type=radio] {
     [type="file"] {
         padding-left: $input-h-padding;
     }
-
 }
 
 /*input::-moz-placeholder {
     line-height: inherit;
 }*/
 
-[type=file]::-ms-value {
-    background: #fff;
-    border: 0;
-}
 
 //input[type=file] > input[type=button]::-moz-focus-inner 
 ::-moz-focus-inner {
@@ -1024,9 +1026,26 @@ input[type=file]:-moz-focusring {
 }
 
 // Temp experiments:
+// MS pseudo-elements.
+// Note - there's some odd spacing issues between the containing element and the pseudo-elements,
+// where background colours can show through unexpectedly, so there are some tweaks to rectify this.
+[type=file]::-ms-value {
+    background: $input-background-color;
+    border: 0;
+    margin-left: -6px;
+    margin-right: 0;
+    padding-left: 0.5em;
+    border-top-left-radius: $input-radius - $input-border-width;
+    border-bottom-left-radius: $input-radius - $input-border-width;
+}
+
+[type=file]:focus::-ms-value {
+    @include text-input-focus();
+}
 
 [type=file]::-ms-browse {
-    overflow: visible;
+    // Not sure why this was set:
+    //overflow: visible;
     background-color: $ui-color--base;
     color: #fff;
     font-family: inherit;
@@ -1035,22 +1054,44 @@ input[type=file]:-moz-focusring {
     min-height:  $form-element-min-height;
     text-transform: none;
     cursor: pointer;
-    margin: 0 0 0 -2px;
-    border-width: $input-border-width;
+
+    border-width: 0 0 0 $input-border-width;
     border-color: $input-border-colour;
     border-style: $form-element-border-style;
-    border-top-right-radius: $input-radius;
-    border-bottom-right-radius: $input-radius;
+    border-top-right-radius: $input-radius - $input-border-width;
+    border-bottom-right-radius: $input-radius - $input-border-width;
     /* padding-top: 0.125rem; */
     /* padding-bottom: 0.125rem; */
+    
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
+    
+    // IE10 doesn't like rem so convert to px:
+        // IE10:
+    padding-left: #{calc-px-from-rem($input-h-padding)}\9;
+    padding-right: #{calc-px-from-rem($input-h-padding)}\9;
+    
     border-style: solid;
 
-  }
+    // Spacing height + 2 sets of input padding, plus border width
+    // - the button doesn't need it in IE:
+    //height: $fallback--base-rem-space-unit + ($input-border-width * 2));
+    //height: calc(#{$fallback--base-rem-space-unit} + #{$input-border-width * 2});
+    
+
+}
+
+    [type=file]:hover::-ms-browse,
+    [type=file]:active::-ms-browse,
+    [type=file]:focus::-ms-browse {
+        background-color: $button-background-color--state-1;
+    }
+
 
 [type=file]::-webkit-file-upload-button {
-    overflow: visible;
+    // Not sure why this was set:
+    //overflow: visible;
+
     vertical-align: top;
     box-sizing: border-box;
     background-color: $ui-color--base;
@@ -1058,18 +1099,20 @@ input[type=file]:-moz-focusring {
     font-family: inherit;
     font-style: inherit;
     font-weight: inherit;
-    //height: $form-element-min-height;
+    
+    // Spacing height + 2 sets of input padding, minus border width:
+    height: calc(#{($fallback--base-rem-space-unit * 1.25)} - #{$input-border-width * 2});
     text-transform: none;
     -webkit-appearance: none;
     cursor: pointer;
-    margin: 0 0 0 -2px;
     border-width: 0 $input-border-width 0 0;
     border-color: $input-border-colour;
     border-style: $form-element-border-style;
-    border-top-left-radius: $input-radius;
-    border-bottom-left-radius: $input-radius;
+    border-radius: 0;
+    /*border-top-left-radius: $input-radius - $input-border-width;
+    border-bottom-left-radius: $input-radius - $input-border-width;
     border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
+    border-bottom-right-radius: 0;*/
     padding-top: 0;
     padding-bottom: 0;
     padding-left: $input-h-padding;
@@ -1077,6 +1120,12 @@ input[type=file]:-moz-focusring {
     border-style: solid;
 }
 
+
+    [type=file]:hover::-webkit-file-upload-button,
+    [type=file]:active::-webkit-file-upload-button,
+    [type=file]:focus::-webkit-file-upload-button {
+        background-color: $button-background-color--state-1;
+    }
 
 /**
  * N: Correct the cursor style of increment and decrement buttons in Chrome.
