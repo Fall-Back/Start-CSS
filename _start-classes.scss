@@ -15,7 +15,7 @@
 
 .bordered {
     //@include bordered($fallback--base-line-height, $base-border-width);
-    @include bordered($fallback--base-rem-space-unit, $base-border-width);
+    @include bordered($fallback--base-rem-space-unit, $ui-border-width);
 }
 
 
