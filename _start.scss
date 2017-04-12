@@ -357,7 +357,12 @@ html {
 
     cursor: default; /* 6 */
 }
-
+/*
+    Fix font size for IE10 as it can't calculate % to 1 decimal place! Grrr.
+*/
+@if ($fallback--root-font-size != 16px) {
+    _:-ms-lang(x), html { font-size: calc(0.625rem + 0.1px)\9; }
+}
 
 * {
     margin:  0;
@@ -614,7 +619,9 @@ blockquote {
     padding-left: $button-h-padding;
     padding-right: $button-h-padding;
 
-    vertical-align: baseline;
+    //vertical-align: baseline;
+    // Keep adjacent elements in the middle:
+    vertical-align: middle;
 
     /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
@@ -908,8 +915,9 @@ input {
     // Allow inputs to contract to avoid braking containers:
     max-width: 100%;
     
-    
-    vertical-align: top;
+    // Keep adjacent elements in the middle:
+    vertical-align: middle;
+    //vertical-align: top;
 
     /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
@@ -956,10 +964,10 @@ input:not([type="checkbox"]):not([type="radio"]) {
 input[type=checkbox],
 input[type=radio] {
     /* Vertical centering via line-height/vertical align not satisfactory: */
-    vertical-align: top;
-    -webkit-transform: translateY(40%);
-        -ms-transform: translateY(40%);
-            transform: translateY(40%);
+    //vertical-align: top;
+    //-webkit-transform: translateY(40%);
+    //    -ms-transform: translateY(40%);
+    //        transform: translateY(40%);
    
     /*
         IE9 adds the border and background:
@@ -1189,8 +1197,11 @@ label {
     display: inline-block;
     font-weight: bold;
     cursor: pointer;
-    //vertical-align: middle;
+    vertical-align: middle;
     //vertical-align: baseline;
+    
+    padding-top: $fallback--base-rem-space-unit / 4;
+    padding-bottom: $fallback--base-rem-space-unit / 4;
     
     /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
@@ -1293,6 +1304,8 @@ option {
     min-height: $fallback--base-rem-space-unit; /* AK */
     //height: $fallback--base-rem-space-unit; /* AK */
     //padding-top: 3px; /* AK: help v-center text. */
+    padding-left: $input-h-padding;
+    padding-right: $input-h-padding;
     
     // This v-centers the text in FF and Chrome. Edge doesn't apply this but looks ok regardless.
     // Just IE9-11 to sort out?
@@ -1444,6 +1457,30 @@ select {
     }
 }
 
+select:not([multiple]) {
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2ZmZjt9LmNscy0ye2ZpbGw6IzQ0NDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iNC45NSIgaGVpZ2h0PSIxMCIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIxLjQxIDQuNjcgMi40OCAzLjE4IDMuNTQgNC42NyAxLjQxIDQuNjciLz48cG9seWdvbiBjbGFzcz0iY2xzLTIiIHBvaW50cz0iMy41NCA1LjMzIDIuNDggNi44MiAxLjQxIDUuMzMgMy41NCA1LjMzIi8+PC9zdmc+);
+    background-repeat: no-repeat;
+
+    background-position-x: 95%;
+    background-position-y: 50%;
+    
+    -moz-appearance: none; 
+	-webkit-appearance: none; 
+	appearance: none;
+    padding-left: $input-h-padding / 2;
+    // Give webkit extra padding:
+    // (not sure this is the best way but it seems FF and IE add the option padding, but webkit 
+    // doesn't so this basially works)
+    -webkit-padding-start: $input-h-padding;
+    padding-right: $input-h-padding * 4;
+}
+
+// Undo for IE9-11:
+_::selection, select:not([multiple]) {
+    background-image: none\0;
+    padding-right: 0\0;
+}
+
 select:focus {
     @include text-input-focus();
 }
@@ -1462,7 +1499,27 @@ select[multiple] {
     margin-top: ($fallback--base-rem-space-unit / 8);
     //margin-bottom: ($fallback--base-rem-space-unit / 3.42857142857);
     margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2});
+    
+    // iOS:
+    //min-height: $input-min-height * 2;
+    //-webkit-appearance: none; 
 }
+/*
+    Note: Safari refuses to adjust the height of select[multiple] options.
+    The only way I've managed to get it to adhere to the vertical rhythm is by adjust the font-size
+    on the select:
+    select[multiple] {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+    
+    This is no good, of course as it makes the text HUGE. Scaling it back with transform works:
+    
+        transform-origin: top;
+        transform: scale(0.7);
+        
+    but of course the gaps around it are huge as well.
+*/
 
 //shadow {}
 
