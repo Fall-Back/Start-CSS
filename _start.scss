@@ -1609,28 +1609,34 @@ svg {
       overflow: hidden;
     }
 
+/*
+    1. Opera Mini (no calc support).
+    2. Calc to deduct any border-width.
+*/
 table {
     border-collapse: collapse; /* N */
     border-spacing: 0; /* N */
 
     border: $table-border;
     background-color: $table-background-color;
-    /* margin-top: -$table-border-width; */
-    margin-bottom: $fallback--base-rem-space-unit - calc-rem-from-px($table-border-width);
+    margin-bottom: $fallback--base-rem-space-unit; /* 1 */
+    margin-bottom: calc(#{$fallback--base-rem-space-unit} - #{$table-border-width}); /* 2 */
 
     width: 100%;
     /* @TODO - possibly make this configurable to be 'natural' width but centered instead. */
 }
 
 //tbody {}
+/*
+    1. Opera Mini (no calc support).
+    2. Calc to deduct any border-width.
+*/
 td {
     border: $table-border;
     padding-top: $table-cell-padding;
     padding-right: $table-cell-padding;
-    /* @include calc(padding-bottom, '#{$table-cell-padding} - #{$table-border-width}'); */
-    // Opera Mini needs this:
-    padding-bottom: $table-cell-padding;
-    padding-bottom: $table-cell-padding - calc-rem-from-px($table-border-width);
+    padding-bottom: $table-cell-padding; /* 1 */
+    padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
     padding-left: $table-cell-padding;
 }
 
@@ -1687,15 +1693,16 @@ textarea:focus {
 }
 
 //tfoot {}
-
+/*
+    1. Opera Mini (no calc support).
+    2. Calc to deduct any border-width.
+*/
 th {
     border: $table-border;
     padding-top: $table-cell-padding;
     padding-right: $table-cell-padding;
-    /* @include calc(padding-bottom, '#{$table-cell-padding} - #{$table-border-width}'); */
-    // Opera Mini needs this:
-    padding-bottom: $table-cell-padding;
-    padding-bottom: $table-cell-padding - calc-rem-from-px($table-border-width);
+    padding-bottom: $table-cell-padding; /* 1 */
+    padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
     padding-left: $table-cell-padding;
 }
 
