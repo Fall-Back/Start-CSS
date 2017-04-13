@@ -6,10 +6,10 @@
     Chrome 29+, Opera 16+, Safari 6.1+, iOS 7+, Android ~4.4+
 
     Notes:
-    
+
     -moz-calc because this supports FF8+ and I like to be thorough.
-    
-    
+
+
     Resources:
     * http://www.smashingmagazine.com/2012/12/css-baseline-the-good-the-bad-and-the-ugly/
     * https://24ways.org/2006/compose-to-a-vertical-rhythm
@@ -62,12 +62,12 @@
     padding-top:   #{$padding};
     padding-top:   -moz-calc(#{$padding} - #{$border-width});
     padding-top:        calc(#{$padding} - #{$border-width});
-    
+
     // Opera Mini needs this:
     padding-left:  #{$padding};
     padding-left:  -moz-calc(#{$padding} - #{$border-width});
     padding-left:       calc(#{$padding} - #{$border-width});
-    
+
     // Opera Mini needs this:
     padding-right: #{$padding};
     padding-right: -moz-calc(#{$padding} - #{$border-width});
@@ -89,6 +89,7 @@
 .ref {
     fallback--base-rem-space-unit: $fallback--base-rem-space-unit;
     fallback--base-rem-1px: $fallback--base-rem-1px;
+    fallback--root-font-size-percent: $fallback--root-font-size-percent;
 }
 
 
@@ -127,7 +128,7 @@ $text-input-focus-border: false !default;
 
 // ELEMENTS
 
-// <a> 
+// <a>
 $anchor-text-color: $ui-color--base !default;
 $anchor-text-color--hover: darken($anchor-text-color, 15%) !default;
 $anchor-text-decoration: none !default;
@@ -180,6 +181,7 @@ $input-h-padding: $fallback--base-rem-space-unit / 4 !default;
 
 $input-text-color: $ui-color--text !default;
 $input-background-color: #fff !default;
+$input-background-color--state-1: lighten($ui-color--base, 60%) !default;
 
 $input-border-colour: darken($ui-color--base, 10%) !default;
 $input-border-width: $ui-border-width !default;
@@ -310,28 +312,27 @@ $selection-text-shadow: none;
 
 \*------------------------------------------------------------------------------------------------*/
 
-/*      
+/*
     1. Change the default box-sizing (-moz prefix for FF8-28).
-    
+
     2. `min-height` _should_ be what we want here (as declared in inuit css), except that
        `min-height` doesn't works as expected; child elements set to `(min-)height: 100%;` won't
        increase their height - they'll only do that if the parent has `height: 100%;`.
        This can lead to situations where sometimes elements (and thus their visible decoration) do
        not stretch to be tall enough for their content (because they're limited to 100% height).
-    
+
     3. Force scrollbars to always be visible to prevent awkward 'jumps' when
        navigating between pages that do/do not have enough content to produce
        scrollbars naturally. (I)
-       
+
     4. If not using default (16px) font-size, convert the value to a percentage so as not to
        override user font settings.
-       
+
     5. Prevent font size adjustments after orientation changes in IE and iOS. (N)
-    
+
     6. Add the default cursor in all browsers. (S)
-        
 */
-html {  
+html {
     -moz-box-sizing: border-box; /* 1 */
     box-sizing: border-box; /* 1 */
 
@@ -343,7 +344,7 @@ html {
     background-color: $fallback--base-background-color;
 
     @if ($fallback--root-font-size != 16px) {
-        font-size: #{($fallback--root-font-size / 1px) / 0.16}%; /* 4 */
+        font-size: #{$fallback--root-font-size-percent * 1%}; /* 4 */
     }
     font-family: $fallback--base-font-family;
 
@@ -352,7 +353,7 @@ html {
 
     // -- -moz-osx-font-smoothing: grayscale; --
     // -- -webkit-font-smoothing: antialiased; --
-    
+
     // -- text-rendering: optimizeLegibility; --
 
     cursor: default; /* 6 */
@@ -361,7 +362,7 @@ html {
     Fix font size for IE10 as it can't calculate % to 1 decimal place! Grrr.
 */
 @if ($fallback--root-font-size != 16px) {
-    _:-ms-lang(x), html { font-size: calc(0.625rem + 0.1px)\9; }
+    _:-ms-lang(x), html { font-size: calc(#{($fallback--root-font-size-percent / 100) * 1rem} + 0.1px)\9; }
 }
 
 * {
@@ -444,7 +445,7 @@ a:link a:visited a:hover a:active a:focus
 
 /*
     1. Remove the gray background on active links in IE 10. (S)
-    
+
     2. Remove the gaps in underlines in iOS 8+ and Safari 8+. (S)
 
     3. Remove the tapping delay from clickable elements . (S)
@@ -457,7 +458,7 @@ a[href] {
     color: $anchor-text-color;
     background-color: transparent; /* 1 */
 
-    text-decoration: $anchor-text-decoration; 
+    text-decoration: $anchor-text-decoration;
     -webkit-text-decoration-skip: objects; /* 2 */
 
     -ms-touch-action: manipulation; /* 3 */
@@ -585,11 +586,11 @@ blockquote {
     font-style: inherit; /* S */
     font-weight: inherit; /* S */
 
-    // Sort out the hight of buttons. At 12px spacing, should be 30px high with 3px top/bottom
+    // Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom
     // margin.
     // Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
     // FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
-    
+
     line-height: calc(#{$input-min-height} - #{$input-border-width * 2});
     //min-height: calc(#{$input-min-height} - #{$input-border-width * 2});
 
@@ -613,7 +614,7 @@ blockquote {
     //padding-bottom: #{$fallback--base-rem-space-unit / 8};
     //padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
     //padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
-    
+
     padding-top: 0;
     padding-bottom: 0;
     padding-left: $button-h-padding;
@@ -640,7 +641,7 @@ blockquote {
     &:focus {
         background-color: $bg-color--state-1;
     }
-    
+
     &:focus {
         outline: $focus-outline-style;
     }
@@ -658,7 +659,7 @@ _:-o-prefocus, :root button {
 // Old FF:
 /*
     Remove the inner border and padding in Firefox and fix height.
-    
+
     Early FF doesn't correctly apply the box sizing to inputs (buttons?)
     Adding margin to -moz-focus-inner helps to force the correct height.
     It doesn't have any effect in newer FF.
@@ -895,7 +896,7 @@ input {
 
     color: $input-text-color;
     background-color: $input-background-color;
-    
+
     border-width: $input-border-width;
     border-radius: $input-border-radius;
     border-color: $input-border-colour;
@@ -914,7 +915,7 @@ input {
 
     // Allow inputs to contract to avoid braking containers:
     max-width: 100%;
-    
+
     // Keep adjacent elements in the middle:
     vertical-align: middle;
     //vertical-align: top;
@@ -968,7 +969,7 @@ input[type=radio] {
     //-webkit-transform: translateY(40%);
     //    -ms-transform: translateY(40%);
     //        transform: translateY(40%);
-   
+
     /*
         IE9 adds the border and background:
     */
@@ -986,7 +987,7 @@ input[type=radio] {
 
 // IE10 makes the line-height massive with calc, but doesn't appear to need it anyway:
 [type="button"],
-[type="reset"], 
+[type="reset"],
 [type="submit"] {
     line-height:1\9;
 }
@@ -1003,11 +1004,11 @@ input[type=radio] {
     @if $input-file-max-width != false {
         max-width: $input-file-max-width;
     }
-    // IE and Edge behave differently (both to other browsers and each other) and so min-height 
+    // IE and Edge behave differently (both to other browsers and each other) and so min-height
     // and line-height settings don't seem consistent.
     // Using height explictly for now.
     //height: $input-min-height + calc-rem-from-px(($input-border-width * 2));
-    
+
     // Make sure button corners aren't visisible:
     overflow: hidden;
 }
@@ -1030,12 +1031,13 @@ _:-ms-input-placeholder, :root [type="file"] {
 }*/
 
 
-//input[type=file] > input[type=button]::-moz-focus-inner 
+//input[type=file] > input[type=button]::-moz-focus-inner
 ::-moz-focus-inner {
     border: 0;
     padding: 0;
     margin: 0;
 }
+
 input[type=file]:-moz-focusring {
     outline: 1px dotted #f00;
 }
@@ -1077,22 +1079,22 @@ input[type=file]:-moz-focusring {
     border-bottom-right-radius: $input-border-radius - $input-border-width;
     /* padding-top: 0.125rem; */
     /* padding-bottom: 0.125rem; */
-    
+
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
-    
+
     // IE10 doesn't like rem so convert to px:
         // IE10:
     padding-left: #{calc-px-from-rem($input-h-padding)}\9;
     padding-right: #{calc-px-from-rem($input-h-padding)}\9;
-    
+
     border-style: solid;
 
     // Spacing height + 2 sets of input padding, plus border width
     // - the button doesn't need it in IE:
     //height: $fallback--base-rem-space-unit + ($input-border-width * 2));
     //height: calc(#{$fallback--base-rem-space-unit} + #{$input-border-width * 2});
-    
+
 
 }
 
@@ -1114,7 +1116,7 @@ input[type=file]:-moz-focusring {
     font-family: inherit;
     font-style: inherit;
     font-weight: inherit;
-    
+
     // Spacing height + 2 sets of input padding, minus border width:
     height: calc(#{($fallback--base-rem-space-unit * 1.25)} - #{$input-border-width * 2});
     text-transform: none;
@@ -1199,10 +1201,10 @@ label {
     cursor: pointer;
     vertical-align: middle;
     //vertical-align: baseline;
-    
+
     padding-top: $fallback--base-rem-space-unit / 4;
     padding-bottom: $fallback--base-rem-space-unit / 4;
-    
+
     /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
@@ -1294,7 +1296,7 @@ optgroup {
     /* N: Don't inherit the `font-weight` (applied by a rule above). */
     /* NOTE: the default cannot safely be changed in Chrome and Safari on OS X. */
     font-weight: bold;
-    
+
     color: $input-text-color;
     background-color: $input-background-color;
 }
@@ -1306,11 +1308,19 @@ option {
     //padding-top: 3px; /* AK: help v-center text. */
     padding-left: $input-h-padding;
     padding-right: $input-h-padding;
-    
+
     // This v-centers the text in FF and Chrome. Edge doesn't apply this but looks ok regardless.
     // Just IE9-11 to sort out?
     display: flex;
     align-items: center;
+
+
+    &:hover {
+        background-color: $input-background-color--state-1;
+        color: $input-text-color;
+    }
+
+
 }
 
 
@@ -1409,7 +1419,7 @@ select {
 
     /* padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width); */
     /* padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width); */
-    padding-left: $input-h-padding;
+    //padding-left: $input-h-padding;
     /* padding-right: $input-h-padding; */
     margin: ($fallback--base-rem-space-unit / 8) 0;
     vertical-align: top; /* AK: For FF */
@@ -1463,13 +1473,13 @@ select:not([multiple]) {
 
     background-position-x: 95%;
     background-position-y: 50%;
-    
-    -moz-appearance: none; 
-	-webkit-appearance: none; 
+
+    -moz-appearance: none;
+	-webkit-appearance: none;
 	appearance: none;
     padding-left: $input-h-padding / 2;
     // Give webkit extra padding:
-    // (not sure this is the best way but it seems FF and IE add the option padding, but webkit 
+    // (not sure this is the best way but it seems FF and IE add the option padding, but webkit
     // doesn't so this basially works)
     -webkit-padding-start: $input-h-padding;
     padding-right: $input-h-padding * 4;
@@ -1486,11 +1496,12 @@ select:focus {
 }
 
 // FF
+/*
 @supports (-moz-appearance: meterbar) {
     select {
         padding-right: $input-h-padding;
     }
-}
+}*/
 
 select[multiple] {
     height: auto;
@@ -1499,10 +1510,10 @@ select[multiple] {
     margin-top: ($fallback--base-rem-space-unit / 8);
     //margin-bottom: ($fallback--base-rem-space-unit / 3.42857142857);
     margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2});
-    
+
     // iOS:
     //min-height: $input-min-height * 2;
-    //-webkit-appearance: none; 
+    //-webkit-appearance: none;
 }
 /*
     Note: Safari refuses to adjust the height of select[multiple] options.
@@ -1512,12 +1523,12 @@ select[multiple] {
         font-size: 20px;
         margin-bottom: 8px;
     }
-    
+
     This is no good, of course as it makes the text HUGE. Scaling it back with transform works:
-    
+
         transform-origin: top;
         transform: scale(0.7);
-        
+
     but of course the gaps around it are huge as well.
 */
 
@@ -1559,7 +1570,7 @@ summary {
     /* S: Firefox 40+, Internet Explorer 11-, Windows Phone 8.1+ */
     /* N: Correct `block` display not defined for `details` or `summary` in IE 10/11 */
     display: block;
-    
+
     /* S: Remove the tapping delay from clickable elements */
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
@@ -1571,7 +1582,7 @@ summary {
     summary::-webkit-details-marker {
         display: none;
     }
-    
+
     details > summary::before {
         content: '\25BA';
         font-family: serif;
@@ -1584,7 +1595,7 @@ summary {
     details[open] > summary::before {
         transform: rotate(90deg);
     }
- 
+
 
 // N: Prevent `sup` affecting `line-height` in all browsers.
 sup {
@@ -1655,7 +1666,7 @@ textarea {
     resize: $textarea-resize; // S
     overflow: auto; // N, S: Edge 12+, Internet Explorer 11- // AK without this it acts like overflow: scroll.
 
-    
+
     font-family: inherit; // S
     font-style: inherit; // S
     font-weight: inherit; // S
