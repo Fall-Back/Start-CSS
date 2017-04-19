@@ -35,6 +35,7 @@
 
     @return $value;
 }
+
 @function calc-px-from-rem($rem, $negative: false) {
     // e.g. $rem = 1.5rem
     // 1.5rem  + 0rem = 1.5rem | 1.5 + 0rem = 1.5rem (add unit if necessary)
@@ -47,6 +48,13 @@
     }
 
     @return $value;
+}
+
+// This helps with building media query hacks.
+@mixin mq($query) {
+    @media #{$query} {
+        @content
+    }
 }
 
 //@debug calc-px-from-rem(1.5rem);
@@ -331,6 +339,8 @@ $selection-text-shadow: none;
     5. Prevent font size adjustments after orientation changes in IE and iOS. (N)
 
     6. Add the default cursor in all browsers. (S)
+    
+    7. Remove margin on Mac Safari 6.1-8.
 */
 html {
     -moz-box-sizing: border-box; /* 1 */
@@ -359,19 +369,34 @@ html {
     cursor: default; /* 6 */
 }
 /*
-    Fix font size for IE10 as it can't calculate % to 1 decimal place! Grrr.
+    Fix font size for IE9,10 as it can't calculate % to 1 decimal place! Grrr.
 */
 @if ($fallback--root-font-size != 16px) {
+    // IE9 @media screen and (min-width:0\0) and (min-resolution:.001dpcm) { .selector { property:value; } }
+    @media screen and (min-width:0\0) and (min-resolution:.001dpcm) { html { font-size: calc(#{($fallback--root-font-size-percent / 100) * 1rem} + 0.1px); } }
+    
+    // IE10 _:-ms-lang(x), .selector { property:value\9; }
     _:-ms-lang(x), html { font-size: calc(#{($fallback--root-font-size-percent / 100) * 1rem} + 0.1px)\9; }
 }
 
-* {
-    margin:  0;
 
+/*
+    'Global' reset.
+    
+    1. For Mac Safari 6.1-8.
+*/
+* {
+    -webkit-margin-before: 0; /* 1 */   
+    -webkit-margin-after: 0;  /* 1 */
+    -webkit-margin-start: 0;  /* 1 */
+    -webkit-margin-end: 0;    /* 1 */
+    margin:  0;
+    
     padding: 0;
 
     font-size: inherit;
     line-height: inherit;
+
 }
 
 
@@ -542,8 +567,8 @@ audio {
  */
 b {
     font-weight: bolder;
-    // Prevent increase in line-height:
-    line-height: normal;
+    // Prevent increase in line-height in IE:
+    line-height: 1; //normal
 }
 
 //base {}
@@ -585,14 +610,23 @@ blockquote {
     font-family: inherit; /* S */
     font-style: inherit; /* S */
     font-weight: inherit; /* S */
+    
+    display: inline-block;
 
     // Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom
     // margin.
     // Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
     // FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
+    // Need to make sure height is goverened by line-height in case of breaks within buttons.
 
-    line-height: calc(#{$input-min-height} - #{$input-border-width * 2});
+    //line-height: calc(#{$input-min-height} - #{$button-border-width * 2});
     //min-height: calc(#{$input-min-height} - #{$input-border-width * 2});
+    
+    //box-sizing: content-box;
+    min-height: $input-min-height;
+    line-height: $fallback--base-rem-space-unit;
+    
+    margin: ($fallback--base-rem-space-unit / 8) 0;
 
 
     text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
@@ -600,23 +634,22 @@ blockquote {
     -webkit-appearance: none; /* AK */
     cursor: pointer; /* [N3] */
 
-    margin: ($fallback--base-rem-space-unit / 8) 0;
+    
     border-color: $button-border-colour;
     border-style: $button-border-style;
     border-width: $button-border-width;
     border-radius: $button-border-radius;
 
     // Opera Mini needs this:
-    //padding-top: #{$fallback--base-rem-space-unit / 8};
-    //padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
-    //padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    padding-top: #{$fallback--base-rem-space-unit / 8};
+    padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
     // Opera Mini needs this:
-    //padding-bottom: #{$fallback--base-rem-space-unit / 8};
-    //padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
-    //padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    padding-bottom: #{$fallback--base-rem-space-unit / 8};
+    padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
 
-    padding-top: 0;
-    padding-bottom: 0;
+
     padding-left: $button-h-padding;
     padding-right: $button-h-padding;
 
@@ -685,8 +718,12 @@ canvas {
 }
 
 caption {
+    display: table-caption;
     font-weight: bold;
-    padding: $table-caption-padding;
+    padding-top: $table-caption-padding;
+    padding-right: $table-caption-padding;
+    padding-bottom: $table-caption-padding;
+    padding-left: $table-caption-padding;
     background-color: $table-caption-background-color;
     color: $table-caption-text-color;
 }
@@ -727,8 +764,14 @@ dfn {
 //--dir {}--
 //div {}
 
+/*
+    1. Either of these will make lists behave properly next to floated items.
+       (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
+*/
 dl {
     margin-bottom: $fallback--base-rem-space-unit;
+    overflow: hidden; /* 1 */
+    //display: table; /* 1 */
 }
 
 dt {
@@ -952,11 +995,11 @@ input {
 }
 
 
-input:not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type="progess"]):focus {
+input:not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
     @include text-input-focus();
 }
 
-input:not([type="checkbox"]):not([type="radio"]) {
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
     min-height: $input-min-height; /* ~S */
     margin: ($fallback--base-rem-space-unit / 8) 0;
     /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
@@ -998,6 +1041,10 @@ input[type=radio] {
     //line-height: $input-min-height;
     cursor: pointer;
     padding: 0;
+    
+    min-height: $input-min-height;
+    margin: ($fallback--base-rem-space-unit / 8) 0;
+    
     /* On smaller devices the width of these inputs can force horizontal scrolling. */
     /* Max-width doesn't work to solve this, but may be needed to restrict width on larger screens */
     width: 100%;
@@ -1144,13 +1191,29 @@ input[type=file]:-moz-focusring {
         background-color: $button-background-color--state-1;
     }
 
-/**
- * N: Correct the cursor style of increment and decrement buttons in Chrome.
- */
 
+/*
+    Remove extra padding in Chrome
+*/
+[type="date"]::-webkit-datetime-edit-fields-wrapper,
+[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
+[type="month"]::-webkit-datetime-edit-fields-wrapper,
+[type="time"]::-webkit-datetime-edit-fields-wrapper,
+[type="week"]::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+}
+
+/*
+    Tidy spin buttons and apply cursor:
+*/
+[type="date"]::-webkit-inner-spin-button,
+[type="datetime-local"]::-webkit-inner-spin-button,
+[type="month"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-outer-spin-button {
-  height: auto;
+[type="time"]::-webkit-inner-spin-button,
+[type="week"]::-webkit-inner-spin-button {
+    height: auto;
+    cursor: pointer;
 }
 
 
@@ -1284,8 +1347,14 @@ object {
     vertical-align: $media-element-vertical-align;
 }
 
+/*
+    1. Either of these will make lists behave properly next to floated items.
+       (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
+*/
 ol {
     margin-bottom: $fallback--base-rem-space-unit;
+    overflow: hidden; /* 1 */
+    //display: table; /* 1 */
 }
 
 optgroup {
@@ -1515,22 +1584,64 @@ select[multiple] {
     //min-height: $input-min-height * 2;
     //-webkit-appearance: none;
 }
+
 /*
-    Note: Safari refuses to adjust the height of select[multiple] options.
+    Safari refuses to adjust the height of select[multiple] options.
     The only way I've managed to get it to adhere to the vertical rhythm is by adjust the font-size
     on the select:
     select[multiple] {
         font-size: 20px;
         margin-bottom: 8px;
     }
-
+    
     This is no good, of course as it makes the text HUGE. Scaling it back with transform works:
-
+    
         transform-origin: top;
         transform: scale(0.7);
-
+        
     but of course the gaps around it are huge as well.
+    
+    Hand-adjusting margins here so I can test the rest of the elements on grid properly and moving
+    on:
 */
+// _:scope, _:future, _:not(*:root), .selector { property:value; }
+// Chrome 27+, Safari 6.1+ (and Opera 14+)
+_:scope, _:future, _:not(*:root), select[size="2"]  { margin-bottom: 0; }
+_:scope, _:future, _:not(*:root), select[size="3"]  { margin-bottom: 0; }
+_:scope, _:future, _:not(*:root), select[size="4"]  { margin-bottom: 0; }
+_:scope, _:future, _:not(*:root), select[size="5"]  { margin-bottom: calc(0.9rem - 2px); }
+_:scope, _:future, _:not(*:root), select[size="6"]  { margin-bottom: calc(0.4rem - 2px); }
+_:scope, _:future, _:not(*:root), select[size="7"]  { margin-bottom: calc(1.1rem - 2px); }
+_:scope, _:future, _:not(*:root), select[size="8"]  { margin-bottom: calc(0.6rem - 2px); }
+_:scope, _:future, _:not(*:root), select[size="9"]  { margin-bottom: calc(1.3rem - 2px); }
+_:scope, _:future, _:not(*:root), select[size="10"] { margin-bottom: calc(0.8rem - 2px); }
+
+
+// Reset Chrome and Opera:
+// @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) { .selector { property:value; } }
+// Chrome 29+ (and Opera 16+)
+@media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+    select[size] { margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2}); }
+}
+
+
+
+/*
+    Similar problem with IE10-11:
+*/
+//_:-ms-input-placeholder, :root .selector { property:value; }
+//@media screen and (min-width:0\0) and (min-resolution:+72dpi) { .selector { property:value; } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="2"]  { margin-bottom: calc(1.3rem - #{$input-border-width * 2} - 0.2px); } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="3"]  { margin-bottom: calc(0.9rem - #{$input-border-width * 2} - 0.3px); } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="4"]  { margin-bottom: calc(0.5rem - #{$input-border-width * 2} - 0.4px); } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="5"]  { margin-bottom: calc(1.3rem - #{$input-border-width * 2} - 0.5px); } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="6"]  { margin-bottom: calc(0.9rem - #{$input-border-width * 2} - 0.6px); } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="7"]  { margin-bottom: calc(0.5rem - #{$input-border-width * 2} - 0.7px); } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="8"]  { margin-bottom: calc(1.3rem - #{$input-border-width * 2} - 0.8px); } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="9"]  { margin-bottom: calc(0.9rem - #{$input-border-width * 2} - 0.9px); } }
+@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="10"] { margin-bottom: calc(0.5rem - #{$input-border-width * 2} - 1px);   } }
+
+
 
 //shadow {}
 
@@ -1726,8 +1837,14 @@ th {
 //--tt {}--
 //u {}
 
+/*
+    1. Either of these will make lists behave properly next to floated items.
+       (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
+*/
 ul {
     margin-bottom: $fallback--base-rem-space-unit;
+    overflow: hidden; /* 1 */
+    //display: table; /* 1 */
 }
 
 //var {}

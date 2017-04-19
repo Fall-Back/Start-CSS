@@ -33,50 +33,74 @@
 }
 
 
-
+/*
+    1. Prevent element increasing height of parent.
+*/
 b.subtitle {
     font-size: 0.8em;
     font-weight: inherit;
     font-style: normal;
-    line-height: 1; // AK: prevent element increasing height of parent.
+    line-height: 1;  /* 1 */
 }
 
 
+/*
+    1. Negate heading margin.
+*/
 p.subtitle {
     font-size: 1.5em;
     font-weight: inherit;
-    margin-top: -1.5rem; // AK: negate heading margin.
+    margin-top: -#{$fallback--base-rem-space-unit / 2}; /* 1 */
 }
 
+/*
+    1. Negate heading margin.
+*/
 .tagline {
     font-size: 1.14285714286em;
-    margin-top: -1.5rem; // AK: negate heading margin.
+    margin-top: -#{$fallback--base-rem-space-unit / 2}; /* 1 */
 }
 
+/*
+    1. Collapse whitespace.
+    2. Prevent extra height being added.
+*/
 .composite {
-    /*
-        For IE9 - make sure there are no spaces between elements in the markup as the
-        as the whitespace won't collapse.
-    */
-    display: inline-block;
-    /* Collapse whitespace */
-    display: inline-flex;
-
-    /*
-        Added for IE9 custom file input (button hiding technique) but safe/useful anyway.
-    */
-    overflow: hidden;
-
-    vertical-align: middle;
+    display: -webkit-inline-box; /* 1 */
+    display: -ms-inline-flexbox; /* 1 */
+    display: inline-flex; /* 1 */
+    vertical-align: middle; /* 2 */
 }
 
-    .composite > * {
-        /*
-            This is for IE9 but does no harm elsewhere.
-        */
-        vertical-align: top;
-    }
+/*
+    1. Prevent extra height being added.
+*/
+.composite > * {
+    /*display: flex; /* 1 */
+    vertical-align: top; /* 1 */
+    flex: 1 1 auto;
+}
 
+/*
+    IE9
+    
+    1. Make sure there are no spaces between elements in the markup as the as the whitespace won't 
+       collapse.
+       
+    2. Hide button.
+*/
+@media screen and (min-width:0\0) and (min-resolution:.001dpcm) {
+    .composite {
+        display: inline-block; /* 1 */
+        white-space: nowrap; /* 1 */
+        overflow: hidden; /* 2 */
+    }
+    
+    .composite > * {
+        vertical-align: top;
+        display: inline-block;
+    }
+}
 
     .composite > *:not(:first-child) {
         border-top-left-radius: 0;
@@ -125,8 +149,8 @@ p.subtitle {
 .custom-input[type="radio"] + .custom-input-label::before {
     display: inline-block;
     content: "";
-    width: 1rem;
-    height: 1rem;
+    width: 1em;
+    height: 1em;
     background: #ccc;
     border-radius: 2px;
 
@@ -154,10 +178,10 @@ p.subtitle {
 .custom-input[type="checkbox"]:checked + .custom-input-label::after {
     content: "";
     display: inline-block;
-    width: 0.6rem;
-    height: 0.3rem;
+    width: 0.6em;
+    height: 0.3em;
     border: solid #fff;
-    border-width: 0 0 2px 2px;
+    border-width: 0 0 0.2em 0.2em;
 
     position: absolute;
     left: 0.22em;
@@ -172,7 +196,7 @@ p.subtitle {
 .custom-input[type="radio"]:checked + .custom-input-label::before {
     background: #fff;
     border-color: $ui-color--base;
-    border-width: 5px;
+    border-width: 0.25em;
     border-style: solid;
 }
 
@@ -192,7 +216,7 @@ p.subtitle {
 
 .custom-input--align-end[type="checkbox"]:checked + .custom-input-label::after {
     left: auto;
-    right: 0.22em;
+    right: 0.16em;
 }
 
 
@@ -201,7 +225,7 @@ p.subtitle {
 
 
 /* CUSTOM INPUTS: FILE */
-.custom-input-[type="file"] {
+.custom-input[type="file"] {
 }
 
     /* -webkit hide the button: */
@@ -232,8 +256,17 @@ p.subtitle {
 
     /* IE9 hide the button: (https://jeffclayton.wordpress.com/2014/07/22/internet-explorer-css-hacks-collection/) */
     @media screen and (min-width:0\0) and (min-resolution:.001dpcm) {
-        .custom-input[type=file] {
-            margin-right: -6.4em;
+        /*
+            So far I haven't managed to get this arrangment working properly in IE9, so hiding it:
+        */
+        .button + .custom-input[type=file] {
+            margin-left: -5.35em;
+        }
+        
+        .custom-input[type="file"] + .button {
+            min-width: 7em;
+            margin-left: -7em;
+            text-align: center;
         }
     }
 
