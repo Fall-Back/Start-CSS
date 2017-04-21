@@ -21,88 +21,12 @@
 
 */
 
-//@debug ($fallback--base-rem-space-unit / 8) - ((($input-border-width + 0px) / 1px) * $fallback--base-rem-1px);
-@function calc-rem-from-px($px, $negative: false) {
-    // e.g. $px = 16px (and $fallback--base-rem-1px = 0.0625rem)
-    // 16px + 0px = 16px | 16 + 0px = 16px (add unit if necessary)
-    // 16px / 1px = 16 (strip unit)
-    // 16px * 0.0625rem = 1rem
-    $value: ((($px + 0px) / 1px) * $fallback--base-rem-1px);
+/*------------------------------------------------------------------------------------------------*\
 
-    @if $negative {
-        $value: -#{$value};
-    }
+    SETTINGS
 
-    @return $value;
-}
+\*------------------------------------------------------------------------------------------------*/
 
-@function calc-px-from-rem($rem, $negative: false) {
-    // e.g. $rem = 1.5rem
-    // 1.5rem  + 0rem = 1.5rem | 1.5 + 0rem = 1.5rem (add unit if necessary)
-    // 1.5rem / 1rem = 1 (strip unit)
-    // 1.5 * 16px = 24px
-    $value: ((($rem + 0rem) / 1rem) * $fallback--root-font-size);
-
-    @if $negative {
-        $value: -#{$value};
-    }
-
-    @return $value;
-}
-
-// This helps with building media query hacks.
-@mixin mq($query) {
-    @media #{$query} {
-        @content
-    }
-}
-
-//@debug calc-px-from-rem(1.5rem);
-
-@mixin bordered($padding, $border-width) {
-    border-width: $border-width;
-    border-style: solid;
-    border-color: $ui-color--base;
-    //padding-top: calc-rem-from-px($padding - $border-width);
-    //padding-left: calc-rem-from-px($padding - $border-width);
-    //padding-right: calc-rem-from-px($padding - $border-width);
-    // Opera Mini needs this:
-    padding-top:   #{$padding};
-    padding-top:   -moz-calc(#{$padding} - #{$border-width});
-    padding-top:        calc(#{$padding} - #{$border-width});
-
-    // Opera Mini needs this:
-    padding-left:  #{$padding};
-    padding-left:  -moz-calc(#{$padding} - #{$border-width});
-    padding-left:       calc(#{$padding} - #{$border-width});
-
-    // Opera Mini needs this:
-    padding-right: #{$padding};
-    padding-right: -moz-calc(#{$padding} - #{$border-width});
-    padding-right:      calc(#{$padding} - #{$border-width});
-
-    &::after {
-        display: block;
-        content: "";
-        height: 0;
-        margin-top: -$border-width;
-        //margin-bottom: calc-rem-from-px($padding - $border-width);
-        //margin-bottom: calc(#{$padding} - #{$border-width});
-        margin-bottom: $padding;
-    }
-}
-
-
-/* Output class for reference (tmp): */
-.ref {
-    fallback--base-rem-space-unit: $fallback--base-rem-space-unit;
-    fallback--base-rem-1px: $fallback--base-rem-1px;
-    fallback--root-font-size-percent: $fallback--root-font-size-percent;
-}
-
-
-
-/* 'Globals': */
 $ui-color--base: $fallback--base-ui-color !default;
 $ui-color--text: $fallback--base-text-color !default;
 
@@ -248,10 +172,15 @@ $hr-margin-bottom: $fallback--base-rem-space-unit;
 $pre-background-color: lighten($ui-color--base, 55%) !default;
 //$pre-margin-bottom: $fallback--base-rem-space-unit !default;
 //$pre-margin-bottom: ($fallback--base-rem-space-unit * 2) - calc-rem-from-px(($fallback--base-line-height * 2) - 17px);
+
+// Adjust bottom margin to  take into account scrollbar height of 17px:
 $pre-margin-bottom: calc-rem-from-px(($fallback--base-line-height * 2) - 17px);
+// Edge has a scrollbar height of 12px:
+$pre-margin-bottom--edge: calc-rem-from-px(($fallback--base-line-height * 2) - 12px);
+
 // (margin to account for scrollbar, we can check for touch in most browsers and change this
 // or use custom scrollbars = see `pre` below)
-// Note top/bottom padding takes into account scrollbar height:
+
 $pre-code-padding: ($fallback--base-rem-space-unit / 2);
 
 
@@ -293,6 +222,94 @@ $selection-background-color: lighten($ui-color--base, 30%) !default;
 $selection-text-shadow: none;
 
 
+/*------------------------------------------------------------------------------------------------*\
+
+    FUNCTIONS AND MIXINS
+
+\*------------------------------------------------------------------------------------------------*/
+
+//@debug ($fallback--base-rem-space-unit / 8) - ((($input-border-width + 0px) / 1px) * $fallback--base-rem-1px);
+@function calc-rem-from-px($px, $negative: false) {
+    // e.g. $px = 16px (and $fallback--base-rem-1px = 0.0625rem)
+    // 16px + 0px = 16px | 16 + 0px = 16px (add unit if necessary)
+    // 16px / 1px = 16 (strip unit)
+    // 16px * 0.0625rem = 1rem
+    $value: ((($px + 0px) / 1px) * $fallback--base-rem-1px);
+
+    @if $negative {
+        $value: -#{$value};
+    }
+
+    @return $value;
+}
+
+@function calc-px-from-rem($rem, $negative: false) {
+    // e.g. $rem = 1.5rem
+    // 1.5rem  + 0rem = 1.5rem | 1.5 + 0rem = 1.5rem (add unit if necessary)
+    // 1.5rem / 1rem = 1 (strip unit)
+    // 1.5 * 16px = 24px
+    $value: ((($rem + 0rem) / 1rem) * $fallback--root-font-size);
+
+    @if $negative {
+        $value: -#{$value};
+    }
+
+    @return $value;
+}
+
+// This helps with building media query hacks.
+@mixin mq($query) {
+    @media #{$query} {
+        @content
+    }
+}
+
+//@debug calc-px-from-rem(1.5rem);
+
+@mixin bordered($padding, $border-width) {
+    border-width: $border-width;
+    border-style: solid;
+    border-color: $ui-color--base;
+    //padding-top: calc-rem-from-px($padding - $border-width);
+    //padding-left: calc-rem-from-px($padding - $border-width);
+    //padding-right: calc-rem-from-px($padding - $border-width);
+    // Opera Mini needs this:
+    padding-top:   #{$padding};
+    padding-top:   -moz-calc(#{$padding} - #{$border-width});
+    padding-top:        calc(#{$padding} - #{$border-width});
+
+    // Opera Mini needs this:
+    padding-left:  #{$padding};
+    padding-left:  -moz-calc(#{$padding} - #{$border-width});
+    padding-left:       calc(#{$padding} - #{$border-width});
+
+    // Opera Mini needs this:
+    padding-right: #{$padding};
+    padding-right: -moz-calc(#{$padding} - #{$border-width});
+    padding-right:      calc(#{$padding} - #{$border-width});
+
+    &::after {
+        display: block;
+        content: "";
+        height: 0;
+        margin-top: -$border-width;
+        //margin-bottom: calc-rem-from-px($padding - $border-width);
+        //margin-bottom: calc(#{$padding} - #{$border-width});
+        margin-bottom: $padding;
+    }
+}
+
+
+/* Output class for reference (tmp): */
+.ref {
+    fallback--base-rem-space-unit: $fallback--base-rem-space-unit;
+    fallback--base-rem-1px: $fallback--base-rem-1px;
+    fallback--root-font-size-percent: $fallback--root-font-size-percent;
+}
+
+
+
+
 
 // Attempt to organise 'normalisation' by tag.
 // All elements are listed, but elements that are non-visual or obsolete are commented out, as are
@@ -316,7 +333,7 @@ $selection-text-shadow: none;
 
 /*------------------------------------------------------------------------------------------------*\
 
-    Root Styles
+    ROOT STYLES
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -339,7 +356,7 @@ $selection-text-shadow: none;
     5. Prevent font size adjustments after orientation changes in IE and iOS. (N)
 
     6. Add the default cursor in all browsers. (S)
-    
+
     7. Remove margin on Mac Safari 6.1-8.
 */
 html {
@@ -374,7 +391,7 @@ html {
 @if ($fallback--root-font-size != 16px) {
     // IE9 @media screen and (min-width:0\0) and (min-resolution:.001dpcm) { .selector { property:value; } }
     @media screen and (min-width:0\0) and (min-resolution:.001dpcm) { html { font-size: calc(#{($fallback--root-font-size-percent / 100) * 1rem} + 0.1px); } }
-    
+
     // IE10 _:-ms-lang(x), .selector { property:value\9; }
     _:-ms-lang(x), html { font-size: calc(#{($fallback--root-font-size-percent / 100) * 1rem} + 0.1px)\9; }
 }
@@ -382,16 +399,16 @@ html {
 
 /*
     'Global' reset.
-    
+
     1. For Mac Safari 6.1-8.
 */
 * {
-    -webkit-margin-before: 0; /* 1 */   
+    -webkit-margin-before: 0; /* 1 */
     -webkit-margin-after: 0;  /* 1 */
     -webkit-margin-start: 0;  /* 1 */
     -webkit-margin-end: 0;    /* 1 */
     margin:  0;
-    
+
     padding: 0;
 
     font-size: inherit;
@@ -401,20 +418,20 @@ html {
 
 
 /*
-    S1. Remove repeating backgrounds in all browsers (opinionated).
-    S2. Add box sizing inheritence in all browsers (opinionated).
-
-    A1. Supporting FF8+ due to Mustard Cut so including for completeness.
+    1. Remove repeating backgrounds in all browsers (opinionated). (S)
+    2. Add box sizing inheritence in all browsers (opinionated).
+       Supporting FF8+ due to Mustard Cut so including for completeness.
+    3. (Sc)
 */
 *,
 ::before,
 ::after {
-    background-repeat: no-repeat; /* S1 */
+    background-repeat: no-repeat; /* 1 */
 
-    -moz-box-sizing: inherit; /* A1 */
-         box-sizing: inherit; /* S2 Sc I */
+    -moz-box-sizing: inherit; /* 2 */
+         box-sizing: inherit; /* 2 */
 
-    -webkit-font-smoothing: inherit; /* Sc */
+    -webkit-font-smoothing: inherit; /* 3 */
 
     /*border-style: inherit; /* AK */
     // This had been commented out, but I can't remember why. I think I read it was detremental
@@ -426,16 +443,18 @@ html {
 }
 
 /*
-    S1. Add text decoration inheritance in all browsers (opinionated).
-    S1. Add vertical alignment inheritence in all browsers (opinionated).
+    1. Add text decoration inheritance in all browsers (opinionated). (s)
+    2. Add vertical alignment inheritence in all browsers (s).
 */
 ::before,
 ::after {
-    text-decoration: inherit; /* S1 */
-    vertical-align: inherit; /* S2 */
+    text-decoration: inherit; /* 1 */
+    vertical-align: inherit; /* 2 */
 }
 
-
+/*
+    1. Ensure that absolutely positioned child elements expand to the full height of the body.
+*/
 body {
     font-size: ($fallback--base-font-size / $fallback--root-font-size * 1em);
     line-height: $fallback--base-rem-space-unit;
@@ -448,14 +467,13 @@ body {
     min-width: $body-min-width;
     max-width: $body-max-width;
 
-    /* This ensures that absolutely positioned child elements expand to the full height of the body. */
-    position: relative;
+    position: relative; /* 1 */
 }
 
 
 /*------------------------------------------------------------------------------------------------*\
 
-    All Elements
+    ALL ELEMENTS
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -515,17 +533,17 @@ a[href] {
         }
     }
 
+/*
+    1. Remove the bottom border in Firefox 39-. (N)
+    2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari. (N)
+*/
 abbr {
-    cursor: help; /* I */
+    cursor: help;
 
-    /**
-     * N1. Remove the bottom border in Firefox 39-.
-     * N2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
-     */
     &[title] {
-        border-bottom: none; /* N1 */
-        text-decoration: underline; /* N2 */
-        text-decoration: underline dotted; /* N2 */
+        border-bottom: none; /* 1 */
+        text-decoration: underline; /* 2 */
+        text-decoration: underline dotted; /* 2 */
     }
 }
 
@@ -549,26 +567,27 @@ aside {
 }
 
 /*
-    N1. Add the correct display in IE 9-.
+    1. Add the correct display in IE 9-. (N)
+    2. Chrome 44-, iOS 8+, Safari 9+. (S)
 */
 audio {
-    display: inline-block; /* N1 */
-    vertical-align: $media-element-vertical-align; /* S */
+    display: inline-block; /* 1 */
+    vertical-align: $media-element-vertical-align;
 
     &:not([controls]) {
-        display: none; /* S: Chrome 44-, iOS 8+, Safari 9+ */
-        height: 0; /* N */
+        display: none; /* 2 */
+        height: 0;
     }
 }
 
 
-/**
- * S: Add the correct font weight in Chrome, Edge, and Safari.
- */
+/*
+    1: Add the correct font weight in Chrome, Edge, and Safari. (S)
+    2. Prevent increase in line-height in IE.
+*/
 b {
-    font-weight: bolder;
-    // Prevent increase in line-height in IE:
-    line-height: 1; //normal
+    font-weight: bolder; /* 1 */
+    line-height: 1; //normal /* 2 */
 }
 
 //base {}
@@ -610,7 +629,7 @@ blockquote {
     font-family: inherit; /* S */
     font-style: inherit; /* S */
     font-weight: inherit; /* S */
-    
+
     display: inline-block;
 
     // Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom
@@ -621,11 +640,11 @@ blockquote {
 
     //line-height: calc(#{$input-min-height} - #{$button-border-width * 2});
     //min-height: calc(#{$input-min-height} - #{$input-border-width * 2});
-    
+
     //box-sizing: content-box;
     min-height: $input-min-height;
     line-height: $fallback--base-rem-space-unit;
-    
+
     margin: ($fallback--base-rem-space-unit / 8) 0;
 
 
@@ -634,7 +653,7 @@ blockquote {
     -webkit-appearance: none; /* AK */
     cursor: pointer; /* [N3] */
 
-    
+
     border-color: $button-border-colour;
     border-style: $button-border-style;
     border-width: $button-border-width;
@@ -710,10 +729,10 @@ button::-moz-focus-inner {
 }
 
 /*
-    N1. Add the correct display in IE 9-.
+    1. Add the correct display in IE 9-. (N)
 */
 canvas {
-    display: inline-block;  /* N1. */
+    display: inline-block;  /* 1 */
     vertical-align: $media-element-vertical-align;
 }
 
@@ -730,12 +749,15 @@ caption {
 
 //--center {}
 // cite {}
-
+/*
+    1. (N)
+    2. Address odd `em`-unit font size rendering in all browsers. (N)
+    3. Prevent the element increasing the line-height of the parent.
+*/
 code {
-    font-family: $monospace-font-family, monospace; /* S, N */
-    font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
-
-    line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
+    font-family: $monospace-font-family, monospace; /* 1 */
+    font-size: 1em; /* 2 */
+    line-height: 0; /* 3 */
 }
 
 //!col {}
@@ -755,7 +777,9 @@ details {
     display: block; /* N: IE 10/11 */
 }
 
-/* N: Address styling not present in Safari and Chrome. */
+/*
+    Address styling not present in Safari and Chrome. (N)
+*/
 dfn {
     font-style: italic;
 }
@@ -873,6 +897,9 @@ h6 {
     font-variant: $h6-font-variant;
 }
 
+/*
+    1. Show the overflow in Edge and IE. (N)
+*/
 hr {
     /* box-sizing: content-box; */
     /* height: 0; */
@@ -883,7 +910,7 @@ hr {
     border-bottom: $hr-border;
     margin-top: $hr-margin-top;
     margin-bottom: $hr-margin-bottom;
-    overflow: visible; /* N: Show the overflow in Edge and IE. */
+    overflow: visible; /* 1 */
 }
 
 //^html {}
@@ -895,25 +922,35 @@ iframe {
 
 //--image {}--
 
-// I1. Fluid images for responsive purposes.
-// I2. Offset `alt` text from surrounding copy.
+// I1.
+// I2.
 // I3. Setting `vertical-align` removes the whitespace that appears under `img` elements when they
 //  are dropped into a page as-is. Safer alternative to using `display: block;`.
-img {
-    vertical-align: $media-element-vertical-align; /* S, I3 */
-    border-style: none; /* N: Remove the border on images inside links in IE 10-. */
-    max-width: 100%; /* [I1] */
-    font-style: italic; /* [I2] */
+/*
+    1. Setting `vertical-align` removes the whitespace that appears under `img` elements when they
+       are dropped into a page as-is. Safer alternative to using `display: block;`. (N, I)
 
-    /**
-     * I1. Google Maps breaks if `max-width: 100%` acts upon it; use their selector to remove the
-     *     effects.
-     * I2. If a `width` and/or `height` attribute have been explicitly defined, let's not make the
-     *     image fluid.
-     */
-    .gm-style &, /* [I1] */
-    &[width], /* [I2] */
-    &[height] {  /* [I2] */
+    2. Remove the border on images inside links in IE 10-. (N)
+
+    3. Fluid images for responsive purposes. (I)
+
+    4. Offset `alt` text from surrounding copy. (I)
+
+    5. Google Maps breaks if `max-width: 100%` acts upon it; use their selector to remove the
+       effects. (I)
+
+    6. If a `width` and/or `height` attribute have been explicitly defined, let's not make the
+       image fluid.
+*/
+img {
+    vertical-align: $media-element-vertical-align; /* 1 */
+    border-style: none; /* 2  */
+    max-width: 100%; /* 3 */
+    font-style: italic; /* 4 */
+
+    .gm-style &, /* 5 */
+    &[width], /* 6 */
+    &[height] {  /* 6 */
         max-width: none;
     }
 }
@@ -1041,10 +1078,10 @@ input[type=radio] {
     //line-height: $input-min-height;
     cursor: pointer;
     padding: 0;
-    
+
     min-height: $input-min-height;
     margin: ($fallback--base-rem-space-unit / 8) 0;
-    
+
     /* On smaller devices the width of these inputs can force horizontal scrolling. */
     /* Max-width doesn't work to solve this, but may be needed to restrict width on larger screens */
     width: 100%;
@@ -1099,8 +1136,15 @@ input[type=file]:-moz-focusring {
     margin-left: -6px;
     margin-right: 0;
     padding-left: 0.5em;
-    border-top-left-radius: $input-border-radius - $input-border-width;
-    border-bottom-left-radius: $input-border-radius - $input-border-width;
+    //border-top-left-radius: $input-border-radius - $input-border-width;
+    //border-bottom-left-radius: $input-border-radius - $input-border-width;
+    border-radius: $input-border-radius;
+}
+// Edge
+@supports (-ms-ime-align:auto) {
+    [type=file]::-ms-value {
+        background: transparent;
+    }
 }
 
 [type=file]:focus::-ms-value {
@@ -1404,23 +1448,32 @@ p {
 //--plaintext {}--
 
 /*
-    Note: code is the most probable use for a `<pre>` tag. Other uses may occur (e.g. poem) but t
+    Note: code is the most probable use for a `<pre>` tag. Other uses may occur (e.g. poem) but
     these could be adjusted with a class. Could maybe make this default configurable but leave as it
     is for now as it's likely that a poem would need a complete re-style (e.g. fonts etc.).
 
-    N1. Correct the inheritance and scaling of font size in all browsers.
-    N2. Correct the odd `em` font sizing in all browsers.
+    1. Correct the inheritance and scaling of font size in all browsers. (N)
 
-    A1. Keep scrollbar visible to maintain vertical rhythm.
+    2. Correct the odd `em` font sizing in all browsers. (N)
+
+    3. Keep scrollbar visible to maintain vertical rhythm.
+       Most browsers have a scrollbar height of 17px (calculated in settings section), however Edge
+       appears to have a scrollbar height of 12px, so we override it with a hack.
 */
 pre {
-    font-family: $monospace-font-family, monospace; /* N1 */
-    font-size: 1em; /* N2 */
-    overflow-y: auto; /* A1 */
-    overflow-x: scroll; /* A1 */
-    margin-bottom: $pre-margin-bottom; /* A */
-    background-color: $pre-background-color; /* A */
+    font-family: $monospace-font-family, monospace; /* 1 */
+    font-size: 1em; /* 2 */
+    overflow-y: auto; /* 3 */
+    overflow-x: scroll; /* 3 */
+    margin-bottom: $pre-margin-bottom; /* 3 */
+    background-color: $pre-background-color; /*3 */
 }
+@supports (-ms-ime-align:auto) {
+    pre {
+        margin-bottom: $pre-margin-bottom--edge; /* 3 */
+    }
+}
+
     pre code {
         display: inline-block;
         //line-height: 1.5rem; /* Revert zeroed line-height (see) `code` */
@@ -1537,7 +1590,7 @@ select {
 }
 
 select:not([multiple]) {
-    background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2ZmZjt9LmNscy0ye2ZpbGw6IzQ0NDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHJlY3QgY2xhc3M9ImNscy0xIiB3aWR0aD0iNC45NSIgaGVpZ2h0PSIxMCIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIxLjQxIDQuNjcgMi40OCAzLjE4IDMuNTQgNC42NyAxLjQxIDQuNjciLz48cG9seWdvbiBjbGFzcz0iY2xzLTIiIHBvaW50cz0iMy41NCA1LjMzIDIuNDggNi44MiAxLjQxIDUuMzMgMy41NCA1LjMzIi8+PC9zdmc+);
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNC45NSAxMCI+PHBvbHlnb24gZmlsbD0iIzQ0NCIgcG9pbnRzPSIxLjQxIDQuNjcgMi40OCAzLjE4IDMuNTQgNC42NyAxLjQxIDQuNjciLz48cG9seWdvbiBmaWxsPSIjNDQ0IiBwb2ludHM9IjMuNTQgNS4zMyAyLjQ4IDYuODIgMS40MSA1LjMzIDMuNTQgNS4zMyIvPjwvc3ZnPg==);
     background-repeat: no-repeat;
 
     background-position-x: 95%;
@@ -1593,14 +1646,14 @@ select[multiple] {
         font-size: 20px;
         margin-bottom: 8px;
     }
-    
+
     This is no good, of course as it makes the text HUGE. Scaling it back with transform works:
-    
+
         transform-origin: top;
         transform: scale(0.7);
-        
+
     but of course the gaps around it are huge as well.
-    
+
     Hand-adjusting margins here so I can test the rest of the elements on grid properly and moving
     on:
 */
@@ -1890,7 +1943,7 @@ video {
 
 /*------------------------------------------------------------------------------------------------*\
 
-    Accessibility / ARIA
+    ACCESSIBILITY / ARIA
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -1898,26 +1951,33 @@ video {
     cursor: progress;
 }
 
-// S: specify the pointer cursor of trigger elements
+/*
+    Specify the pointer cursor of trigger elements. (S)
+*/
 
 [aria-controls] {
     cursor: pointer;
 }
 
-// S: specify the unstyled cursor of disabled, not-editable, or otherwise inoperable elements
+/*
+    Specify the unstyled cursor of disabled, not-editable, or otherwise inoperable elements. (S)
+*/
 [disabled],
 [aria-disabled] {
     cursor: default;
 }
 
 
-// N: Address `[hidden]` styling not present in IE 8/9/10.
+/*
+    Address `[hidden]` styling not present in IE 8/9/10. (N)
+*/
 [hidden] {
-    display: none; /* S: Internet Explorer 10- */
+    display: none;
 }
 
-// S: specify the style of visually hidden yet accessible elements
-
+/*
+    Specify the style of visually hidden yet accessible elements. (s)
+*/
 [hidden][aria-hidden="false"] {
     clip: rect(0 0 0 0);
     position: absolute;
@@ -1945,18 +2005,21 @@ video {
 
 /*------------------------------------------------------------------------------------------------*\
 
-    Utilities
+    UTILITIES
 
 \*------------------------------------------------------------------------------------------------*/
 
-// H: Clearfix: contain floats for modern browsers
-// 1. The space content is one way to avoid an Opera bug when the
-//    `contenteditable` attribute is included anywhere else in the document.
-//    Otherwise it causes space to appear at the top and bottom of elements
-//    that receive the `clearfix` class.
-// 2. The use of `table` rather than `block` is only necessary if using
-//    `:before` to contain the top-margins of child elements.
 
+/*
+    Clearfix: contain floats for modern browsers
+
+    1. The space content is one way to avoid an Opera bug when the `contenteditable` attribute is #
+       included anywhere else in the document.
+       Otherwise it causes space to appear at the top and bottom of elements that receive the#
+       `clearfix` class.
+    2. The use of `table` rather than `block` is only necessary if using
+       `:before` to contain the top-margins of child elements.
+*/
 
 .clearfix:before,
 .clearfix:after {
@@ -1964,6 +2027,7 @@ video {
     display: table; /* 2 */
 }
 
+.clearfix,
 .clearfix:after {
     clear: both;
 }
