@@ -9,6 +9,9 @@
 
     -moz-calc because this supports FF8+ and I like to be thorough.
 
+    CSS hacks from http://browserstrangeness.com/css_hacks.html
+    (hack and browser support in comments above each usage)
+
 
     Resources:
     * http://www.smashingmagazine.com/2012/12/css-baseline-the-good-the-bad-and-the-ugly/
@@ -20,6 +23,83 @@
 
 
 */
+
+/*------------------------------------------------------------------------------------------------*\
+
+    FUNCTIONS AND MIXINS
+
+\*------------------------------------------------------------------------------------------------*/
+
+//@debug ($fallback--base-rem-space-unit / 8) - ((($input-border-width + 0px) / 1px) * $fallback--base-rem-1px);
+@function calc-rem-from-px($px, $negative: false) {
+    // e.g. $px = 16px (and $fallback--base-rem-1px = 0.0625rem)
+    // 16px + 0px = 16px | 16 + 0px = 16px (add unit if necessary)
+    // 16px / 1px = 16 (strip unit)
+    // 16px * 0.0625rem = 1rem
+    $value: ((($px + 0px) / 1px) * $fallback--base-rem-1px);
+
+    @if $negative {
+        $value: -#{$value};
+    }
+
+    @return $value;
+}
+
+@function calc-px-from-rem($rem, $negative: false) {
+    // e.g. $rem = 1.5rem
+    // 1.5rem  + 0rem = 1.5rem | 1.5 + 0rem = 1.5rem (add unit if necessary)
+    // 1.5rem / 1rem = 1 (strip unit)
+    // 1.5 * 16px = 24px
+    $value: ((($rem + 0rem) / 1rem) * $fallback--root-font-size);
+
+    @if $negative {
+        $value: -#{$value};
+    }
+
+    @return $value;
+}
+
+// This helps with building media query hacks.
+@mixin mq($query) {
+    @media #{$query} {
+        @content
+    }
+}
+
+//@debug calc-px-from-rem(1.5rem);
+
+@mixin bordered($padding, $border-width) {
+    border-width: $border-width;
+    border-style: solid;
+    border-color: $ui-color--base;
+    //padding-top: calc-rem-from-px($padding - $border-width);
+    //padding-left: calc-rem-from-px($padding - $border-width);
+    //padding-right: calc-rem-from-px($padding - $border-width);
+    // Opera Mini needs this:
+    padding-top:   #{$padding};
+    padding-top:   -moz-calc(#{$padding} - #{$border-width});
+    padding-top:        calc(#{$padding} - #{$border-width});
+
+    // Opera Mini needs this:
+    padding-left:  #{$padding};
+    padding-left:  -moz-calc(#{$padding} - #{$border-width});
+    padding-left:       calc(#{$padding} - #{$border-width});
+
+    // Opera Mini needs this:
+    padding-right: #{$padding};
+    padding-right: -moz-calc(#{$padding} - #{$border-width});
+    padding-right:      calc(#{$padding} - #{$border-width});
+
+    &::after {
+        display: block;
+        content: "";
+        height: 0;
+        margin-top: -$border-width;
+        //margin-bottom: calc-rem-from-px($padding - $border-width);
+        //margin-bottom: calc(#{$padding} - #{$border-width});
+        margin-bottom: $padding;
+    }
+}
 
 /*------------------------------------------------------------------------------------------------*\
 
@@ -134,28 +214,21 @@ $input-file-max-width: 18.5em !default;
 // <hx>
 $h1-font-size: 42px / $fallback--base-font-size * 1em !default;
 $h1-height:  $fallback--base-rem-space-unit * 2 !default;
-$h1-font-variant: normal !default;
 
 $h2-font-size: 30px / $fallback--base-font-size * 1em !default;
 $h2-height:  $fallback--base-rem-space-unit * 1.5 !default;
-$h2-font-variant: normal !default;
 
 $h3-font-size: 24px / $fallback--base-font-size * 1em !default;
 $h3-height:  $fallback--base-rem-space-unit * 1.5 !default;
-$h3-font-variant: normal !default;
 
 $h4-font-size: 18px / $fallback--base-font-size * 1em !default;
 $h4-height:  $fallback--base-rem-space-unit !default;
-$h4-font-variant: normal !default;
 
 $h5-font-size: 15px / $fallback--base-font-size * 1em !default;
 $h5-height:  $fallback--base-rem-space-unit !default;
-$h5-font-variant: normal !default;
 
 $h6-font-size: 14px / $fallback--base-font-size * 1em !default;
 $h6-height:  $fallback--base-rem-space-unit !default;
-$h6-font-variant: normal !default;
-//$h6-font-variant: small-caps !default;
 
 
 
@@ -222,82 +295,7 @@ $selection-background-color: lighten($ui-color--base, 30%) !default;
 $selection-text-shadow: none;
 
 
-/*------------------------------------------------------------------------------------------------*\
 
-    FUNCTIONS AND MIXINS
-
-\*------------------------------------------------------------------------------------------------*/
-
-//@debug ($fallback--base-rem-space-unit / 8) - ((($input-border-width + 0px) / 1px) * $fallback--base-rem-1px);
-@function calc-rem-from-px($px, $negative: false) {
-    // e.g. $px = 16px (and $fallback--base-rem-1px = 0.0625rem)
-    // 16px + 0px = 16px | 16 + 0px = 16px (add unit if necessary)
-    // 16px / 1px = 16 (strip unit)
-    // 16px * 0.0625rem = 1rem
-    $value: ((($px + 0px) / 1px) * $fallback--base-rem-1px);
-
-    @if $negative {
-        $value: -#{$value};
-    }
-
-    @return $value;
-}
-
-@function calc-px-from-rem($rem, $negative: false) {
-    // e.g. $rem = 1.5rem
-    // 1.5rem  + 0rem = 1.5rem | 1.5 + 0rem = 1.5rem (add unit if necessary)
-    // 1.5rem / 1rem = 1 (strip unit)
-    // 1.5 * 16px = 24px
-    $value: ((($rem + 0rem) / 1rem) * $fallback--root-font-size);
-
-    @if $negative {
-        $value: -#{$value};
-    }
-
-    @return $value;
-}
-
-// This helps with building media query hacks.
-@mixin mq($query) {
-    @media #{$query} {
-        @content
-    }
-}
-
-//@debug calc-px-from-rem(1.5rem);
-
-@mixin bordered($padding, $border-width) {
-    border-width: $border-width;
-    border-style: solid;
-    border-color: $ui-color--base;
-    //padding-top: calc-rem-from-px($padding - $border-width);
-    //padding-left: calc-rem-from-px($padding - $border-width);
-    //padding-right: calc-rem-from-px($padding - $border-width);
-    // Opera Mini needs this:
-    padding-top:   #{$padding};
-    padding-top:   -moz-calc(#{$padding} - #{$border-width});
-    padding-top:        calc(#{$padding} - #{$border-width});
-
-    // Opera Mini needs this:
-    padding-left:  #{$padding};
-    padding-left:  -moz-calc(#{$padding} - #{$border-width});
-    padding-left:       calc(#{$padding} - #{$border-width});
-
-    // Opera Mini needs this:
-    padding-right: #{$padding};
-    padding-right: -moz-calc(#{$padding} - #{$border-width});
-    padding-right:      calc(#{$padding} - #{$border-width});
-
-    &::after {
-        display: block;
-        content: "";
-        height: 0;
-        margin-top: -$border-width;
-        //margin-bottom: calc-rem-from-px($padding - $border-width);
-        //margin-bottom: calc(#{$padding} - #{$border-width});
-        margin-bottom: $padding;
-    }
-}
 
 
 /* Output class for reference (tmp): */
@@ -389,10 +387,12 @@ html {
     Fix font size for IE9,10 as it can't calculate % to 1 decimal place! Grrr.
 */
 @if ($fallback--root-font-size != 16px) {
-    // IE9 @media screen and (min-width:0\0) and (min-resolution:.001dpcm) { .selector { property:value; } }
+    // @media screen and (min-width:0\0) and (min-resolution:.001dpcm) { .selector { property:value; } }
+    // Internet Explorer 9
     @media screen and (min-width:0\0) and (min-resolution:.001dpcm) { html { font-size: calc(#{($fallback--root-font-size-percent / 100) * 1rem} + 0.1px); } }
 
-    // IE10 _:-ms-lang(x), .selector { property:value\9; }
+    // _:-ms-lang(x), .selector { property:value\9; }
+    // Internet Explorer 10
     _:-ms-lang(x), html { font-size: calc(#{($fallback--root-font-size-percent / 100) * 1rem} + 0.1px)\9; }
 }
 
@@ -418,18 +418,21 @@ html {
 
 
 /*
-    1. Remove repeating backgrounds in all browsers (opinionated). (S)
-    2. Add box sizing inheritence in all browsers (opinionated).
+    1. Add box sizing inheritence in all browsers (opinionated).
        Supporting FF8+ due to Mustard Cut so including for completeness.
+
+    2. Remove repeating backgrounds in all browsers (opinionated). (S)
+
+
     3. (Sc)
 */
 *,
 ::before,
 ::after {
-    background-repeat: no-repeat; /* 1 */
+    -moz-box-sizing: inherit; /* 1 */
+         box-sizing: inherit; /* 1 */
 
-    -moz-box-sizing: inherit; /* 2 */
-         box-sizing: inherit; /* 2 */
+    background-repeat: no-repeat; /* 2 */
 
     -webkit-font-smoothing: inherit; /* 3 */
 
@@ -449,6 +452,7 @@ html {
 ::before,
 ::after {
     text-decoration: inherit; /* 1 */
+
     vertical-align: inherit; /* 2 */
 }
 
@@ -456,18 +460,20 @@ html {
     1. Ensure that absolutely positioned child elements expand to the full height of the body.
 */
 body {
-    font-size: ($fallback--base-font-size / $fallback--root-font-size * 1em);
-    line-height: $fallback--base-rem-space-unit;
-    padding: $body-padding;
-    margin: $body-margin;
+    position: relative; /* 1 */
 
-
-    -height: 100%;
-    min-height: 100%;
     min-width: $body-min-width;
     max-width: $body-max-width;
 
-    position: relative; /* 1 */
+    -height: 100%;
+    min-height: 100%;
+
+    margin: $body-margin;
+
+    padding: $body-padding;
+
+    font-size: ($fallback--base-font-size / $fallback--root-font-size * 1em);
+    line-height: $fallback--base-rem-space-unit;
 }
 
 
@@ -478,15 +484,8 @@ body {
 \*------------------------------------------------------------------------------------------------*/
 
 /*
-a:link a:visited a:hover a:active a:focus
-*/
-/* [N1] Remove the gray background color from active links in IE 10. */
-/**
- * S1. Remove the gray background on active links in IE 10.
- * S2. Remove the gaps in underlines in iOS 8+ and Safari 8+.
- */
+    a:link a:visited a:hover a:active a:focus
 
-/*
     1. Remove the gray background on active links in IE 10. (S)
 
     2. Remove the gaps in underlines in iOS 8+ and Safari 8+. (S)
@@ -520,16 +519,22 @@ a[href] {
 
     @if $anchor-add-external-link-indicator == true {
         a[href][rel="external"]::after {
-            border-color: transparent  currentColor;
-            border-style: solid;
-            border-width: 0 0.4em 0.4em 0;
-            content: "";
             display: inline-block;
-            height: 0;
-            margin-left: 0.2em;
-            margin-right: 0.2em;
-            vertical-align: super;
+
+            content: "";
+
             width: 0;
+
+            height: 0;
+
+            margin-right: 0.2em;
+            margin-left: 0.2em;
+
+            border-width: 0 0.4em 0.4em 0;
+            border-style: solid;
+            border-color: transparent  currentColor;
+
+            vertical-align: super;
         }
     }
 
@@ -542,7 +547,9 @@ abbr {
 
     &[title] {
         border-bottom: none; /* 1 */
+
         text-decoration: underline; /* 2 */
+
         text-decoration: underline dotted; /* 2 */
     }
 }
@@ -558,20 +565,24 @@ address {
 
 article {
     display: block;
+
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
 aside {
     display: block;
+
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
 /*
     1. Add the correct display in IE 9-. (N)
+
     2. Chrome 44-, iOS 8+, Safari 9+. (S)
 */
 audio {
     display: inline-block; /* 1 */
+
     vertical-align: $media-element-vertical-align;
 
     &:not([controls]) {
@@ -583,6 +594,7 @@ audio {
 
 /*
     1: Add the correct font weight in Chrome, Edge, and Safari. (S)
+
     2. Prevent increase in line-height in IE.
 */
 b {
@@ -601,6 +613,7 @@ b {
 blockquote {
     margin-bottom: $fallback--base-rem-space-unit;
     margin-left: $fallback--base-rem-space-unit;
+
     font-style: italic;
     /*
         @TODO - set up vars and styles for the most common quote styles.
@@ -703,13 +716,15 @@ button {
     @include button;
 }
 
-// Opera Mini:
+// _:-o-prefocus, :root .selector { property:value; }
+// Opera 9.5-12, Opera Mini 7.x (Opera 9.80)
 _:-o-prefocus, :root button {
     line-height: $fallback--base-rem-space-unit !important;
 }
 
-// Old FF:
 /*
+    Old FF
+
     Remove the inner border and padding in Firefox and fix height.
 
     Early FF doesn't correctly apply the box sizing to inputs (buttons?)
@@ -722,6 +737,8 @@ button::-moz-focus-inner {
     margin: 2px 0;
 }
 
+// @supports (-moz-appearance:none) and (background-blend-mode:difference,normal) { .selector { property:value; } }
+// Firefox 30+
 @supports (-moz-appearance:none) and (background-blend-mode:difference,normal) {
     button::-moz-focus-inner {
         margin: 0;
@@ -733,25 +750,31 @@ button::-moz-focus-inner {
 */
 canvas {
     display: inline-block;  /* 1 */
+
     vertical-align: $media-element-vertical-align;
 }
 
 caption {
     display: table-caption;
-    font-weight: bold;
+
     padding-top: $table-caption-padding;
     padding-right: $table-caption-padding;
     padding-bottom: $table-caption-padding;
     padding-left: $table-caption-padding;
-    background-color: $table-caption-background-color;
+
     color: $table-caption-text-color;
+    background-color: $table-caption-background-color;
+
+    font-weight: bold;
 }
 
 //--center {}
 // cite {}
 /*
-    1. (N)
+    1. Correct the inheritance and scaling of font size in all browsers. (N)
+
     2. Address odd `em`-unit font size rendering in all browsers. (N)
+
     3. Prevent the element increasing the line-height of the parent.
 */
 code {
@@ -793,8 +816,10 @@ dfn {
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
 */
 dl {
-    margin-bottom: $fallback--base-rem-space-unit;
     overflow: hidden; /* 1 */
+
+    margin-bottom: $fallback--base-rem-space-unit;
+
     //display: table; /* 1 */
 }
 
@@ -814,9 +839,11 @@ fieldset {
 }
 
     fieldset fieldset {
-        border-width: 0;
-        padding: 0;
         margin: 0;
+
+        padding: 0;
+
+        border-width: 0;
     }
         fieldset fieldset::after {
             display: none;
@@ -828,6 +855,7 @@ figcaption {
 
 figure {
     display: block;
+
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -835,6 +863,7 @@ figure {
 
 footer {
     display: block;
+
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -848,6 +877,7 @@ form {
 
 header {
     display: block;
+
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -857,60 +887,61 @@ hgroup {
 
 h1 {
     margin-bottom: $fallback--base-rem-space-unit;
+
     font-size: $h1-font-size;
     line-height: $h1-height;
-    font-variant: $h1-font-variant;
 }
 
 h2 {
     margin-bottom: $fallback--base-rem-space-unit;
+
     font-size: $h2-font-size;
     line-height: $h2-height;
-    font-variant: $h2-font-variant;
 }
 
 h3 {
     margin-bottom: $fallback--base-rem-space-unit;
+
     font-size: $h3-font-size;
     line-height: $h3-height;
-    font-variant: $h3-font-variant;
 }
 
 h4 {
     margin-bottom: $fallback--base-rem-space-unit;
+
     font-size: $h4-font-size;
     line-height: $h4-height;
-    font-variant: $h4-font-variant;
 }
 
 h5 {
     margin-bottom: $fallback--base-rem-space-unit;
+
     font-size: $h5-font-size;
     line-height: $h5-height;
-    font-variant: $h5-font-variant;
 }
 
 h6 {
     margin-bottom: $fallback--base-rem-space-unit;
+
     font-size: $h6-font-size;
     line-height: $h6-height;
-    font-variant: $h6-font-variant;
 }
 
 /*
     1. Show the overflow in Edge and IE. (N)
 */
 hr {
-    /* box-sizing: content-box; */
-    /* height: 0; */
     height: 0;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: $hr-border;
+
+    overflow: visible; /* 1 */
+
     margin-top: $hr-margin-top;
     margin-bottom: $hr-margin-bottom;
-    overflow: visible; /* 1 */
+
+    border-top: none;
+    border-right: none;
+    border-bottom: $hr-border;
+    border-left: none;
 }
 
 //^html {}
@@ -927,14 +958,14 @@ iframe {
 // I3. Setting `vertical-align` removes the whitespace that appears under `img` elements when they
 //  are dropped into a page as-is. Safer alternative to using `display: block;`.
 /*
-    1. Setting `vertical-align` removes the whitespace that appears under `img` elements when they
-       are dropped into a page as-is. Safer alternative to using `display: block;`. (N, I)
+    1. Fluid images for responsive purposes. (I)
 
     2. Remove the border on images inside links in IE 10-. (N)
 
-    3. Fluid images for responsive purposes. (I)
+    3. Offset `alt` text from surrounding copy. (I)
 
-    4. Offset `alt` text from surrounding copy. (I)
+    4. Setting `vertical-align` removes the whitespace that appears under `img` elements when they
+       are dropped into a page as-is. Safer alternative to using `display: block;`. (N, I)
 
     5. Google Maps breaks if `max-width: 100%` acts upon it; use their selector to remove the
        effects. (I)
@@ -943,10 +974,13 @@ iframe {
        image fluid.
 */
 img {
-    vertical-align: $media-element-vertical-align; /* 1 */
+    max-width: 100%; /* 1 */
+
     border-style: none; /* 2  */
-    max-width: 100%; /* 3 */
-    font-style: italic; /* 4 */
+
+    font-style: italic; /* 3 */
+
+    vertical-align: $media-element-vertical-align; /* 4 */
 
     .gm-style &, /* 5 */
     &[width], /* 6 */
@@ -955,80 +989,65 @@ img {
     }
 }
 
-/** N:
- * 1. Correct color not being inherited.
- *    Known issue: affects color of disabled elements.
- * 2. Correct font properties not being inherited.
- * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
- */
+/*
+
+
+    1. Allow inputs to contract to avoid braking containers:
+
+    2. Opera Mini needs this.
+
+    3. Remove the tapping delay from clickable elements (S)
+
+    4. Keep adjacent elements in the middle.
+*/
 input {
-    /* color: inherit; // N1 */
-    /* font: inherit; // N2 */
-    /* margin: 0; // N3 */
+    max-width: 100%; /* 1 */
 
-    font-family: inherit; /* S */
-    font-style: inherit; /* S */
-    font-weight: inherit; /* S */
+    padding-top: #{$fallback--base-rem-space-unit / 8}; /* 2 */
+    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    padding-right: $input-h-padding;
+    padding-bottom: #{$fallback--base-rem-space-unit / 8}; /* 2 */
+    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
+    padding-left: $input-h-padding;
 
-    /* AK: mainly for IE */
-
-    /* -webkit-border-radius: 0; // S: iOS 8+ // AK not needed as radius declared below. */
+    border-width: $input-border-width;
+    border-style: $input-border-style;
+    border-color: $input-border-colour;
+    border-radius: $input-border-radius;
 
     color: $input-text-color;
     background-color: $input-background-color;
 
-    border-width: $input-border-width;
-    border-radius: $input-border-radius;
-    border-color: $input-border-colour;
-    border-style: $input-border-style;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
 
-    //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
-    // Opera Mini needs this:
-    padding-top: #{$fallback--base-rem-space-unit / 8};
-    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
-    //padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
-    // Opera Mini needs this:
-    padding-bottom: #{$fallback--base-rem-space-unit / 8};
-    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$input-border-width});
-    padding-left: $input-h-padding;
-    padding-right: $input-h-padding;
+    -ms-touch-action: manipulation; /* 3 (IE10) */
+    touch-action: manipulation; /* 3 */
 
-    // Allow inputs to contract to avoid braking containers:
-    max-width: 100%;
+    vertical-align: middle; /* 4 */
 
-    // Keep adjacent elements in the middle:
-    vertical-align: middle;
-    //vertical-align: top;
-
-    /* S: Remove the tapping delay from clickable elements */
-    -ms-touch-action: manipulation; /* S: IE10 */
-    touch-action: manipulation;
-
-    /**
-     * Remove the inner border and padding in Firefox.
-     */
+    // Remove the inner border and padding in Firefox.
     &::-moz-focus-inner {
         border: 0;
         padding: 0;
     }
 
-    /**
-     * Restore the focus styles unset by the previous rule.
-     */
+    // Restore the focus styles unset by the previous rule.
     &:-moz-focusring {
         outline: 1px dotted ButtonText;
     }
-
-
 }
 
 /*
     Remove the inner border and padding in Firefox and fix height.
 */
 ::-moz-focus-inner {
-    border: 0;
-    padding: 0;
     margin: 0;
+
+    padding: 0;
+
+    border: 0;
 }
 
 
@@ -1042,18 +1061,13 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
     /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
 }
 
-input[type=checkbox],
-input[type=radio] {
-    /* Vertical centering via line-height/vertical align not satisfactory: */
-    //vertical-align: top;
-    //-webkit-transform: translateY(40%);
-    //    -ms-transform: translateY(40%);
-    //        transform: translateY(40%);
-
-    /*
-        IE9 adds the border and background:
-    */
+/*
+    IE9 adds the border and background:
+*/
+[type=checkbox],
+[type=radio] {
     border: 0;
+
     background: transparent;
 }
 
@@ -1065,40 +1079,55 @@ input[type=radio] {
     @include button;
 }
 
-// IE10 makes the line-height massive with calc, but doesn't appear to need it anyway:
+/*
+    IE10 makes the line-height massive with calc, but doesn't appear to need it anyway.
+*/
 [type="button"],
 [type="reset"],
 [type="submit"] {
     line-height:1\9;
 }
 
+/*
+    1. On smaller devices the width of these inputs can force horizontal scrolling.
+       Max-width doesn't work to solve this, but may be needed to restrict width on larger screens.
 
+    2. IE and Edge behave differently (both to other browsers and each other) and so min-height and
+       line-height settings don't seem consistent.
+       Using height explictly for now.
+
+    3. Make sure button corners aren't visisible.
+*/
 [type="file"] {
-    /* V-center the text in FF: */
-    //line-height: $input-min-height;
-    cursor: pointer;
-    padding: 0;
-
-    min-height: $input-min-height;
-    margin: ($fallback--base-rem-space-unit / 8) 0;
-
-    /* On smaller devices the width of these inputs can force horizontal scrolling. */
-    /* Max-width doesn't work to solve this, but may be needed to restrict width on larger screens */
-    width: 100%;
+    width: 100%; /* 1 */
     @if $input-file-max-width != false {
         max-width: $input-file-max-width;
     }
-    // IE and Edge behave differently (both to other browsers and each other) and so min-height
-    // and line-height settings don't seem consistent.
-    // Using height explictly for now.
-    //height: $input-min-height + calc-rem-from-px(($input-border-width * 2));
 
-    // Make sure button corners aren't visisible:
-    overflow: hidden;
+    //height: $input-min-height + calc-rem-from-px(($input-border-width * 2)); /* 2 */
+    min-height: $input-min-height;
+
+    overflow: hidden; /* 3 */
+
+    margin: ($fallback--base-rem-space-unit / 8) 0;
+
+    padding: 0;
+
+    cursor: pointer;
+}
+
+/*
+    Fix button height in Firefox.
+*/
+// _:-moz-any-link, :root .selector { property:value; }
+// Firefox (any)
+_:-moz-any-link, :root [type="file"] {
+    height: $input-min-height;
 }
 
 // This helps avoid white 'bleed-through' between containing element and the pseudo-elements in
-// IE 10-11:
+// _:-ms-input-placeholder, :root .selector { property:value; }
+// Internet Explorer 10-11
 _:-ms-input-placeholder, :root [type="file"] {
     background-color: $ui-color--base;
 }
@@ -1115,32 +1144,40 @@ _:-ms-input-placeholder, :root [type="file"] {
 }*/
 
 
-//input[type=file] > input[type=button]::-moz-focus-inner
 ::-moz-focus-inner {
     border: 0;
     padding: 0;
     margin: 0;
 }
 
-input[type=file]:-moz-focusring {
+[type=file]:-moz-focusring {
     outline: 1px dotted #f00;
 }
 
-// Temp experiments:
-// MS pseudo-elements.
-// Note - there's some odd spacing issues between the containing element and the pseudo-elements,
-// where background colours can show through unexpectedly, so there are some tweaks to rectify this.
+/*
+    EXPERIMENTAL
+*/
+
+/*
+    MS pseudo-elements.
+
+    Note - there's some odd spacing issues between the containing element and the pseudo-elements,
+    where background colours can show through unexpectedly, so there are some tweaks to rectify
+    this.
+*/
 [type=file]::-ms-value {
-    background: $input-background-color;
-    border: 0;
-    margin-left: -6px;
     margin-right: 0;
+    margin-left: -6px;
+
     padding-left: 0.5em;
-    //border-top-left-radius: $input-border-radius - $input-border-width;
-    //border-bottom-left-radius: $input-border-radius - $input-border-width;
+
+    border: 0;
     border-radius: $input-border-radius;
+
+    background: $input-background-color;
 }
-// Edge
+// @supports (-ms-ime-align:auto) { .selector { property:value; } }
+// Microsoft Edge 12+ (all MS Edge)
 @supports (-ms-ime-align:auto) {
     [type=file]::-ms-value {
         background: transparent;
@@ -1151,42 +1188,35 @@ input[type=file]:-moz-focusring {
     @include text-input-focus();
 }
 
+/*
+    1. IE10 doesn't like rem so convert to px.
+*/
 [type=file]::-ms-browse {
-    // Not sure why this was set:
-    //overflow: visible;
-    background-color: $ui-color--base;
-    color: #fff;
-    font-family: inherit;
-    font-style: inherit;
-    font-weight: inherit;
     min-height:  $input-min-height;
-    text-transform: none;
-    cursor: pointer;
+
+    //overflow: visible; // Not sure why this was set
+
+    padding-right: $input-h-padding;
+    padding-right: #{calc-px-from-rem($input-h-padding)}\9; /* 1 */
+    padding-left: $input-h-padding;
+    padding-left: #{calc-px-from-rem($input-h-padding)}\9; /* 1 */
 
     border-width: 0 0 0 $input-border-width;
-    border-color: $input-border-colour;
     border-style: $input-border-style;
+    border-color: $input-border-colour;
     border-top-right-radius: $input-border-radius - $input-border-width;
     border-bottom-right-radius: $input-border-radius - $input-border-width;
-    /* padding-top: 0.125rem; */
-    /* padding-bottom: 0.125rem; */
 
-    padding-left: $input-h-padding;
-    padding-right: $input-h-padding;
+    color: #fff;
+    background-color: $ui-color--base;
 
-    // IE10 doesn't like rem so convert to px:
-        // IE10:
-    padding-left: #{calc-px-from-rem($input-h-padding)}\9;
-    padding-right: #{calc-px-from-rem($input-h-padding)}\9;
+    font-weight: inherit;
+    font-style: inherit;
+    font-family: inherit;
 
-    border-style: solid;
+    text-transform: none;
 
-    // Spacing height + 2 sets of input padding, plus border width
-    // - the button doesn't need it in IE:
-    //height: $fallback--base-rem-space-unit + ($input-border-width * 2));
-    //height: calc(#{$fallback--base-rem-space-unit} + #{$input-border-width * 2});
-
-
+    cursor: pointer;
 }
 
     [type=file]:hover::-ms-browse,
@@ -1292,12 +1322,16 @@ input[type=file]:-moz-focusring {
 
 //--isindex {}--
 /*
-    A1. Prevent the element increasing the line-height of the parent.
+    1. Correct the inheritance and scaling of font size in all browsers. (N)
+
+    2. Address odd `em`-unit font size rendering in all browsers. (N)
+
+    3. Prevent the element increasing the line-height of the parent.
 */
 kbd {
-    font-family: $monospace-font-family, monospace; /* S, N */
-    font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
-    line-height: 0; /* A1 */
+    font-family: $monospace-font-family, monospace; /* 1 */
+    font-size: 1em; /* 2 */
+    line-height: 0; /* 3 */
 }
 
 //keygen {}
@@ -1396,8 +1430,10 @@ object {
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
 */
 ol {
-    margin-bottom: $fallback--base-rem-space-unit;
     overflow: hidden; /* 1 */
+
+    margin-bottom: $fallback--base-rem-space-unit;
+
     //display: table; /* 1 */
 }
 
@@ -1499,11 +1535,17 @@ progress {
 //ruby {}
 //s {}
 
-samp {
-    font-family: $monospace-font-family, monospace; /* * S, N */
-    font-size: 1em; /* N: Address odd `em`-unit font size rendering in all browsers. */
+/*
+    1. Correct the inheritance and scaling of font size in all browsers. (N)
 
-    line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
+    2. Address odd `em`-unit font size rendering in all browsers. (N)
+
+    3. Prevent the element increasing the line-height of the parent.
+*/
+samp {
+    font-family: $monospace-font-family, monospace; /* 1 */
+    font-size: 1em; /* 2 */
+    line-height: 0; /* 3 */
 }
 
 //!script {}
@@ -1627,16 +1669,37 @@ select:focus {
 
 select[multiple] {
     height: auto;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: ($fallback--base-rem-space-unit / 8);
-    //margin-bottom: ($fallback--base-rem-space-unit / 3.42857142857);
-    margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2});
 
-    // iOS:
-    //min-height: $input-min-height * 2;
-    //-webkit-appearance: none;
+    margin-top: ($fallback--base-rem-space-unit / 8);
+    margin-right: 0;
+    margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2});
+    margin-left: 0;
 }
+
+
+/*
+    Apply padding to fudge height in Sarafi (we need to apply to iOS)...
+*/
+// _::-webkit-full-page-media, _:future, :root .selector { property:value; }
+// Safari 6.2,7.1+
+_::-webkit-full-page-media, _:future, :root select[multiple] {
+    margin-bottom: 0;
+
+    padding: ($fallback--base-rem-space-unit / 12);
+}
+
+/*
+    ... but reset for Mac Safari .
+*/
+// _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root .selector { property:value; }
+// Safari 6.2,7.1+ (Not iOS)
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multiple] {
+    margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2});
+    padding: 0;
+}
+
+
+
 
 /*
     Safari refuses to adjust the height of select[multiple] options.
@@ -1659,6 +1722,7 @@ select[multiple] {
 */
 // _:scope, _:future, _:not(*:root), .selector { property:value; }
 // Chrome 27+, Safari 6.1+ (and Opera 14+)
+/*
 _:scope, _:future, _:not(*:root), select[size="2"]  { margin-bottom: 0; }
 _:scope, _:future, _:not(*:root), select[size="3"]  { margin-bottom: 0; }
 _:scope, _:future, _:not(*:root), select[size="4"]  { margin-bottom: 0; }
@@ -1668,21 +1732,36 @@ _:scope, _:future, _:not(*:root), select[size="7"]  { margin-bottom: calc(1.1rem
 _:scope, _:future, _:not(*:root), select[size="8"]  { margin-bottom: calc(0.6rem - 2px); }
 _:scope, _:future, _:not(*:root), select[size="9"]  { margin-bottom: calc(1.3rem - 2px); }
 _:scope, _:future, _:not(*:root), select[size="10"] { margin-bottom: calc(0.8rem - 2px); }
+*/
 
+
+
+// _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root .selector { property:value; }
+// Safari 6.2,7.1+ (Not iOS)
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="2"]  { margin-bottom: 0; }
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="3"]  { margin-bottom: 0; }
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="4"]  { margin-bottom: 0; }
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="5"]  { margin-bottom: calc(0.9rem - 2px); }
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="6"]  { margin-bottom: calc(0.4rem - 2px); }
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="7"]  { margin-bottom: calc(1.1rem - 2px); }
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="8"]  { margin-bottom: calc(0.6rem - 2px); }
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="9"]  { margin-bottom: calc(1.3rem - 2px); }
+_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="10"] { margin-bottom: calc(0.8rem - 2px); }
 
 // Reset Chrome and Opera:
 // @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) { .selector { property:value; } }
 // Chrome 29+ (and Opera 16+)
+/*
 @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
     select[size] { margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2}); }
 }
+*/
 
 
 
 /*
     Similar problem with IE10-11:
 */
-//_:-ms-input-placeholder, :root .selector { property:value; }
 //@media screen and (min-width:0\0) and (min-resolution:+72dpi) { .selector { property:value; } }
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="2"]  { margin-bottom: calc(1.3rem - #{$input-border-width * 2} - 0.2px); } }
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="3"]  { margin-bottom: calc(0.9rem - #{$input-border-width * 2} - 0.3px); } }
@@ -1895,49 +1974,56 @@ th {
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
 */
 ul {
-    margin-bottom: $fallback--base-rem-space-unit;
     overflow: hidden; /* 1 */
+
+    margin-bottom: $fallback--base-rem-space-unit;
+
     //display: table; /* 1 */
 }
 
 //var {}
 
 /*
-    A1. Allow video to center if container larger than video.
+    1. Allow video to center if container larger than video.
 */
 video {
-    display: block; /* A1 */
-    margin: 0 auto; /* A1 */
+    display: block; /* 1 */
 
-    /* vertical-align: $media-element-vertical-align; // Video is now a block so no need for this */
+    max-width: 100%;
 
-    max-width: 100%; /* Sc */
-    height: auto; /* Sc */
+    height: auto;
 
-    background-color: $video-background-color; /* A */
+    margin: 0 auto; /* 1 */
+
+    background-color: $video-background-color;
 }
 
 //wbr {}
 //--xmp {}--
 
+/*
+    1. Remove the tapping delay from clickable elements. (S)
+*/
 [tabindex] {
-    /* S: Remove the tapping delay from clickable elements */
-    -ms-touch-action: manipulation; /* S: IE10 */
-    touch-action: manipulation;
+    -ms-touch-action: manipulation; /* 1 (IE10) */
+    touch-action: manipulation; /* 1 */
 }
 
 
-// specify the background color, font color, and drop shadow of text selections
-
+/*
+    Specify the background color, font color, and drop shadow of text selections.
+*/
 ::-moz-selection {
-    background-color: $selection-background-color;
     color: $selection-text-color;
+    background-color: $selection-background-color;
+
     text-shadow: $selection-text-shadow;
 }
 
 ::selection {
-    background-color: $selection-background-color;
     color: $selection-text-color;
+    background-color: $selection-background-color;
+
     text-shadow: $selection-text-shadow;
 }
 
@@ -1976,7 +2062,7 @@ video {
 }
 
 /*
-    Specify the style of visually hidden yet accessible elements. (s)
+    Specify the style of visually hidden yet accessible elements. (S)
 */
 [hidden][aria-hidden="false"] {
     clip: rect(0 0 0 0);
@@ -2017,6 +2103,7 @@ video {
        included anywhere else in the document.
        Otherwise it causes space to appear at the top and bottom of elements that receive the#
        `clearfix` class.
+
     2. The use of `table` rather than `block` is only necessary if using
        `:before` to contain the top-margins of child elements.
 */
