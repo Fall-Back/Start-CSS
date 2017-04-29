@@ -114,6 +114,9 @@ $ui-border-width: 1px !default;
 $ui-border-radius: 3px !default;
 $ui-border-style: solid !default;
 
+$ui-shadow-dark: rgba(0,0,0,0.2) !default;
+$ui-shadow-light: rgba(255,255,255,0.2) !default;
+
 $monospace-font-family: monospace !default;
 
 
@@ -163,7 +166,8 @@ $button-h-padding: $fallback--base-rem-space-unit / 4 !default;
 
 $button-text-color: #fff !default;
 $button-background-color: $ui-color--base !default;
-$button-background-color--state-1: lighten($ui-color--base, 10%) !default;
+$button-background-color--state-1: light-shadow;
+//$button-background-color--state-1: lighten($ui-color--base, 10%) !default;
 
 //$button-border-colour: darken($ui-color--base, 10%) !default;
 $button-border-colour: rgba(0,0,0,0.2) !default;
@@ -723,7 +727,17 @@ blockquote {
     &:hover,
     &:active,
     &:focus {
-        background-color: $bg-color--state-1;
+        /*
+            100vmax used for shadow to ensure it'll always be big enough.
+            Better way? Performance? Not sure.
+        */ 
+        @if $bg-color--state-1 == light-shadow {
+            box-shadow: 0 0 0 100vmax $ui-shadow-light inset;
+        } @else if $bg-color--state-1 == dark-shadow {
+            box-shadow: 0 0 0 100vmax $ui-shadow-dark inset;
+        } @else {
+            background-color: $bg-color--state-1;
+        }
     }
 
     &:focus {
