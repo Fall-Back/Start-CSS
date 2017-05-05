@@ -27,6 +27,7 @@
 /*------------------------------------------------------------------------------------------------*\
 
     FUNCTIONS AND MIXINS
+   (These must come before the Setting, as the settings make use of some of these)
 
 \*------------------------------------------------------------------------------------------------*/
 
@@ -114,6 +115,7 @@ $ui-border-width: 1px !default;
 $ui-border-radius: 3px !default;
 $ui-border-style: solid !default;
 
+// Gradient better than shadow, I think, but no IE9 support.
 $ui-shadow-dark: rgba(0,0,0,0.2) !default;
 $ui-shadow-light: rgba(255,255,255,0.2) !default;
 
@@ -643,12 +645,37 @@ blockquote {
 // 3. Improve usability and consistency of cursor style between image-type
 //    `input` and others.
 
+/*
+    This button mixin isn't really meant for generated specific/themed _types_ of button - there
+    would be too much code duplication for that.
+    Instead, this is intended to create buttons for new/custom selectors.
+    For example:
+
+    ```
+    [role="button"] {
+        @include button;
+    }
+    ```
+
+    rather than:
+
+    ```
+        .btn--affirmative {
+            @include button(<text-color>, <bg-color>);
+        }
+    ```
+
+    Note - because of this, think about removing parameters (it changed from my original intention -
+    I may change it back or split this into 2 mixins, or even just move things that are meant for
+    input[type="button"] to that ruleset - actually that's not a bad idea).
+
+*/
 @mixin button(
-        $color: $button-text-color, 
-        $bg-color: $button-background-color, 
+        $color: $button-text-color,
+        $bg-color: $button-background-color,
         $bg-color--state-1: $button-background-color--state-1,
-        $color--var-name: --button-text-color, 
-        $bg-color--var-name: --button-background-color, 
+        $color--var-name: --button-text-color,
+        $bg-color--var-name: --button-background-color,
         $bg-color--state-1--var-name: --button-background-color--state-1
     ) {
     //display: inline-block; /* AK. IE9 needs this. */
@@ -661,7 +688,7 @@ blockquote {
         background-color: var($bg-color--var-name);
         color: var($color--var-name);
     }
-    
+
     font-family: inherit;
     font-style: inherit;
     font-weight: inherit;
@@ -730,7 +757,7 @@ blockquote {
         /*
             100vmax used for shadow to ensure it'll always be big enough.
             Better way? Performance? Not sure.
-        */ 
+        */
         @if $bg-color--state-1 == light-shadow {
             box-shadow: 0 0 0 100vmax $ui-shadow-light inset;
         } @else if $bg-color--state-1 == dark-shadow {
@@ -1110,6 +1137,7 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
 [type="reset"],
 [type="submit"] {
     @include button;
+    // Maybe include fixes for these elements here instead of in the mixin.
 }
 
 /*
