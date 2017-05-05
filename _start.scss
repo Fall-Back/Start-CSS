@@ -115,7 +115,8 @@ $ui-border-width: 1px !default;
 $ui-border-radius: 3px !default;
 $ui-border-style: solid !default;
 
-// Gradient better than shadow, I think, but no IE9 support.
+// Gradient better than shadow, I think, but no IE9 support. (filter is ok, but odd on the corners)
+// Problem with shadow, though is if an actual shadow is needed, it would override this.
 $ui-shadow-dark: rgba(0,0,0,0.2) !default;
 $ui-shadow-light: rgba(255,255,255,0.2) !default;
 
@@ -755,16 +756,18 @@ blockquote {
     &:active,
     &:focus {
         /*
-            100vmax used for shadow to ensure it'll always be big enough.
+            9999px used for shadow to ensure it'll always be big enough.
             Better way? Performance? Not sure.
         */
         @if $bg-color--state-1 == light-shadow {
-            box-shadow: 0 0 0 100vmax $ui-shadow-light inset;
+            box-shadow: 0 0 0 9999px $ui-shadow-light inset;
         } @else if $bg-color--state-1 == dark-shadow {
-            box-shadow: 0 0 0 100vmax $ui-shadow-dark inset;
+            box-shadow: 0 0 0 9999px $ui-shadow-dark inset;
         } @else {
             background-color: $bg-color--state-1;
         }
+        //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
+        //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
     }
 
     &:focus {
