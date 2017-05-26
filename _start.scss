@@ -12,8 +12,8 @@
     CSS hacks from http://browserstrangeness.com/css_hacks.html
     (hack and browser support in comments above each usage)
     
-    !!! Maybe don't incvlude custom properties in this, I think it overcomplicates things and needs
-    gradient background overlays to lighten/darken background colours dynamically.
+    !!! Maybe don't include custom properties in this, I think it overcomplicates things and needs
+    gradient background overlays to lighten/darken background colors dynamically.
     Possibly include a seperate file to add custom property support that overrides what it needs,
     all wrapped in an `@supports`.
 
@@ -177,8 +177,8 @@ $button-background-color: $ui-color--base !default;
 $button-background-color--state-1: light-shadow;
 //$button-background-color--state-1: lighten($ui-color--base, 10%) !default;
 
-//$button-border-colour: darken($ui-color--base, 10%) !default;
-$button-border-colour: rgba(0,0,0,0.2) !default;
+//$button-border-color: darken($ui-color--base, 10%) !default;
+$button-border-color: rgba(0,0,0,0.2) !default;
 $button-border-width: $ui-border-width !default;
 $button-border-style: $ui-border-style !default;
 $button-border-radius: $ui-border-radius !default;
@@ -208,7 +208,7 @@ $input-text-color: $ui-color--text !default;
 $input-background-color: #fff !default;
 $input-background-color--state-1: lighten($ui-color--base, 60%) !default;
 
-$input-border-colour: darken($ui-color--base, 10%) !default;
+$input-border-color: darken($ui-color--base, 10%) !default;
 $input-border-width: $ui-border-width !default;
 $input-border-style: $ui-border-style !default;
 $input-border-radius: $ui-border-radius !default;
@@ -347,13 +347,6 @@ $selection-text-shadow: none;
     ROOT STYLES
 
 \*------------------------------------------------------------------------------------------------*/
-
-:root {
-    --button-text-color: $button-text-color;
-    --button-background-color: $button-background-color;
-    --button-background-color--state-1: $button-background-color--state-1;
-    --button-border-colour: $button-border-colour;
-}
 
 /*
     1. Change the default box-sizing (-moz prefix for FF8-28).
@@ -680,27 +673,18 @@ blockquote {
         $color: $button-text-color,
         $bg-color: $button-background-color,
         $bg-color--state-1: $button-background-color--state-1,
-        $color--var-name: --button-text-color,
-        $bg-color--var-name: --button-background-color,
-        $bg-color--state-1--var-name: --button-background-color--state-1
+        $border-color: $button-border-color
     ) {
-    //display: inline-block; /* AK. IE9 needs this. */
-    //display: inline-flex;
-    //align-items: center;
+    display: inline-block; /* AK. IE9 needs this. */
+
     overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
     background-color: $bg-color;
     color: $color;
-    @supports(--var: value) {
-        background-color: var($bg-color--var-name);
-        color: var($color--var-name);
-    }
 
     font-size: inherit; // S
     font-family: inherit;
     font-style: inherit;
     font-weight: inherit;
-
-    display: inline-block;
 
     // Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom
     // margin.
@@ -724,7 +708,7 @@ blockquote {
     cursor: pointer; /* [N3] */
 
 
-    border-color: $button-border-colour;
+    border-color: $border-color;
     border-style: $button-border-style;
     border-width: $button-border-width;
     border-radius: $button-border-radius;
@@ -1081,7 +1065,7 @@ input {
 
     border-width: $input-border-width;
     border-style: $input-border-style;
-    border-color: $input-border-colour;
+    border-color: $input-border-color;
     border-radius: $input-border-radius;
 
     color: $input-text-color;
@@ -1233,7 +1217,7 @@ _:-ms-input-placeholder, :root [type="file"] {
     MS pseudo-elements.
 
     Note - there's some odd spacing issues between the containing element and the pseudo-elements,
-    where background colours can show through unexpectedly, so there are some tweaks to rectify
+    where background colors can show through unexpectedly, so there are some tweaks to rectify
     this.
 */
 [type=file]::-ms-value {
@@ -1274,7 +1258,7 @@ _:-ms-input-placeholder, :root [type="file"] {
 
     border-width: 0 0 0 $input-border-width;
     border-style: $input-border-style;
-    border-color: $input-border-colour;
+    border-color: $input-border-color;
     border-top-right-radius: $input-border-radius - $input-border-width;
     border-bottom-right-radius: $input-border-radius - $input-border-width;
 
@@ -1317,7 +1301,7 @@ _:-ms-input-placeholder, :root [type="file"] {
     -webkit-appearance: none;
     cursor: pointer;
     border-width: 0 $input-border-width 0 0;
-    border-color: $input-border-colour;
+    border-color: $input-border-color;
     border-style: $input-border-style;
     border-radius: 0;
     /*border-top-left-radius: $input-border-radius - $input-border-width;
@@ -1652,7 +1636,7 @@ select {
 
     border-width: $input-border-width;
     border-radius: $input-border-radius;
-    border-color: $input-border-colour;
+    border-color: $input-border-color;
     border-style: $input-border-style;
 
     /* padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width); */
@@ -1998,7 +1982,7 @@ textarea {
 
     border-width: $input-border-width;
     border-radius: $input-border-radius;
-    border-color: $input-border-colour;
+    border-color: $input-border-color;
     border-style: $input-border-style;
 
     //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
