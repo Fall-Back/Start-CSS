@@ -11,7 +11,7 @@
 
     CSS hacks from http://browserstrangeness.com/css_hacks.html
     (hack and browser support in comments above each usage)
-    
+
     !!! Maybe don't include custom properties in this, I think it overcomplicates things and needs
     gradient background overlays to lighten/darken background colors dynamically.
     Possibly include a seperate file to add custom property support that overrides what it needs,
@@ -152,10 +152,11 @@ $text-input-focus-border: false !default;
 
 // <a>
 $anchor-text-color: $ui-color--base !default;
-$anchor-text-color--hover: darken($anchor-text-color, 15%) !default;
+$anchor-text-color--hover: darken($anchor-text-color, 25%) !default;
 $anchor-text-decoration: none !default;
-$anchor-border-bottom: 1px solid lighten($anchor-text-color, 30%) !default;
-$anchor-border-bottom--hover: 2px solid lighten($anchor-text-color--hover, 30%) !default;
+$anchor-border-bottom: 4px double $anchor-text-color !default;
+$anchor-border-bottom--hover: 4px solid $anchor-text-color--hover !default;
+$anchor-border-bottom-offset: -4px;
 $anchor-add-external-link-indicator: true !default;
 
 
@@ -505,6 +506,8 @@ body {
     3. Remove the tapping delay from clickable elements . (S)
 */
 a[href] {
+    margin-bottom: $anchor-border-bottom-offset;
+
     padding-bottom: $fallback--base-rem-space-unit / 12;
 
     border-bottom: $anchor-border-bottom;
@@ -1039,6 +1042,16 @@ img {
     &[height] {  /* 6 */
         max-width: none;
     }
+}
+
+/*
+    Special treatment for images inside links.
+*/
+a img {
+    margin-bottom: $anchor-border-bottom-offset;
+
+    border-width: inherit;
+    border-style: inherit;
 }
 
 /*
