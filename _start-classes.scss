@@ -1,4 +1,5 @@
 /*! Start CSS Classes. See SCSS file for documentation. */
+$custom-input-focus-shadow: 0 0 0 2px lighten($ui-color--base, 20%) inset !default;
 /*
     Resources:
     *
@@ -144,8 +145,11 @@ p.subtitle {
    padding-left: 1.5em;
 }
 
-.custom-input:focus + .custom-input-label::before {
-	outline: $focus-outline-style;
+@if $input-focus-shadow != false {
+	.custom-input:focus + .custom-input-label::before {
+		box-shadow: $custom-input-focus-shadow;
+		outline: 0;
+	}
 }
 
 /* Common psuedo-element styles: */

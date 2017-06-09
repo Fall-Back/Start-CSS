@@ -73,36 +73,40 @@
 
 //@debug calc-px-from-rem(1.5rem);
 
+/*
+	Apply a border with passdign that offsets the border-width from one spacing unit so as not to
+	affect the vertical rhythm.
+	Note the Opera Mini doesn't support `calc` so we need to include normal padding for that
+	browser.
+	Also, since we're supporting FF 8+, we're including -moz-calc fro versions up to 16.
+	I may consider removing this as those browsers are dead, but I'm just being thorough for now.
+*/
 @mixin bordered($padding, $border-width) {
     border-width: $border-width;
     border-style: solid;
     border-color: $ui-color--base;
-    //padding-top: calc-rem-from-px($padding - $border-width);
-    //padding-left: calc-rem-from-px($padding - $border-width);
-    //padding-right: calc-rem-from-px($padding - $border-width);
-    // Opera Mini needs this:
+
     padding-top:   #{$padding};
     padding-top:   -moz-calc(#{$padding} - #{$border-width});
     padding-top:        calc(#{$padding} - #{$border-width});
 
-    // Opera Mini needs this:
     padding-left:  #{$padding};
     padding-left:  -moz-calc(#{$padding} - #{$border-width});
     padding-left:       calc(#{$padding} - #{$border-width});
 
-    // Opera Mini needs this:
     padding-right: #{$padding};
     padding-right: -moz-calc(#{$padding} - #{$border-width});
     padding-right:      calc(#{$padding} - #{$border-width});
 
     &::after {
-        display: block;
-        content: "";
-        height: 0;
-        margin-top: -$border-width;
-        //margin-bottom: calc-rem-from-px($padding - $border-width);
-        //margin-bottom: calc(#{$padding} - #{$border-width});
-        margin-bottom: $padding;
+		display: block;
+
+		content: "";
+
+		height: 0;
+
+		margin-top: -$border-width;
+		margin-bottom: $padding;
     }
 }
 
@@ -115,14 +119,19 @@
 $ui-color--base: $fallback--base-ui-color !default;
 $ui-color--text: $fallback--base-text-color !default;
 
+//?$ui-color--base--inverted: invert($fallback--base-ui-color) !default;
+//?$ui-color--text--inverted: invert($fallback--base-text-color) !default;
+
+//?$ui-color--base--tint-level-1 = 30%;
+
 $ui-border-width: 1px !default;
 $ui-border-radius: 3px !default;
 $ui-border-style: solid !default;
 
 // Gradient better than shadow, I think, but no IE9 support. (filter is ok, but odd on the corners)
 // Problem with shadow, though is if an actual shadow is needed, it would override this.
-$ui-shadow-dark: rgba(0,0,0,0.2) !default;
-$ui-shadow-light: rgba(255,255,255,0.2) !default;
+$ui-shadow-dark: rgba(0,0,0,0.3) !default;
+$ui-shadow-light: rgba(255,255,255,0.3) !default;
 
 $monospace-font-family: monospace !default;
 
@@ -131,32 +140,19 @@ $monospace-font-family: monospace !default;
 $max-main-line-length: 50em !default;
 
 /* Global focus style: */
-$focus-outline-style: 1px dotted #000 !default;
+//$focus-outline-style: 1px dotted #000 !default;
+$focus-outline-style: 0 !default;
 
-$text-input-focus-shadow: 0 0 3px 0 $ui-color--base inset !default;
-$text-input-focus-border: false !default;
-
-@mixin text-input-focus() {
-    @if $text-input-focus-shadow != false {
-        box-shadow: $text-input-focus-shadow;
-        // Remove Chromes focus outline:
-        outline: 0;
-    }
-    @if $text-input-focus-border != false {
-        // Remove Chromes focus outline:
-        border: $text-input-focus-border;
-    }
-}
 
 // ELEMENTS
 
 // <a>
 $anchor-text-color: $ui-color--base !default;
-$anchor-text-color--hover: darken($anchor-text-color, 25%) !default;
+$anchor-text-color--hover: $anchor-text-color !default; // No longer adjusting color
 $anchor-text-decoration: none !default;
-$anchor-border-bottom: 4px double $anchor-text-color !default;
-$anchor-border-bottom--hover: 4px solid $anchor-text-color--hover !default;
-$anchor-border-bottom-offset: -4px;
+$anchor-border-bottom: 3px double !default;
+$anchor-border-bottom--hover: 3px solid !default;
+$anchor-border-bottom-offset: -3px;
 $anchor-add-external-link-indicator: true !default;
 
 
@@ -183,6 +179,9 @@ $button-border-width: $ui-border-width !default;
 $button-border-style: $ui-border-style !default;
 $button-border-radius: $ui-border-radius !default;
 
+$button-focus-shadow: 0 0 0 2px lighten($ui-color--base, 30%) inset !default;
+$button-focus-border: false !default;
+
 
 
 // <fieldset>
@@ -206,7 +205,7 @@ $input-h-padding: $fallback--base-rem-space-unit / 4 !default;
 
 $input-text-color: $ui-color--text !default;
 $input-background-color: #fff !default;
-$input-background-color--state-1: lighten($ui-color--base, 60%) !default;
+$input-background-color--state-1: lighten($ui-color--base, 40%) !default;
 
 $input-border-color: darken($ui-color--base, 10%) !default;
 $input-border-width: $ui-border-width !default;
@@ -214,6 +213,8 @@ $input-border-style: $ui-border-style !default;
 $input-border-radius: $ui-border-radius !default;
 
 $input-min-height: ($fallback--base-rem-space-unit * 1.25);
+
+$input-focus-shadow: 0 0 0 2px lighten($ui-color--base, 40%) inset !default;
 
 // File inputs' natural width varies between browers and is too wide for smaller screens.
 // The only way to get it to collapse on smaller screens is to speciify `width: 100%;` but this
@@ -525,9 +526,11 @@ a[href] {
     &:active,
     &:focus {
         border-bottom: $anchor-border-bottom--hover;
-
-        color: $anchor-text-color--hover;
-
+		
+		@if $anchor-text-color--hover != $anchor-text-color {
+			color: $anchor-text-color--hover;
+		}
+		
         outline-width: 0;
     }
 }
@@ -736,35 +739,43 @@ blockquote {
     -ms-touch-action: manipulation; /* S: IE10 */
     touch-action: manipulation;
 
-    /**
-     * Restore the focus styles unset by the previous rule.
-     */
 
-    &:-moz-focusring {
-      outline: 1px dotted ButtonText;
-    }
-
-    &:hover,
+	// Thinking about changing my mind how I do this. It's gettign too complicated. I've thought
+	// harder about how to handle alternate state from an a11y perspective the old "Don't just rely
+	// on colour" keeps going around my head, so a subtle background-colour tint-shift doesn't
+	// really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a 
+	// bigger difference.
+	// I mustn't forget StartCSS isn't supposed to provide configuration to add EVERYTHING directly
+	// to this one file - it's easy enough to add custom styling on top of this - I just want to
+	// make sure everthing I DO include is configurable, or turn-off-able.
+	// So, IF the user wants to use my inner-line shadow idea, they can, otherwise, they can set the 
+	// var to `false` and add their own however they like.
+	@if $button-focus-shadow != false {
+		&:hover,
+		&:active,
+		&:focus {
+			box-shadow: $button-focus-shadow;
+			outline: 0;
+		}
+	}
+	
+	
+    /*
+	&:hover,
     &:active,
     &:focus {
-        /*
-            9999px used for shadow to ensure it'll always be big enough.
-            Better way? Performance? Not sure.
-        */
+        // 9999px used for shadow to ensure it'll always be big enough. Better way? Performance? Not sure.
         @if $bg-color--state-1 == light-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-light inset;
+            box-shadow: 0 0 0 9999px $ui-shadow-light inset, $button-focus-shadow;
         } @else if $bg-color--state-1 == dark-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-dark inset;
+            box-shadow: 0 0 0 9999px $ui-shadow-dark inset, $button-focus-shadow;
         } @else {
             background-color: $bg-color--state-1;
         }
         //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
         //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
     }
-
-    &:focus {
-        outline: $focus-outline-style;
-    }
+	*/
 }
 
 button {
@@ -825,6 +836,7 @@ caption {
 
 //--center {}
 // cite {}
+
 /*
     1. Correct the inheritance and scaling of font size in all browsers. (N)
 
@@ -869,13 +881,15 @@ dfn {
 /*
     1. Either of these will make lists behave properly next to floated items.
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
+	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
+	       bottom borders get cropped, so using b instead.
 */
 dl {
-    overflow: hidden; /* 1 */
+    //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
 
-    //display: table; /* 1 */
+    display: table; /* 1b */
 }
 
 dt {
@@ -889,7 +903,6 @@ dt {
 fieldset {
     margin-bottom: $fallback--base-rem-space-unit;
 
-    //@include bordered(calc-px-from-rem($fieldset-padding), $fieldset-border-width);
     @include bordered($fieldset-padding, $fieldset-border-width);
 }
 
@@ -1116,9 +1129,11 @@ input {
     border: 0;
 }
 
-
-input:not([type="button"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
-    @include text-input-focus();
+@if $input-focus-shadow != false {
+	input:not([type="button"]):not([type="reset"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
+		box-shadow: $input-focus-shadow;
+		outline: 0;
+	}
 }
 
 input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
@@ -1251,8 +1266,12 @@ _:-ms-input-placeholder, :root [type="file"] {
     }
 }
 
-[type=file]:focus::-ms-value {
-    @include text-input-focus();
+
+@if $input-focus-shadow != false {
+	[type=file]:focus::-ms-value {
+		box-shadow: $input-focus-shadow;
+		outline: 0;
+	}
 }
 
 /*
@@ -1497,13 +1516,15 @@ object {
 /*
     1. Either of these will make lists behave properly next to floated items.
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
+	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
+	       bottom borders get cropped, so using b instead.
 */
 ol {
-    overflow: hidden; /* 1 */
+    //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
 
-    //display: table; /* 1 */
+    display: table; /* 1b */
 }
 
 optgroup {
@@ -1606,16 +1627,16 @@ progress {
 //s {}
 
 /*
-    1. Correct the inheritance and scaling of font size in all browsers. (N)
-
-    2. Address odd `em`-unit font size rendering in all browsers. (N)
+    1. Address odd `em`-unit font size rendering in all browsers. (N)
+	
+	2. Correct the inheritance and scaling of font size in all browsers. (N)
 
     3. Prevent the element increasing the line-height of the parent.
 */
 samp {
-    font-family: $monospace-font-family, monospace; /* 1 */
-    font-size: 1em; /* 2 */
-    line-height: 0; /* 3 */
+	font-size: 1em; /* 1 */
+	font-family: $monospace-font-family, monospace; /* 2 */
+	line-height: 0; /* 3 */
 }
 
 //!script {}
@@ -1725,10 +1746,12 @@ _::selection, select:not([multiple]) {
     padding-right: 0\0;
 }
 
-select:focus {
-    @include text-input-focus();
+@if $input-focus-shadow != false {
+	select:focus {
+		box-shadow: $input-focus-shadow;
+		outline: 0;
+	}
 }
-
 // FF
 /*
 @supports (-moz-appearance: meterbar) {
@@ -1872,11 +1895,13 @@ strong {
 // N: Prevent `sub` affecting `line-height` in all browsers.
 //
 sub {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
-    bottom: -0.25em;
+	position: relative;
+	bottom: -0.25em;
+
+	font-size: 75%;
+	line-height: 0;
+
+	vertical-align: baseline;
 }
 
 summary {
@@ -1897,12 +1922,16 @@ summary {
     }
 
     details > summary::before {
-        content: '\25BA';
-        font-family: serif;
-        font-size: 0.75em;
-        display: inline-block;
-        vertical-align: top;
-        margin-right: 0.5em;
+		display: inline-block;
+
+		content: '\25BA';
+
+		margin-right: 0.5em;
+
+		font-size: 0.75em;
+		font-family: serif;
+
+		vertical-align: top;
     }
 
     details[open] > summary::before {
@@ -1912,11 +1941,13 @@ summary {
 
 // N: Prevent `sup` affecting `line-height` in all browsers.
 sup {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
-    top: -0.5em;
+	position: relative;
+	top: -0.5em;
+
+	font-size: 75%;
+	line-height: 0;
+
+	vertical-align: baseline;
 }
 
 /**
@@ -1938,16 +1969,19 @@ svg {
     2. Calc to deduct any border-width.
 */
 table {
-    border-collapse: collapse; /* N */
-    border-spacing: 0; /* N */
+	width: 100%;
+	/* @TODO - possibly make this configurable to be 'natural' width but centered instead. */
+	
+	border-collapse: collapse;
 
-    border: $table-border;
-    background-color: $table-background-color;
-    margin-bottom: $fallback--base-rem-space-unit; /* 1 */
-    margin-bottom: calc(#{$fallback--base-rem-space-unit} - #{$table-border-width}); /* 2 */
+	margin-bottom: $fallback--base-rem-space-unit; /* 1 */
+	margin-bottom: calc(#{$fallback--base-rem-space-unit} - #{$table-border-width}); /* 2 */
 
-    width: 100%;
-    /* @TODO - possibly make this configurable to be 'natural' width but centered instead. */
+	border: $table-border;
+
+	background-color: $table-background-color;
+
+	border-spacing: 0;
 }
 
 //tbody {}
@@ -1956,12 +1990,13 @@ table {
     2. Calc to deduct any border-width.
 */
 td {
-    border: $table-border;
-    padding-top: $table-cell-padding;
-    padding-right: $table-cell-padding;
-    padding-bottom: $table-cell-padding; /* 1 */
-    padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
-    padding-left: $table-cell-padding;
+	padding-top: $table-cell-padding;
+	padding-right: $table-cell-padding;
+	padding-bottom: $table-cell-padding; /* 1 */
+	padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
+	padding-left: $table-cell-padding;
+
+	border: $table-border;
 }
 
 template {
@@ -2013,22 +2048,25 @@ textarea {
     touch-action: manipulation;
 }
 
-textarea:focus {
-    @include text-input-focus();
+@if $input-focus-shadow != false {
+	textarea:focus {
+		box-shadow: $input-focus-shadow;
+		outline: 0;
+	}
 }
-
 //tfoot {}
 /*
     1. Opera Mini (no calc support).
     2. Calc to deduct any border-width.
 */
-th {
-    border: $table-border;
-    padding-top: $table-cell-padding;
-    padding-right: $table-cell-padding;
-    padding-bottom: $table-cell-padding; /* 1 */
-    padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
-    padding-left: $table-cell-padding;
+th {	
+	padding-top: $table-cell-padding;
+	padding-right: $table-cell-padding;
+	padding-bottom: $table-cell-padding; /* 1 */
+	padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
+	padding-left: $table-cell-padding;
+
+	border: $table-border;
 }
 
 
@@ -2043,13 +2081,15 @@ th {
 /*
     1. Either of these will make lists behave properly next to floated items.
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
+	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
+	       bottom borders get cropped, so using b instead.
 */
 ul {
-    overflow: hidden; /* 1 */
+    //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
 
-    //display: table; /* 1 */
+    display: table; /* 1b */
 }
 
 //var {}
