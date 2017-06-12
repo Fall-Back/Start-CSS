@@ -137,7 +137,7 @@ $monospace-font-family: monospace !default;
 
 
 //$max-main-line-length: 0 !default;
-$max-main-line-length: 50em !default;
+$max-main-line-length: 40em !default;
 
 /* Global focus style: */
 //$focus-outline-style: 1px dotted #000 !default;
@@ -362,8 +362,7 @@ $selection-text-shadow: none;
        navigating between pages that do/do not have enough content to produce
        scrollbars naturally. (I)
 
-    4. If not using default (16px) font-size, convert the value to a percentage so as not to
-       override user font settings.
+    4. Convert the value to a percentage so as not to override user font settings.
 
     5. Prevent font size adjustments after orientation changes in IE and iOS. (N)
 
@@ -381,10 +380,8 @@ html {
 
     color: $fallback--base-text-color;
     background-color: $fallback--base-background-color;
-
-    @if ($fallback--root-font-size != 16px) {
-        font-size: #{$fallback--root-font-size-percent * 1%}; /* 4 */
-    }
+    
+    font-size: #{$fallback--root-font-size-percent * 1%}; /* 4 */
     font-family: $fallback--base-font-family;
 
     -ms-text-size-adjust: 100%; /* 5 */
@@ -1178,7 +1175,7 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
        line-height settings don't seem consistent.
        Using height explictly for now.
 
-    3. Make sure button corners aren't visisible.
+    3. Make sure button corners aren't visible.
 */
 [type="file"] {
     width: 100%; /* 1 */
@@ -1358,6 +1355,18 @@ _:-ms-input-placeholder, :root [type="file"] {
 		}
 	}
 
+/*
+    iOS turns these inputs into selects which are a touch too high.
+*/
+[type="date"],
+[type="datetime-local"],
+[type="month"],
+[type="time"],
+[type="week"] {
+    //height: 1.8rem;
+    height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 6); /* ~S */
+    //line-height: $fallback--base-rem-space-unit;
+}
 
 /*
     Remove extra padding in Chrome
@@ -1382,6 +1391,7 @@ _:-ms-input-placeholder, :root [type="file"] {
     height: auto;
     cursor: pointer;
 }
+
 
 
 /**
