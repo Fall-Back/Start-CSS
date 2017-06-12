@@ -74,7 +74,7 @@
 //@debug calc-px-from-rem(1.5rem);
 
 /*
-	Apply a border with passdign that offsets the border-width from one spacing unit so as not to
+	Apply a border and a paddind that offsets the border-width from one spacing unit so as not to
 	affect the vertical rhythm.
 	Note the Opera Mini doesn't support `calc` so we need to include normal padding for that
 	browser.
