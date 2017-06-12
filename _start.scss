@@ -740,7 +740,7 @@ blockquote {
     touch-action: manipulation;
 
 
-	// Thinking about changing my mind how I do this. It's gettign too complicated. I've thought
+	// Thinking about changing my mind how I do this. It's getting too complicated. I've thought
 	// harder about how to handle alternate state from an a11y perspective the old "Don't just rely
 	// on colour" keeps going around my head, so a subtle background-colour tint-shift doesn't
 	// really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a 
@@ -1306,11 +1306,14 @@ _:-ms-input-placeholder, :root [type="file"] {
     cursor: pointer;
 }
 
-    [type=file]:hover::-ms-browse,
-    [type=file]:active::-ms-browse,
-    [type=file]:focus::-ms-browse {
-        background-color: $button-background-color--state-1;
-    }
+    @if $button-focus-shadow != false {
+        [type=file]:hover::-ms-browse,
+        [type=file]:active::-ms-browse,
+        [type=file]:focus::-ms-browse {
+			box-shadow: $button-focus-shadow;
+			outline: 0;
+		}
+	}
 
 
 [type=file]::-webkit-file-upload-button {
@@ -1346,12 +1349,14 @@ _:-ms-input-placeholder, :root [type="file"] {
     border-style: solid;
 }
 
-
-    [type=file]:hover::-webkit-file-upload-button,
-    [type=file]:active::-webkit-file-upload-button,
-    [type=file]:focus::-webkit-file-upload-button {
-        background-color: $button-background-color--state-1;
-    }
+    @if $button-focus-shadow != false {
+        [type=file]:hover::-webkit-file-upload-button,
+        [type=file]:active::-webkit-file-upload-button,
+        [type=file]:focus::-webkit-file-upload-button {
+			box-shadow: $button-focus-shadow;
+			outline: 0;
+		}
+	}
 
 
 /*
