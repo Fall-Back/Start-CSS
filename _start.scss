@@ -153,6 +153,7 @@ $anchor-text-decoration: none !default;
 $anchor-border-bottom: 3px double !default;
 $anchor-border-bottom--hover: 3px solid !default;
 $anchor-border-bottom-offset: -3px;
+$anchor-padding-bottom: 0;
 $anchor-add-external-link-indicator: true !default;
 
 
@@ -506,7 +507,7 @@ body {
 a[href] {
     margin-bottom: $anchor-border-bottom-offset;
 
-    padding-bottom: $fallback--base-rem-space-unit / 12;
+    padding-bottom: $anchor-padding-bottom;
 
     border-bottom: $anchor-border-bottom;
 
