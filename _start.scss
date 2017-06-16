@@ -718,11 +718,13 @@ blockquote {
 
     // Opera Mini needs this:
     padding-top: #{$fallback--base-rem-space-unit / 8};
-    padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    //padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-top: -moz-calc(0);
     padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
     // Opera Mini needs this:
     padding-bottom: #{$fallback--base-rem-space-unit / 8};
-    padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    //padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-bottom: -moz-calc(0);
     padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
 
 
@@ -1103,6 +1105,9 @@ input {
     touch-action: manipulation; /* 3 */
 
     vertical-align: middle; /* 4 */
+	
+	min-height: $input-min-height;
+    margin: ($fallback--base-rem-space-unit / 8) 0;
 
     // Remove the inner border and padding in Firefox.
     &::-moz-focus-inner {
@@ -1128,23 +1133,39 @@ input {
 }
 
 @if $input-focus-shadow != false {
-	input:not([type="button"]):not([type="reset"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
+	//input:not([type="button"]):not([type="reset"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
+	// Specifying these individually, because using `:not` increases the specifity too much.
+	// (Except for special case of input with no type)
+	input:not([type]):focus,
+	[type="color"]:focus,
+	[type="date"]:focus,
+	[type="datetime"]:focus,
+	[type="datetime-local"]:focus,
+	[type="month"]:focus,
+	[type="number"]:focus,
+	[type="password"]:focus,
+	[type="search"]:focus,
+	[type="tel"]:focus,
+	[type="text"]:focus,
+	[type="time"]:focus,
+	[type="url"]:focus,
+	[type="week"]:focus {
 		box-shadow: $input-focus-shadow;
 		outline: 0;
 	}
 }
 
+/*
 input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
-    min-height: $input-min-height; /* ~S */
+    min-height: $input-min-height;
     margin: ($fallback--base-rem-space-unit / 8) 0;
-    /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
 }
-
+*/
 /*
     IE9 adds the border and background:
 */
-[type=checkbox],
-[type=radio] {
+[type="checkbox"],
+[type="radio"] {
     border: 0;
 
     background: transparent;
@@ -1230,7 +1251,7 @@ _:-ms-input-placeholder, :root [type="file"] {
     margin: 0;
 }
 
-[type=file]:-moz-focusring {
+[type="file"]:-moz-focusring {
     outline: 1px dotted #f00;
 }
 
@@ -1245,7 +1266,7 @@ _:-ms-input-placeholder, :root [type="file"] {
     where background colors can show through unexpectedly, so there are some tweaks to rectify
     this.
 */
-[type=file]::-ms-value {
+[type="file"]::-ms-value {
     margin-right: 0;
     margin-left: -6px;
 
@@ -1259,14 +1280,14 @@ _:-ms-input-placeholder, :root [type="file"] {
 // @supports (-ms-ime-align:auto) { .selector { property:value; } }
 // Microsoft Edge 12+ (all MS Edge)
 @supports (-ms-ime-align:auto) {
-    [type=file]::-ms-value {
+    [type="file"]::-ms-value {
         background: transparent;
     }
 }
 
 
 @if $input-focus-shadow != false {
-	[type=file]:focus::-ms-value {
+	[type="file"]:focus::-ms-value {
 		box-shadow: $input-focus-shadow;
 		outline: 0;
 	}
@@ -1275,7 +1296,7 @@ _:-ms-input-placeholder, :root [type="file"] {
 /*
     1. IE10 doesn't like rem so convert to px.
 */
-[type=file]::-ms-browse {
+[type="file"]::-ms-browse {
     min-height:  $input-min-height;
 
     //overflow: visible; // Not sure why this was set
@@ -1305,16 +1326,16 @@ _:-ms-input-placeholder, :root [type="file"] {
 }
 
     @if $button-focus-shadow != false {
-        [type=file]:hover::-ms-browse,
-        [type=file]:active::-ms-browse,
-        [type=file]:focus::-ms-browse {
+        [type="file"]:hover::-ms-browse,
+        [type="file"]:active::-ms-browse,
+        [type="file"]:focus::-ms-browse {
 			box-shadow: $button-focus-shadow;
 			outline: 0;
 		}
 	}
 
 
-[type=file]::-webkit-file-upload-button {
+[type="file"]::-webkit-file-upload-button {
     // Not sure why this was set:
     //overflow: visible;
 
@@ -1348,9 +1369,9 @@ _:-ms-input-placeholder, :root [type="file"] {
 }
 
     @if $button-focus-shadow != false {
-        [type=file]:hover::-webkit-file-upload-button,
-        [type=file]:active::-webkit-file-upload-button,
-        [type=file]:focus::-webkit-file-upload-button {
+        [type="file"]:hover::-webkit-file-upload-button,
+        [type="file"]:active::-webkit-file-upload-button,
+        [type="file"]:focus::-webkit-file-upload-button {
 			box-shadow: $button-focus-shadow;
 			outline: 0;
 		}
