@@ -961,18 +961,11 @@ hgroup {
     display: block;
 }
 
-/*
-    Headings overflow is hidden so outline snaps to line-height.
-    This is just cosmetic for testing and may have unintended side-effects, so beware!
-*/
-
 h1 {
     margin-bottom: $fallback--base-rem-space-unit;
 
     font-size: $h1-font-size;
     line-height: $h1-height;
-    
-    overflow-y: hidden;
 }
 
 h2 {
@@ -980,8 +973,6 @@ h2 {
 
     font-size: $h2-font-size;
     line-height: $h2-height;
-    
-    overflow-y: hidden;
 }
 
 h3 {
@@ -989,8 +980,6 @@ h3 {
 
     font-size: $h3-font-size;
     line-height: $h3-height;
-    
-    overflow-y: hidden;
 }
 
 h4 {
@@ -998,8 +987,6 @@ h4 {
 
     font-size: $h4-font-size;
     line-height: $h4-height;
-    
-    overflow-y: hidden;
 }
 
 h5 {
@@ -1007,8 +994,6 @@ h5 {
 
     font-size: $h5-font-size;
     line-height: $h5-height;
-    
-    overflow-y: hidden;
 }
 
 h6 {
@@ -1016,8 +1001,6 @@ h6 {
 
     font-size: $h6-font-size;
     line-height: $h6-height;
-    
-    overflow-y: hidden;
 }
 
 /*
