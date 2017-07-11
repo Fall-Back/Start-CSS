@@ -908,6 +908,11 @@ dt {
 //em {}
 //embed {}
 
+/*
+    Fieldsets and legends can be difficult to style so I'm keep their appearance basically the same
+    as the default - just a bit of theming.
+    More info here: https://thatemil.com/blog/2015/01/03/reset-your-fieldset/
+*/
 fieldset {
     margin-bottom: $fallback--base-rem-space-unit;
 
@@ -1484,13 +1489,17 @@ label {
     touch-action: manipulation;
 }
 
+/*
+    Fieldsets and legends can be difficult to style so I'm keep their appearance basically the same
+    as the default - just a bit of theming.
+    More info here: https://thatemil.com/blog/2015/01/03/reset-your-fieldset/
+*/
 /**
  * N1. Correct the text wrapping in Edge and IE.
  * N2. Correct the color inheritance from `fieldset` elements in IE.
  * N3. Remove the padding so developers are not caught out when they zero out
  *    `fieldset` elements in all browsers.
  */
-
 legend {
     /* box-sizing: border-box; /* N1 */
     color: inherit; /* N2 */
