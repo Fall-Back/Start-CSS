@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /*! Start CSS. See SCSS file for documentation. */
 /*
-    Design for use with the basic [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
+    Designed for use with the basic [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
     IE 9+, FF 8+, Opera 12, [Chrome 29+, Android ~4.4+]
     Chrome 29+, Opera 16+, Safari 6.1+, iOS 7+, Android ~4.4+
 
@@ -115,6 +115,8 @@
     SETTINGS
 
 \*------------------------------------------------------------------------------------------------*/
+$namespace: '' !default;
+
 
 $ui-color--base: $fallback--base-ui-color !default;
 $ui-color--text: $fallback--base-text-color !default;
@@ -382,7 +384,7 @@ html {
 
     color: $fallback--base-text-color;
     background-color: $fallback--base-background-color;
-    
+
     font-size: #{$fallback--root-font-size-percent * 1%}; /* 4 */
     font-family: $fallback--base-font-family;
 
@@ -478,7 +480,6 @@ body {
     min-width: $body-min-width;
     max-width: $body-max-width;
 
-    -height: 100%;
     min-height: 100%;
 
     margin: $body-margin;
@@ -505,7 +506,7 @@ body {
 
     3. Remove the tapping delay from clickable elements . (S)
 */
-a[href] {
+#{$namespace}a[href] {
     margin-bottom: $anchor-border-bottom-offset;
 
     padding-bottom: $anchor-padding-bottom;
@@ -525,17 +526,17 @@ a[href] {
     &:active,
     &:focus {
         border-bottom: $anchor-border-bottom--hover;
-		
+
 		@if $anchor-text-color--hover != $anchor-text-color {
 			color: $anchor-text-color--hover;
 		}
-		
+
         outline-width: 0;
     }
 }
 
     @if $anchor-add-external-link-indicator == true {
-        a[href][rel="external"]::after {
+        #{$namespace}a[href][rel="external"]::after {
             display: inline-block;
 
             content: "";
@@ -559,7 +560,7 @@ a[href] {
     1. Remove the bottom border in Firefox 39-. (N)
     2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari. (N)
 */
-abbr {
+#{$namespace}abbr {
     cursor: help;
 
     &[title] {
@@ -573,20 +574,20 @@ abbr {
 
 //--acronym {}--
 
-address {
+#{$namespace}address {
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
 //--applet {}--
 //!area {}
 
-article {
+#{$namespace}article {
     display: block;
 
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
-aside {
+#{$namespace}aside {
     display: block;
 
     margin-bottom: $fallback--base-rem-space-unit;
@@ -597,7 +598,7 @@ aside {
 
     2. Chrome 44-, iOS 8+, Safari 9+. (S)
 */
-audio {
+#{$namespace}audio {
     display: inline-block; /* 1 */
 
     vertical-align: $media-element-vertical-align;
@@ -614,7 +615,7 @@ audio {
 
     2. Prevent increase in line-height in IE.
 */
-b {
+#{$namespace}b {
     font-weight: bolder; /* 1 */
     line-height: 1; //normal /* 2 */
 }
@@ -627,7 +628,7 @@ b {
 //--big {}--
 //--blink {}--
 
-blockquote {
+#{$namespace}blockquote {
     margin-bottom: $fallback--base-rem-space-unit;
     margin-left: $fallback--base-rem-space-unit;
 
@@ -744,12 +745,12 @@ blockquote {
 	// Thinking about changing my mind how I do this. It's getting too complicated. I've thought
 	// harder about how to handle alternate state from an a11y perspective the old "Don't just rely
 	// on colour" keeps going around my head, so a subtle background-colour tint-shift doesn't
-	// really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a 
+	// really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a
 	// bigger difference.
 	// I mustn't forget StartCSS isn't supposed to provide configuration to add EVERYTHING directly
 	// to this one file - it's easy enough to add custom styling on top of this - I just want to
 	// make sure everthing I DO include is configurable, or turn-off-able.
-	// So, IF the user wants to use my inner-line shadow idea, they can, otherwise, they can set the 
+	// So, IF the user wants to use my inner-line shadow idea, they can, otherwise, they can set the
 	// var to `false` and add their own however they like.
 	@if $button-focus-shadow != false {
 		&:hover,
@@ -759,8 +760,8 @@ blockquote {
 			outline: 0;
 		}
 	}
-	
-	
+
+
     /*
 	&:hover,
     &:active,
@@ -779,13 +780,13 @@ blockquote {
 	*/
 }
 
-button {
+#{$namespace}button {
     @include button;
 }
 
 // _:-o-prefocus, :root .selector { property:value; }
 // Opera 9.5-12, Opera Mini 7.x (Opera 9.80)
-_:-o-prefocus, :root button {
+_:-o-prefocus, :root #{$namespace}button {
     line-height: $fallback--base-rem-space-unit !important;
 }
 
@@ -799,10 +800,10 @@ _:-o-prefocus, :root button {
     It doesn't have any effect in newer FF.
     --It ceases to have an effect from around FF54 onwards? Dev edition.--
     --The correct box sizing is applied from FF30 onwards.--
-    
+
     NOTE: these adjustments don't seem very robust / dependent on font-family and font-size.
 */
-button::-moz-focus-inner {
+#{$namespace}button::-moz-focus-inner {
     margin: -1px 0;
 }
 
@@ -822,13 +823,13 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 /*
     1. Add the correct display in IE 9-. (N)
 */
-canvas {
+#{$namespace}canvas {
     display: inline-block;  /* 1 */
 
     vertical-align: $media-element-vertical-align;
 }
 
-caption {
+#{$namespace}caption {
     display: table-caption;
 
     padding-top: $table-caption-padding;
@@ -852,7 +853,7 @@ caption {
 
     3. Prevent the element increasing the line-height of the parent.
 */
-code {
+#{$namespace}code {
     font-family: $monospace-font-family, monospace; /* 1 */
     font-size: 1em; /* 2 */
     line-height: 0; /* 3 */
@@ -865,20 +866,20 @@ code {
 //data {}
 //datalist {}
 
-dd {
+#{$namespace}dd {
     margin-left:  $fallback--base-rem-space-unit * 1.5;
 }
 
 //del {}
 
-details {
+#{$namespace}details {
     display: block; /* N: IE 10/11 */
 }
 
 /*
     Address styling not present in Safari and Chrome. (N)
 */
-dfn {
+#{$namespace}dfn {
     font-style: italic;
 }
 
@@ -892,7 +893,7 @@ dfn {
 	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
 	       bottom borders get cropped, so using b instead.
 */
-dl {
+#{$namespace}dl {
     //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
@@ -900,7 +901,7 @@ dl {
     display: table; /* 1b */
 }
 
-dt {
+#{$namespace}dt {
     font-weight: bold;
 }
 
@@ -913,28 +914,28 @@ dt {
     as the default - just a bit of theming.
     More info here: https://thatemil.com/blog/2015/01/03/reset-your-fieldset/
 */
-fieldset {
+#{$namespace}fieldset {
     margin-bottom: $fallback--base-rem-space-unit;
 
     @include bordered($fieldset-padding, $fieldset-border-width);
 }
 
-    fieldset fieldset {
+    #{$namespace}fieldset fieldset {
         margin: 0;
 
         padding: 0;
 
         border-width: 0;
     }
-        fieldset fieldset::after {
+        #{$namespace}fieldset fieldset::after {
             display: none;
         }
 
-figcaption {
+#{$namespace}figcaption {
     display: block;
 }
 
-figure {
+#{$namespace}figure {
     display: block;
 
     margin-bottom: $fallback--base-rem-space-unit;
@@ -942,13 +943,13 @@ figure {
 
 //--font {}--
 
-footer {
+#{$namespace}footer {
     display: block;
 
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
-form {
+#{$namespace}form {
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -956,52 +957,52 @@ form {
 //--frameset {}--
 //!head {}
 
-header {
+#{$namespace}header {
     display: block;
 
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
-hgroup {
+#{$namespace}hgroup {
     display: block;
 }
 
-h1 {
+#{$namespace}h1 {
     margin-bottom: $fallback--base-rem-space-unit;
 
     font-size: $h1-font-size;
     line-height: $h1-height;
 }
 
-h2 {
+#{$namespace}h2 {
     margin-bottom: $fallback--base-rem-space-unit;
 
     font-size: $h2-font-size;
     line-height: $h2-height;
 }
 
-h3 {
+#{$namespace}h3 {
     margin-bottom: $fallback--base-rem-space-unit;
 
     font-size: $h3-font-size;
     line-height: $h3-height;
 }
 
-h4 {
+#{$namespace}h4 {
     margin-bottom: $fallback--base-rem-space-unit;
 
     font-size: $h4-font-size;
     line-height: $h4-height;
 }
 
-h5 {
+#{$namespace}h5 {
     margin-bottom: $fallback--base-rem-space-unit;
 
     font-size: $h5-font-size;
     line-height: $h5-height;
 }
 
-h6 {
+#{$namespace}h6 {
     margin-bottom: $fallback--base-rem-space-unit;
 
     font-size: $h6-font-size;
@@ -1011,7 +1012,7 @@ h6 {
 /*
     1. Show the overflow in Edge and IE. (N)
 */
-hr {
+#{$namespace}hr {
     height: 0;
 
     overflow: visible; /* 1 */
@@ -1028,7 +1029,7 @@ hr {
 //^html {}
 //i {}
 
-iframe {
+#{$namespace}iframe {
     vertical-align: $media-element-vertical-align;
 }
 
@@ -1054,7 +1055,7 @@ iframe {
     6. If a `width` and/or `height` attribute have been explicitly defined, let's not make the
        image fluid.
 */
-img {
+#{$namespace}img {
     max-width: 100%; /* 1 */
 
     border-style: none; /* 2  */
@@ -1073,7 +1074,7 @@ img {
 /*
     Special treatment for images inside links.
 */
-a img {
+#{$namespace}a img {
     margin-bottom: $anchor-border-bottom-offset;
 
     border-width: inherit;
@@ -1091,7 +1092,7 @@ a img {
 
     4. Keep adjacent elements in the middle.
 */
-input {
+#{$namespace}input {
     max-width: 100%; /* 1 */
 
     padding-top: #{$fallback--base-rem-space-unit / 8}; /* 2 */
@@ -1118,7 +1119,7 @@ input {
     touch-action: manipulation; /* 3 */
 
     vertical-align: middle; /* 4 */
-	
+
 	min-height: $input-min-height;
     margin: ($fallback--base-rem-space-unit / 8) 0;
 
@@ -1137,7 +1138,7 @@ input {
 /*
     Remove the inner border and padding in Firefox and fix height.
 */
-::-moz-focus-inner {
+#{$namespace}::-moz-focus-inner {
     margin: 0;
 
     padding: 0;
@@ -1149,20 +1150,20 @@ input {
 	//input:not([type="button"]):not([type="reset"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
 	// Specifying these individually, because using `:not` increases the specifity too much.
 	// (Except for special case of input with no type)
-	input:not([type]):focus,
-	[type="color"]:focus,
-	[type="date"]:focus,
-	[type="datetime"]:focus,
-	[type="datetime-local"]:focus,
-	[type="month"]:focus,
-	[type="number"]:focus,
-	[type="password"]:focus,
-	[type="search"]:focus,
-	[type="tel"]:focus,
-	[type="text"]:focus,
-	[type="time"]:focus,
-	[type="url"]:focus,
-	[type="week"]:focus {
+	#{$namespace}input:not([type]):focus,
+	#{$namespace}[type="color"]:focus,
+	#{$namespace}[type="date"]:focus,
+	#{$namespace}[type="datetime"]:focus,
+	#{$namespace}[type="datetime-local"]:focus,
+	#{$namespace}[type="month"]:focus,
+	#{$namespace}[type="number"]:focus,
+	#{$namespace}[type="password"]:focus,
+	#{$namespace}[type="search"]:focus,
+	#{$namespace}[type="tel"]:focus,
+	#{$namespace}[type="text"]:focus,
+	#{$namespace}[type="time"]:focus,
+	#{$namespace}[type="url"]:focus,
+	#{$namespace}[type="week"]:focus {
 		box-shadow: $input-focus-shadow;
 		outline: 0;
 	}
@@ -1177,8 +1178,8 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
 /*
     IE9 adds the border and background:
 */
-[type="checkbox"],
-[type="radio"] {
+#{$namespace}[type="checkbox"],
+#{$namespace}[type="radio"] {
     border: 0;
 
     background: transparent;
@@ -1186,9 +1187,9 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
 
 
 
-[type="button"],
-[type="reset"],
-[type="submit"] {
+#{$namespace}[type="button"],
+#{$namespace}[type="reset"],
+#{$namespace}[type="submit"] {
     @include button;
     // Maybe include fixes for these elements here instead of in the mixin.
 }
@@ -1196,9 +1197,9 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
 /*
     IE10 makes the line-height massive with calc, but doesn't appear to need it anyway.
 */
-[type="button"],
-[type="reset"],
-[type="submit"] {
+#{$namespace}[type="button"],
+#{$namespace}[type="reset"],
+#{$namespace}[type="submit"] {
     line-height:1\9;
 }
 
@@ -1212,7 +1213,7 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
 
     3. Make sure button corners aren't visible.
 */
-[type="file"] {
+#{$namespace}[type="file"] {
     width: 100%; /* 1 */
     @if $input-file-max-width != false {
         max-width: $input-file-max-width;
@@ -1235,20 +1236,20 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
 */
 // _:-moz-any-link, :root .selector { property:value; }
 // Firefox (any)
-_:-moz-any-link, :root [type="file"] {
+_:-moz-any-link, :root #{$namespace}[type="file"] {
     height: $input-min-height;
 }
 
 // This helps avoid white 'bleed-through' between containing element and the pseudo-elements in
 // _:-ms-input-placeholder, :root .selector { property:value; }
 // Internet Explorer 10-11
-_:-ms-input-placeholder, :root [type="file"] {
+_:-ms-input-placeholder, :root #{$namespace}[type="file"] {
     background-color: $ui-color--base;
 }
 
 /* IE 9 (I think): */
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) {
-    [type="file"] {
+    #{$namespace}[type="file"] {
         padding-left: $input-h-padding;
     }
 }
@@ -1258,13 +1259,13 @@ _:-ms-input-placeholder, :root [type="file"] {
 }*/
 
 
-::-moz-focus-inner {
+#{$namespace}::-moz-focus-inner {
     border: 0;
     padding: 0;
     margin: 0;
 }
 
-[type="file"]:-moz-focusring {
+#{$namespace}[type="file"]:-moz-focusring {
     outline: 1px dotted #f00;
 }
 
@@ -1279,7 +1280,7 @@ _:-ms-input-placeholder, :root [type="file"] {
     where background colors can show through unexpectedly, so there are some tweaks to rectify
     this.
 */
-[type="file"]::-ms-value {
+#{$namespace}[type="file"]::-ms-value {
     margin-right: 0;
     margin-left: -6px;
 
@@ -1293,14 +1294,14 @@ _:-ms-input-placeholder, :root [type="file"] {
 // @supports (-ms-ime-align:auto) { .selector { property:value; } }
 // Microsoft Edge 12+ (all MS Edge)
 @supports (-ms-ime-align:auto) {
-    [type="file"]::-ms-value {
+    #{$namespace}[type="file"]::-ms-value {
         background: transparent;
     }
 }
 
 
 @if $input-focus-shadow != false {
-	[type="file"]:focus::-ms-value {
+	#{$namespace}[type="file"]:focus::-ms-value {
 		box-shadow: $input-focus-shadow;
 		outline: 0;
 	}
@@ -1309,7 +1310,7 @@ _:-ms-input-placeholder, :root [type="file"] {
 /*
     1. IE10 doesn't like rem so convert to px.
 */
-[type="file"]::-ms-browse {
+#{$namespace}[type="file"]::-ms-browse {
     min-height:  $input-min-height;
 
     //overflow: visible; // Not sure why this was set
@@ -1348,7 +1349,7 @@ _:-ms-input-placeholder, :root [type="file"] {
 	}
 
 
-[type="file"]::-webkit-file-upload-button {
+#{$namespace}[type="file"]::-webkit-file-upload-button {
     // Not sure why this was set:
     //overflow: visible;
 
@@ -1382,9 +1383,9 @@ _:-ms-input-placeholder, :root [type="file"] {
 }
 
     @if $button-focus-shadow != false {
-        [type="file"]:hover::-webkit-file-upload-button,
-        [type="file"]:active::-webkit-file-upload-button,
-        [type="file"]:focus::-webkit-file-upload-button {
+        #{$namespace}[type="file"]:hover::-webkit-file-upload-button,
+        #{$namespace}[type="file"]:active::-webkit-file-upload-button,
+        #{$namespace}[type="file"]:focus::-webkit-file-upload-button {
 			box-shadow: $button-focus-shadow;
 			outline: 0;
 		}
@@ -1393,11 +1394,11 @@ _:-ms-input-placeholder, :root [type="file"] {
 /*
     iOS turns these inputs into selects which are a touch too high.
 */
-[type="date"],
-[type="datetime-local"],
-[type="month"],
-[type="time"],
-[type="week"] {
+#{$namespace}[type="date"],
+#{$namespace}[type="datetime-local"],
+#{$namespace}[type="month"],
+#{$namespace}[type="time"],
+#{$namespace}[type="week"] {
     //height: 1.8rem;
     height: $fallback--base-rem-space-unit + ($fallback--base-rem-space-unit / 6); /* ~S */
     //line-height: $fallback--base-rem-space-unit;
@@ -1406,23 +1407,23 @@ _:-ms-input-placeholder, :root [type="file"] {
 /*
     Remove extra padding in Chrome
 */
-[type="date"]::-webkit-datetime-edit-fields-wrapper,
-[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
-[type="month"]::-webkit-datetime-edit-fields-wrapper,
-[type="time"]::-webkit-datetime-edit-fields-wrapper,
-[type="week"]::-webkit-datetime-edit-fields-wrapper {
+#{$namespace}[type="date"]::-webkit-datetime-edit-fields-wrapper,
+#{$namespace}[type="datetime-local"]::-webkit-datetime-edit-fields-wrapper,
+#{$namespace}[type="month"]::-webkit-datetime-edit-fields-wrapper,
+#{$namespace}[type="time"]::-webkit-datetime-edit-fields-wrapper,
+#{$namespace}[type="week"]::-webkit-datetime-edit-fields-wrapper {
     padding: 0;
 }
 
 /*
     Tidy spin buttons and apply cursor:
 */
-[type="date"]::-webkit-inner-spin-button,
-[type="datetime-local"]::-webkit-inner-spin-button,
-[type="month"]::-webkit-inner-spin-button,
-[type="number"]::-webkit-inner-spin-button,
-[type="time"]::-webkit-inner-spin-button,
-[type="week"]::-webkit-inner-spin-button {
+#{$namespace}[type="date"]::-webkit-inner-spin-button,
+#{$namespace}[type="datetime-local"]::-webkit-inner-spin-button,
+#{$namespace}[type="month"]::-webkit-inner-spin-button,
+#{$namespace}[type="number"]::-webkit-inner-spin-button,
+#{$namespace}[type="time"]::-webkit-inner-spin-button,
+#{$namespace}[type="week"]::-webkit-inner-spin-button {
     height: auto;
     cursor: pointer;
 }
@@ -1433,7 +1434,7 @@ _:-ms-input-placeholder, :root [type="file"] {
  * 1. Correct the odd appearance in Chrome and Safari.
  * 2. Correct the outline style in Safari.
  */
-[type="search"] {
+#{$namespace}[type="search"] {
     -webkit-appearance: textfield; /* 1 */
     outline-offset: -2px; /* 2 */
 }
@@ -1443,15 +1444,15 @@ _:-ms-input-placeholder, :root [type="file"] {
  * Safari on OS X.
  */
 
-[type="search"]::-webkit-search-cancel-button,
-[type="search"]::-webkit-search-decoration {
+#{$namespace}[type="search"]::-webkit-search-cancel-button,
+#{$namespace}[type="search"]::-webkit-search-decoration {
     -webkit-appearance: none;
 }
 
 /**
  * S: Correct the text style on placeholders in Chrome, Edge, and Safari.
  */
-::-webkit-input-placeholder {
+#{$namespace}::-webkit-input-placeholder {
     color: inherit;
     opacity: .54;
 }
@@ -1466,7 +1467,7 @@ _:-ms-input-placeholder, :root [type="file"] {
 
     3. Prevent the element increasing the line-height of the parent.
 */
-kbd {
+#{$namespace}kbd {
     font-family: $monospace-font-family, monospace; /* 1 */
     font-size: 1em; /* 2 */
     line-height: 0; /* 3 */
@@ -1474,7 +1475,7 @@ kbd {
 
 //keygen {}
 
-label {
+#{$namespace}label {
     display: inline-block;
     font-weight: bold;
     cursor: pointer;
@@ -1500,7 +1501,7 @@ label {
  * N3. Remove the padding so developers are not caught out when they zero out
  *    `fieldset` elements in all browsers.
  */
-legend {
+#{$namespace}legend {
     /* box-sizing: border-box; /* N1 */
     color: inherit; /* N2 */
     display: table; /* N1 */
@@ -1518,12 +1519,12 @@ legend {
 }
 
 
-li {
+#{$namespace}li {
     margin-left:  $fallback--base-rem-space-unit * 1.5;
 }
 
-    li ul,
-    li ol {
+    #{$namespace}li ul,
+    #{$namespace}li ol {
         margin-bottom: 0;
     }
 
@@ -1542,7 +1543,7 @@ main {
 //!map {}
 
 // N: Address styling not present in IE 8/9.
-mark {
+#{$namespace}mark {
   background: #ff0;
   color: #000;
 }
@@ -1554,7 +1555,7 @@ mark {
 //meter {}
 //--multicol {}--
 
-nav {
+#{$namespace}nav {
     display: block; /* N */
 }
 
@@ -1563,7 +1564,7 @@ nav {
 //noframes {}
 //noscript {}
 
-object {
+#{$namespace}object {
     vertical-align: $media-element-vertical-align;
 }
 
@@ -1573,7 +1574,7 @@ object {
 	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
 	       bottom borders get cropped, so using b instead.
 */
-ol {
+#{$namespace}ol {
     //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
@@ -1581,7 +1582,7 @@ ol {
     display: table; /* 1b */
 }
 
-optgroup {
+#{$namespace}optgroup {
 
     font-size: inherit; // S
     font-family: inherit; /*  N, S */
@@ -1595,7 +1596,7 @@ optgroup {
     background-color: $input-background-color;
 }
 
-option {
+#{$namespace}option {
     cursor: pointer; /* Sc */
     min-height: $fallback--base-rem-space-unit; /* AK */
     //height: $fallback--base-rem-space-unit; /* AK */
@@ -1620,7 +1621,7 @@ option {
 
 //output {}
 
-p {
+#{$namespace}p {
     margin-bottom: $fallback--base-rem-space-unit;
 }
 
@@ -1641,7 +1642,7 @@ p {
        Most browsers have a scrollbar height of 17px (calculated in settings section), however Edge
        appears to have a scrollbar height of 12px, so we override it with a hack.
 */
-pre {
+#{$namespace}pre {
     font-family: $monospace-font-family, monospace; /* 1 */
     font-size: 1em; /* 2 */
     overflow-y: auto; /* 3 */
@@ -1650,12 +1651,12 @@ pre {
     background-color: $pre-background-color; /*3 */
 }
 @supports (-ms-ime-align:auto) {
-    pre {
+    #{$namespace}pre {
         margin-bottom: $pre-margin-bottom--edge; /* 3 */
     }
 }
 
-    pre code {
+    #{$namespace}pre code {
         display: inline-block;
         //line-height: 1.5rem; /* Revert zeroed line-height (see) `code` */
         line-height: $fallback--base-rem-space-unit; /* Revert zeroed line-height (see) `code` */
@@ -1668,7 +1669,7 @@ pre {
 
     S1. Internet Explorer 11-, Windows Phone 8.1+
 */
-progress {
+#{$namespace}progress {
     display: inline-block; /* S1 */
     vertical-align: $media-element-vertical-align; /* N1 */
 }
@@ -1682,12 +1683,12 @@ progress {
 
 /*
     1. Address odd `em`-unit font size rendering in all browsers. (N)
-	
+
 	2. Correct the inheritance and scaling of font size in all browsers. (N)
 
     3. Prevent the element increasing the line-height of the parent.
 */
-samp {
+#{$namespace}samp {
 	font-size: 1em; /* 1 */
 	font-family: $monospace-font-family, monospace; /* 2 */
 	line-height: 0; /* 3 */
@@ -1695,7 +1696,7 @@ samp {
 
 //!script {}
 
-section {
+#{$namespace}section {
     display: block; /* N */
     margin-bottom: $fallback--base-rem-space-unit;
 }
@@ -1704,7 +1705,7 @@ section {
 // N1: Address inconsistent `text-transform` inheritance for `select`.
 // All other form control elements do not inherit `text-transform` values.
 //  Correct `select` style inheritance in Firefox.
-select {
+#{$namespace}select {
     cursor: pointer; /* Sc */
 
     /* AK: height because min-height doesn't change the expand button height in FF: */
@@ -1778,12 +1779,12 @@ select {
 
 /*
     Make the arrow indicator the same across browsers.
-    
+
     1. FF48- does not support background-position-x/y.
     2. FF34- does not remove the arrow but does not show the background image until FF29-, at which
        point both are shown.
 */
-select:not([multiple]) {
+#{$namespace}select:not([multiple]) {
     background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNC45NSAxMCI+PHBvbHlnb24gZmlsbD0iIzQ0NCIgcG9pbnRzPSIxLjQxIDQuNjcgMi40OCAzLjE4IDMuNTQgNC42NyAxLjQxIDQuNjciLz48cG9seWdvbiBmaWxsPSIjNDQ0IiBwb2ludHM9IjMuNTQgNS4zMyAyLjQ4IDYuODIgMS40MSA1LjMzIDMuNTQgNS4zMyIvPjwvc3ZnPg==);
     background-repeat: no-repeat;
 
@@ -1802,13 +1803,13 @@ select:not([multiple]) {
 
 
 // Undo for IE9-11:
-_::selection, select:not([multiple]) {
+_::selection, #{$namespace}select:not([multiple]) {
     background-image: none\0;
     padding-right: 0\0;
 }
 
 @if $input-focus-shadow != false {
-	select:focus {
+	#{$namespace}select:focus {
 		box-shadow: $input-focus-shadow;
 		outline: 0;
 	}
@@ -1825,7 +1826,7 @@ _::selection, select:not([multiple]) {
     Note that Opera 25- and Safari(all - 10.1.1 latest at time of writing) treat select [size]s of
     less than as 4.
 */
-select[multiple] {
+#{$namespace}select[multiple] {
     height: auto;
 
     margin-top: ($fallback--base-rem-space-unit / 8);
@@ -1860,7 +1861,7 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
 /*
     Various browsers do not allow <option>s height to be specified.
     The ones I've found are:
-    
+
     * IE11-
     * Chrome 38-
     * Opera 24-
@@ -1959,7 +1960,7 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 
 //shadow {}
 
-small {
+#{$namespace}small {
     font-size: $small-font-size; /* All browsers */
     line-height: 0; /* AK: Prevent the element increasing the line-height of the parent. */
 }
@@ -1972,7 +1973,7 @@ small {
 /**
  * S: Add the correct font weight in Chrome, Edge, and Safari.
  */
-strong {
+#{$namespace}strong {
     font-weight: bolder;
     // Prevent increase in line-height:
     line-height: normal;
@@ -1983,7 +1984,7 @@ strong {
 //
 // N: Prevent `sub` affecting `line-height` in all browsers.
 //
-sub {
+#{$namespace}sub {
 	position: relative;
 	bottom: -0.25em;
 
@@ -1993,7 +1994,7 @@ sub {
 	vertical-align: baseline;
 }
 
-summary {
+#{$namespace}summary {
     /* S: Firefox 40+, Internet Explorer 11-, Windows Phone 8.1+ */
     /* N: Correct `block` display not defined for `details` or `summary` in IE 10/11 */
     display: block;
@@ -2006,11 +2007,11 @@ summary {
 }
 
     /* AK: Normalise summary appearance: (note IE support issue )*/
-    summary::-webkit-details-marker {
+    #{$namespace}summary::-webkit-details-marker {
         display: none;
     }
 
-    details > summary::before {
+    #{$namespace}details > summary::before {
 		display: inline-block;
 
 		content: '\25BA';
@@ -2023,13 +2024,13 @@ summary {
 		vertical-align: top;
     }
 
-    details[open] > summary::before {
+    #{$namespace}details[open] > summary::before {
         transform: rotate(90deg);
     }
 
 
 // N: Prevent `sup` affecting `line-height` in all browsers.
-sup {
+#{$namespace}sup {
 	position: relative;
 	top: -0.5em;
 
@@ -2042,7 +2043,7 @@ sup {
 /**
  * S1: Change the fill color to match the text color in all browsers (opinionated).
  */
-svg {
+#{$namespace}svg {
     /* H, S */
     vertical-align: $media-element-vertical-align;
 
@@ -2057,10 +2058,10 @@ svg {
     1. Opera Mini (no calc support).
     2. Calc to deduct any border-width.
 */
-table {
+#{$namespace}table {
 	width: 100%;
 	/* @TODO - possibly make this configurable to be 'natural' width but centered instead. */
-	
+
 	border-collapse: collapse;
 
 	margin-bottom: $fallback--base-rem-space-unit; /* 1 */
@@ -2078,7 +2079,7 @@ table {
     1. Opera Mini (no calc support).
     2. Calc to deduct any border-width.
 */
-td {
+#{$namespace}td {
 	padding-top: $table-cell-padding;
 	padding-right: $table-cell-padding;
 	padding-bottom: $table-cell-padding; /* 1 */
@@ -2088,7 +2089,7 @@ td {
 	border: $table-border;
 }
 
-template {
+#{$namespace}template {
     // S: Android 4.3-, Internet Explorer 11-, iOS 7-, Safari 7-, Windows Phone 8.1+
     // N: Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.
     display: none;
@@ -2098,7 +2099,7 @@ template {
  * S1. Remove the default styling in all browsers (opinionated).
  * S3. Remove the margin in Firefox and Safari.
  */
-textarea {
+#{$namespace}textarea {
 
     resize: $textarea-resize; // S
     overflow: auto; // N, S: Edge 12+, Internet Explorer 11- // AK without this it acts like overflow: scroll.
@@ -2138,7 +2139,7 @@ textarea {
 }
 
 @if $input-focus-shadow != false {
-	textarea:focus {
+	#{$namespace}textarea:focus {
 		box-shadow: $input-focus-shadow;
 		outline: 0;
 	}
@@ -2148,7 +2149,7 @@ textarea {
     1. Opera Mini (no calc support).
     2. Calc to deduct any border-width.
 */
-th {	
+#{$namespace}th {
 	padding-top: $table-cell-padding;
 	padding-right: $table-cell-padding;
 	padding-bottom: $table-cell-padding; /* 1 */
@@ -2173,7 +2174,7 @@ th {
 	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
 	       bottom borders get cropped, so using b instead.
 */
-ul {
+#{$namespace}ul {
     //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
@@ -2186,10 +2187,10 @@ ul {
     characters are displayed, so using custom ones.
     @TODO - make this configurable.
 */
-ul li {
+#{$namespace}ul li {
     list-style: none;
 }
-    ul li:before {
+    #{$namespace}ul li:before {
         content: "";
         display: inline-block;
         width: 0.4em;
@@ -2202,15 +2203,15 @@ ul li {
         left: -1em;
         margin-right: -0.4em;
     }
-    
-    ul ul li:before {
+
+    #{$namespace}ul ul li:before {
         background-color: transparent;
         border: 1px solid currentColor;
         width: 0.45em;
         height: 0.45em;
     }
-    
-    ul ul ul li:before {
+
+    #{$namespace}ul ul ul li:before {
         background-color: currentColor;
         border: none;
         border-radius: 0;
@@ -2220,28 +2221,28 @@ ul li {
 
 /* In IE, the heights of the bullets is too big! */
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) {
-    ul li:before {
+    #{$namespace}ul li:before {
         width: 0.4em;
         height: 0.35em;
     }
-   
-        ul ul li:before {
+
+        #{$namespace}ul ul li:before {
             width: 0.45em;
             height: 0.4em;
         }
-        
-            ul ul ul li:before {
+
+            #{$namespace}ul ul ul li:before {
                 width: 0.4em;
                 height: 0.35em;
             }
 }
-    
+
 //var {}
 
 /*
     1. Allow video to center if container larger than video.
 */
-video {
+#{$namespace}video {
     display: block; /* 1 */
 
     max-width: 100%;
