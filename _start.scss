@@ -217,7 +217,10 @@ $input-border-radius: $ui-border-radius !default;
 
 $input-min-height: ($fallback--base-rem-space-unit * 1.25);
 
-$input-focus-shadow: 0 0 0 2px lighten($ui-color--base, 40%) inset !default;
+$input-focus-indicator-size: 2px !default;
+$input-focus-indicator-color: lighten($ui-color--base, 40%) !default;
+$input-focus-shadow: 0 0 0 $input-focus-indicator-size $input-focus-indicator-color inset !default;
+$input-focus-shadow-outset: 0 0 0 $input-focus-indicator-size $input-focus-indicator-color !default;
 
 // File inputs' natural width varies between browers and is too wide for smaller screens.
 // The only way to get it to collapse on smaller screens is to speciify `width: 100%;` but this
@@ -531,7 +534,7 @@ body {
 			color: $anchor-text-color--hover;
 		}
 
-        outline-width: 0;
+        outline: 0;
     }
 }
 
@@ -1155,6 +1158,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 	#{$namespace}[type="date"]:focus,
 	#{$namespace}[type="datetime"]:focus,
 	#{$namespace}[type="datetime-local"]:focus,
+	#{$namespace}[type="file"]:focus,
 	#{$namespace}[type="month"]:focus,
 	#{$namespace}[type="number"]:focus,
 	#{$namespace}[type="password"]:focus,
@@ -1167,6 +1171,17 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 		box-shadow: $input-focus-shadow;
 		outline: 0;
 	}
+    
+    #{$namespace}[type="checkbox"]:focus,
+    #{$namespace}[type="radio"]:focus {
+        box-shadow: $input-focus-shadow-outset;
+		outline: 0;
+    }
+    
+    _::-webkit-full-page-media, _:future, :root #{$namespace}[type="checkbox"]:focus,
+    _::-webkit-full-page-media, _:future, :root #{$namespace}[type="radio"]:focus {
+        border: $input-focus-indicator-size solid $input-focus-indicator-color;
+    }
 }
 
 /*
