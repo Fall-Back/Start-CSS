@@ -115,6 +115,10 @@
     SETTINGS
 
 \*------------------------------------------------------------------------------------------------*/
+// Let the other Fall-Back patterns know that start is being used:
+$using-start-css: true;
+
+// Use $namespace to scope all body > *:not(main) styles:
 $namespace: '' !default;
 
 
