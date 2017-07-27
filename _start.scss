@@ -1175,13 +1175,13 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 		box-shadow: $input-focus-shadow;
 		outline: 0;
 	}
-    
+
     #{$namespace}[type="checkbox"]:focus,
     #{$namespace}[type="radio"]:focus {
         box-shadow: $input-focus-shadow-outset;
 		outline: 0;
     }
-    
+
     _::-webkit-full-page-media, _:future, :root #{$namespace}[type="checkbox"]:focus,
     _::-webkit-full-page-media, _:future, :root #{$namespace}[type="radio"]:focus {
         border: $input-focus-indicator-size solid $input-focus-indicator-color;
@@ -1591,14 +1591,16 @@ main {
     1. Either of these will make lists behave properly next to floated items.
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
 	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
-	       bottom borders get cropped, so using b instead.
+	      bottom borders get cropped, so using b instead.
+       b. `flow-root` is the better option but support is low, so using table-cell as well.
 */
 #{$namespace}ol {
     //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
 
-    display: table; /* 1b */
+    display: table-cell; /* 1b */
+    display: flow-root;  /* 1b */
 }
 
 #{$namespace}optgroup {
@@ -2191,14 +2193,16 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     1. Either of these will make lists behave properly next to floated items.
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
 	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
-	       bottom borders get cropped, so using b instead.
+	      bottom borders get cropped, so using b instead.
+       b. `flow-root` is the better option but support is low, so using table-cell as well.
 */
 #{$namespace}ul {
     //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
 
-    display: table; /* 1b */
+    display: table-cell; /* 1b */
+    display: flow-root;  /* 1b */
 }
 
 /*
