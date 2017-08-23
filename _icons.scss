@@ -28,7 +28,7 @@
     
     
     <!-- Where it's needed: -->
-    <svg width="0" height="0" class="icon  icon--narrow" aria-label="About Us Submenu"><use xlink:href="#icon-triangle-down"></use></svg>
+    <svg display="none" class="icon" aria-label="Spoken label"><use xlink:href="#icon-triangle-down"></use></svg>
     <!-- Note the aria-label can be removed if equivelent text is already present or the icon is visual only -->
 
 */
@@ -40,49 +40,14 @@
     display: inline; /* [1] */
     fill: currentColor;
 
-    width: 1.14285714286em;
-    height: 1.14285714286em;
-
-    /*width: 1.71428571429em;
-    height: 1.71428571429em;*/
-    
-    /* No idea why, exactly, but this seems to be the best position, we long as we ... */
-    //vertical-align: super;
-    /* ... prevent the icon affecting line-height: */
-    //margin: -0.5em 0;
-    /*
-    -webkit-transform: scale(0.666);
-    -moz-transform: scale(0.666);
-    -ms-transform: scale(0.666);
-    transform: scale(0.666);*/
-}
-
-.icon--narrow {
-    /*margin: -0.5em -0.25em;*/
-    width: 0.85714285714em;
+    width: 1em;
+    height: 1em;
 }
 
 
 _:-o-prefocus, :root .icon {
     vertical-align: middle;
 }
-/*
-.icon symbol {
-    width: 1.14285714286em;
-    height: 1.14285714286em;
-}*/
-
-/*
-    No transform support for Opera Mini, so hack it back to 16px with ems.
-    Note, since Opera Mini doesn't support line-height, it will be vertically centered anyway.
-    1. Hack also affects Opera 12 which is supported by the Original Mustard Cut, so turning off
-       transform for this. Slight difference in position acceptable (lower).
-*//*
-_:-o-prefocus, :root .icon {
-    width: 1.14285714286em;
-    height: 1.14285714286em;
-    transform: none; /* [1] *
-}*/
 
 .icon-wrap {
     display: -webkit-box;
