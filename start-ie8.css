@@ -269,3 +269,18 @@ th {
 
 ul {
   margin-bottom: 24px; }
+
+/*
+	Turn off custom bullets.
+*/
+ul li {
+  list-style: disc; }
+
+ul ul li {
+  list-style: circle; }
+
+ul ul ul li {
+  list-style: square; }
+
+ul li:before {
+  display: none; }

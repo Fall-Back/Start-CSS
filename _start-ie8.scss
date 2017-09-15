@@ -223,3 +223,20 @@ body {
 #{$namespace}ul {
 	margin-bottom: $fallback--base-px-space-unit;
 }
+
+/*
+	Turn off custom bullets.
+*/
+#{$namespace}ul li {
+    list-style: disc;
+}
+#{$namespace}ul ul li {
+    list-style: circle;
+}
+#{$namespace}ul ul ul li {
+    list-style: square;
+}
+
+#{$namespace}ul li:before {
+	display: none;
+}

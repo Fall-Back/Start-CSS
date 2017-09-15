@@ -2212,7 +2212,7 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 #{$namespace}ul li {
     list-style: none;
 }
-    #{$namespace}ul li:before {
+    #{$namespace}ul li::before {
         content: "";
         display: inline-block;
         width: 0.4em;
@@ -2226,14 +2226,14 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
         margin-right: -0.4em;
     }
 
-    #{$namespace}ul ul li:before {
+    #{$namespace}ul ul li::before {
         background-color: transparent;
         border: 1px solid currentColor;
         width: 0.45em;
         height: 0.45em;
     }
 
-    #{$namespace}ul ul ul li:before {
+    #{$namespace}ul ul ul li::before {
         background-color: currentColor;
         border: none;
         border-radius: 0;
@@ -2243,17 +2243,17 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 
 /* In IE, the heights of the bullets is too big! */
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) {
-    #{$namespace}ul li:before {
+    #{$namespace}ul li::before {
         width: 0.4em;
         height: 0.35em;
     }
 
-        #{$namespace}ul ul li:before {
+        #{$namespace}ul ul li::before {
             width: 0.45em;
             height: 0.4em;
         }
 
-            #{$namespace}ul ul ul li:before {
+            #{$namespace}ul ul ul li::before {
                 width: 0.4em;
                 height: 0.35em;
             }
