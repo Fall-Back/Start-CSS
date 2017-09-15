@@ -106,6 +106,144 @@
     }
 }
 
+// [N0] Address inconsistent `text-transform` inheritance for `button`.
+// All other form control elements do not inherit `text-transform` values.
+// Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
+// 2. Correct inability to style clickable `input` types in iOS.
+// 3. Improve usability and consistency of cursor style between image-type
+//    `input` and others.
+
+/*
+    This button mixin isn't really meant for generated specific/themed _types_ of button - there
+    would be too much code duplication for that.
+    Instead, this is intended to create buttons for new/custom selectors.
+    For example:
+
+    ```
+    [role="button"] {
+        @include button;
+    }
+    ```
+
+    rather than:
+
+    ```
+        .btn--affirmative {
+            @include button(<text-color>, <bg-color>);
+        }
+    ```
+
+    Note - because of this, think about removing parameters (it changed from my original intention -
+    I may change it back or split this into 2 mixins, or even just move things that are meant for
+    input[type="button"] to that ruleset - actually that's not a bad idea).
+
+*/
+@mixin button(
+        $color: $button-text-color,
+        $bg-color: $button-background-color,
+        $bg-color--state-1: $button-background-color--state-1,
+        $border-color: $button-border-color
+    ) {
+    display: inline-block; /* AK. IE9 needs this. */
+
+    overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
+    background-color: $bg-color;
+    color: $color;
+
+    font-size: inherit; // S
+    font-family: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+
+    // Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom
+    // margin.
+    // Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
+    // FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
+    // Need to make sure height is goverened by line-height in case of breaks within buttons.
+
+    //line-height: calc(#{$input-min-height} - #{$button-border-width * 2});
+    //min-height: calc(#{$input-min-height} - #{$input-border-width * 2});
+
+    //box-sizing: content-box;
+    min-height: $input-min-height;
+    line-height: $fallback--base-rem-space-unit;
+
+    margin: ($fallback--base-rem-space-unit / 8) 0;
+
+
+    text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
+    /* -webkit-appearance: button; // [N2] */
+    -webkit-appearance: none; /* AK */
+    cursor: pointer; /* [N3] */
+
+
+    border-color: $border-color;
+    border-style: $button-border-style;
+    border-width: $button-border-width;
+    border-radius: $button-border-radius;
+
+    // Opera Mini needs this:
+    padding-top: #{$fallback--base-rem-space-unit / 8};
+    //padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-top: -moz-calc(0);
+    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    // Opera Mini needs this:
+    padding-bottom: #{$fallback--base-rem-space-unit / 8};
+    //padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-bottom: -moz-calc(0);
+    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+
+
+    padding-left: $button-h-padding;
+    padding-right: $button-h-padding;
+
+    //vertical-align: baseline;
+    // Keep adjacent elements in the middle:
+    vertical-align: middle;
+
+    /* S: Remove the tapping delay from clickable elements */
+    -ms-touch-action: manipulation; /* S: IE10 */
+    touch-action: manipulation;
+
+
+	// Thinking about changing my mind how I do this. It's getting too complicated. I've thought
+	// harder about how to handle alternate state from an a11y perspective the old "Don't just rely
+	// on colour" keeps going around my head, so a subtle background-colour tint-shift doesn't
+	// really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a
+	// bigger difference.
+	// I mustn't forget StartCSS isn't supposed to provide configuration to add EVERYTHING directly
+	// to this one file - it's easy enough to add custom styling on top of this - I just want to
+	// make sure everthing I DO include is configurable, or turn-off-able.
+	// So, IF the user wants to use my inner-line shadow idea, they can, otherwise, they can set the
+	// var to `false` and add their own however they like.
+	@if $button-focus-shadow != false {
+		&:hover,
+		&:active,
+		&:focus {
+			box-shadow: $button-focus-shadow;
+			outline: 0;
+		}
+	}
+
+
+    /*
+	&:hover,
+    &:active,
+    &:focus {
+        // 9999px used for shadow to ensure it'll always be big enough. Better way? Performance? Not sure.
+        @if $bg-color--state-1 == light-shadow {
+            box-shadow: 0 0 0 9999px $ui-shadow-light inset, $button-focus-shadow;
+        } @else if $bg-color--state-1 == dark-shadow {
+            box-shadow: 0 0 0 9999px $ui-shadow-dark inset, $button-focus-shadow;
+        } @else {
+            background-color: $bg-color--state-1;
+        }
+        //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
+        //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
+    }
+	*/
+}
+
 /*-------------------------------------------------------------------------------------------------|
 
     SETTINGS
@@ -113,6 +251,9 @@
 |-------------------------------------------------------------------------------------------------*/
 // Let the other Fall-Back patterns know that start is being used:
 $using-start-css: true;
+
+// Allow suppression of styles so this file can be imported only for its variables etc.
+$suppress_styles: false !default;
 
 // Use $namespace to scope all body > *:not(main) styles:
 $namespace: '' !default;
@@ -327,7 +468,7 @@ $selection-text-shadow: none;
 }
 
 
-
+@if ($suppress_styles != true) {
 
 
 // Attempt to organise 'normalisation' by tag.
@@ -644,144 +785,6 @@ body {
 
 //^body {}
 //br {}
-
-// [N0] Address inconsistent `text-transform` inheritance for `button`.
-// All other form control elements do not inherit `text-transform` values.
-// Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
-// 2. Correct inability to style clickable `input` types in iOS.
-// 3. Improve usability and consistency of cursor style between image-type
-//    `input` and others.
-
-/*
-    This button mixin isn't really meant for generated specific/themed _types_ of button - there
-    would be too much code duplication for that.
-    Instead, this is intended to create buttons for new/custom selectors.
-    For example:
-
-    ```
-    [role="button"] {
-        @include button;
-    }
-    ```
-
-    rather than:
-
-    ```
-        .btn--affirmative {
-            @include button(<text-color>, <bg-color>);
-        }
-    ```
-
-    Note - because of this, think about removing parameters (it changed from my original intention -
-    I may change it back or split this into 2 mixins, or even just move things that are meant for
-    input[type="button"] to that ruleset - actually that's not a bad idea).
-
-*/
-@mixin button(
-        $color: $button-text-color,
-        $bg-color: $button-background-color,
-        $bg-color--state-1: $button-background-color--state-1,
-        $border-color: $button-border-color
-    ) {
-    display: inline-block; /* AK. IE9 needs this. */
-
-    overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
-    background-color: $bg-color;
-    color: $color;
-
-    font-size: inherit; // S
-    font-family: inherit;
-    font-style: inherit;
-    font-weight: inherit;
-
-    // Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom
-    // margin.
-    // Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
-    // FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
-    // Need to make sure height is goverened by line-height in case of breaks within buttons.
-
-    //line-height: calc(#{$input-min-height} - #{$button-border-width * 2});
-    //min-height: calc(#{$input-min-height} - #{$input-border-width * 2});
-
-    //box-sizing: content-box;
-    min-height: $input-min-height;
-    line-height: $fallback--base-rem-space-unit;
-
-    margin: ($fallback--base-rem-space-unit / 8) 0;
-
-
-    text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
-    /* -webkit-appearance: button; // [N2] */
-    -webkit-appearance: none; /* AK */
-    cursor: pointer; /* [N3] */
-
-
-    border-color: $border-color;
-    border-style: $button-border-style;
-    border-width: $button-border-width;
-    border-radius: $button-border-radius;
-
-    // Opera Mini needs this:
-    padding-top: #{$fallback--base-rem-space-unit / 8};
-    //padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
-    padding-top: -moz-calc(0);
-    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
-    // Opera Mini needs this:
-    padding-bottom: #{$fallback--base-rem-space-unit / 8};
-    //padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
-    padding-bottom: -moz-calc(0);
-    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
-
-
-    padding-left: $button-h-padding;
-    padding-right: $button-h-padding;
-
-    //vertical-align: baseline;
-    // Keep adjacent elements in the middle:
-    vertical-align: middle;
-
-    /* S: Remove the tapping delay from clickable elements */
-    -ms-touch-action: manipulation; /* S: IE10 */
-    touch-action: manipulation;
-
-
-	// Thinking about changing my mind how I do this. It's getting too complicated. I've thought
-	// harder about how to handle alternate state from an a11y perspective the old "Don't just rely
-	// on colour" keeps going around my head, so a subtle background-colour tint-shift doesn't
-	// really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a
-	// bigger difference.
-	// I mustn't forget StartCSS isn't supposed to provide configuration to add EVERYTHING directly
-	// to this one file - it's easy enough to add custom styling on top of this - I just want to
-	// make sure everthing I DO include is configurable, or turn-off-able.
-	// So, IF the user wants to use my inner-line shadow idea, they can, otherwise, they can set the
-	// var to `false` and add their own however they like.
-	@if $button-focus-shadow != false {
-		&:hover,
-		&:active,
-		&:focus {
-			box-shadow: $button-focus-shadow;
-			outline: 0;
-		}
-	}
-
-
-    /*
-	&:hover,
-    &:active,
-    &:focus {
-        // 9999px used for shadow to ensure it'll always be big enough. Better way? Performance? Not sure.
-        @if $bg-color--state-1 == light-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-light inset, $button-focus-shadow;
-        } @else if $bg-color--state-1 == dark-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-dark inset, $button-focus-shadow;
-        } @else {
-            background-color: $bg-color--state-1;
-        }
-        //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
-        //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
-    }
-	*/
-}
 
 #{$namespace}button {
     @include button;
@@ -2399,3 +2402,4 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     display: none;
 }
 /*! End Start CSS */
+}

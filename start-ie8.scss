@@ -1,0 +1,13 @@
+$fallback--root-font-size: 10px;
+
+//$namespace: '.ugc ';
+//$namespace: 'main ';
+
+
+@import '_settings.scss';
+
+$suppress_styles: true;
+@import '_start.scss';
+
+@import '_start-ie8.scss';
+
