@@ -1,11 +1,6 @@
-
-
-start.css
-start.min.css
 start.scss
-start-classes.css
-start-classes.min.css
 start-classes.scss
+start-ie8.scss
 *.html
 *.css.map
 media/
