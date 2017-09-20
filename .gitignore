@@ -1,6 +1,6 @@
 start.scss
 start-classes.scss
-start-ie8.scss
+
 *.html
 *.css.map
 media/
