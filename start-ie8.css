@@ -11,8 +11,9 @@
     
     
     Any double-classing (e.g. `.class.class`) is deliberate and intended to increase specifity.
-    This allows Start-CSS declarations to be overidden.
-    E.g. `.{pattern}__open.{pattren}__open` overrides `a[href]`.
+    This allows any applicable Start-CSS declarations to be overidden.
+    E.g. `.{pattern} .{pattern}__child` would `a[href]`, but just `.{pattern}` wouldn't, so we use
+    `.{pattern}.{pattren}`
     
 |-------------------------------------------------------------------------------------------------*/
 /*! Start CSS. See SCSS file for documentation. */

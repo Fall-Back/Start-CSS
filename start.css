@@ -12,8 +12,9 @@
     
     
     Any double-classing (e.g. `.class.class`) is deliberate and intended to increase specifity.
-    This allows Start-CSS declarations to be overidden.
-    E.g. `.{pattern}__open.{pattren}__open` overrides `a[href]`.
+    This allows any applicable Start-CSS declarations to be overidden.
+    E.g. `.{pattern} .{pattern}__child` would `a[href]`, but just `.{pattern}` wouldn't, so we use
+    `.{pattern}.{pattren}`
     
 |-------------------------------------------------------------------------------------------------*/
 /*! Start CSS. See SCSS file for documentation. */
@@ -55,6 +56,31 @@
 	Also, since we're supporting FF 8+, we're including -moz-calc fro versions up to 16.
 	I may consider removing this as those browsers are dead, but I'm just being thorough for now.
 */
+/*
+    This button mixin isn't really meant for generated specific/themed _types_ of button - there
+    would be too much code duplication for that.
+    Instead, this is intended to create buttons for new/custom selectors.
+    For example:
+
+    ```
+    [role="button"] {
+        @include button;
+    }
+    ```
+
+    rather than:
+
+    ```
+        .btn--affirmative {
+            @include button(<text-color>, <bg-color>);
+        }
+    ```
+
+    Note - because of this, think about removing parameters (it changed from my original intention -
+    I may change it back or split this into 2 mixins, or even just move things that are meant for
+    input[type="button"] to that ruleset - actually that's not a bad idea).
+
+*/
 /*-------------------------------------------------------------------------------------------------|
 
     SETTINGS
@@ -89,10 +115,6 @@
     4. Convert the value to a percentage so as not to override user font settings.
 
     5. Prevent font size adjustments after orientation changes in IE and iOS. (N)
-
-    6. Add the default cursor in all browsers. (S)
-
-    7. Remove margin on Mac Safari 6.1-8.
 */
 html {
   -moz-box-sizing: border-box;
@@ -111,9 +133,7 @@ html {
   -ms-text-size-adjust: 100%;
   /* 5 */
   -webkit-text-size-adjust: 100%;
-  /* 5 */
-  cursor: default;
-  /* 6 */ }
+  /* 5 */ }
 
 /*
     Fix font size for IE9,10 as it can't calculate % to 1 decimal place! Grrr.
@@ -291,31 +311,6 @@ blockquote {
         I.e. left-border, and enclosing qutoes.
     */ }
 
-/*
-    This button mixin isn't really meant for generated specific/themed _types_ of button - there
-    would be too much code duplication for that.
-    Instead, this is intended to create buttons for new/custom selectors.
-    For example:
-
-    ```
-    [role="button"] {
-        @include button;
-    }
-    ```
-
-    rather than:
-
-    ```
-        .btn--affirmative {
-            @include button(<text-color>, <bg-color>);
-        }
-    ```
-
-    Note - because of this, think about removing parameters (it changed from my original intention -
-    I may change it back or split this into 2 mixins, or even just move things that are meant for
-    input[type="button"] to that ruleset - actually that's not a bad idea).
-
-*/
 button {
   display: inline-block;
   /* AK. IE9 needs this. */
@@ -1562,7 +1557,7 @@ ul {
 ul li {
   list-style: none; }
 
-ul li:before {
+ul li::before {
   content: "";
   display: inline-block;
   width: 0.4em;
@@ -1575,13 +1570,13 @@ ul li:before {
   left: -1em;
   margin-right: -0.4em; }
 
-ul ul li:before {
+ul ul li::before {
   background-color: transparent;
   border: 1px solid currentColor;
   width: 0.45em;
   height: 0.45em; }
 
-ul ul ul li:before {
+ul ul ul li::before {
   background-color: currentColor;
   border: none;
   border-radius: 0;
@@ -1590,13 +1585,13 @@ ul ul ul li:before {
 
 /* In IE, the heights of the bullets is too big! */
 @media screen and (min-width: 0\0) and (min-resolution: 72dpi) {
-  ul li:before {
+  ul li::before {
     width: 0.4em;
     height: 0.35em; }
-  ul ul li:before {
+  ul ul li::before {
     width: 0.45em;
     height: 0.4em; }
-  ul ul ul li:before {
+  ul ul ul li::before {
     width: 0.4em;
     height: 0.35em; } }
 
