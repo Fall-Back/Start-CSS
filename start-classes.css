@@ -1,21 +1,3 @@
-/*-------------------------------------------------------------------------------------------------|
-    Fall-Back Start-CSS Settings v1.0.0
-
-    Fall-Back is designed for use with the basic
-    [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
-    
-    This determines a browser support base of:
-    
-    IE 9+, FF 8+, Opera 12, [Chrome 29+, Android ~4.4+]
-    Chrome 29+, Opera 16+, Safari 6.1+, iOS 7+, Android ~4.4+
-    
-    
-    Any double-classing (e.g. `.class.class`) is deliberate and intended to increase specifity.
-    This allows any applicable Start-CSS declarations to be overidden.
-    E.g. `.{pattern} .{pattern}__child` would `a[href]`, but just `.{pattern}` wouldn't, so we use
-    `.{pattern}.{pattren}`
-    
-|-------------------------------------------------------------------------------------------------*/
 /*! Start CSS. See SCSS file for documentation. */
 /*
 
@@ -459,8 +441,8 @@ dt {
   font-weight: bold; }
 
 /*
-    Fieldsets and legends can be difficult to style so I'm keep their appearance basically the same
-    as the default - just a bit of theming.
+    Fieldsets and legends can be difficult to style so I'm keeping their appearance basically the 
+    same as the default - just a bit of theming.
     More info here: https://thatemil.com/blog/2015/01/03/reset-your-fieldset/
 */
 fieldset {
