@@ -70,12 +70,12 @@
 //@debug calc-px-from-rem(1.5rem);
 
 /*
-	Apply a border and a paddind that offsets the border-width from one spacing unit so as not to
-	affect the vertical rhythm.
-	Note the Opera Mini doesn't support `calc` so we need to include normal padding for that
-	browser.
-	Also, since we're supporting FF 8+, we're including -moz-calc fro versions up to 16.
-	I may consider removing this as those browsers are dead, but I'm just being thorough for now.
+    Apply a border and a paddind that offsets the border-width from one spacing unit so as not to
+    affect the vertical rhythm.
+    Note the Opera Mini doesn't support `calc` so we need to include normal padding for that
+    browser.
+    Also, since we're supporting FF 8+, we're including -moz-calc fro versions up to 16.
+    I may consider removing this as those browsers are dead, but I'm just being thorough for now.
 */
 @mixin bordered($padding, $border-width) {
     border-width: $border-width;
@@ -95,14 +95,14 @@
     padding-right:      calc(#{$padding} - #{$border-width});
 
     &::after {
-		display: block;
+        display: block;
 
-		content: "";
+        content: "";
 
-		height: 0;
+        height: 0;
 
-		margin-top: -$border-width;
-		margin-bottom: $padding;
+        margin-top: -$border-width;
+        margin-bottom: $padding;
     }
 }
 
@@ -206,28 +206,28 @@
     touch-action: manipulation;
 
 
-	// Thinking about changing my mind how I do this. It's getting too complicated. I've thought
-	// harder about how to handle alternate state from an a11y perspective the old "Don't just rely
-	// on colour" keeps going around my head, so a subtle background-colour tint-shift doesn't
-	// really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a
-	// bigger difference.
-	// I mustn't forget StartCSS isn't supposed to provide configuration to add EVERYTHING directly
-	// to this one file - it's easy enough to add custom styling on top of this - I just want to
-	// make sure everthing I DO include is configurable, or turn-off-able.
-	// So, IF the user wants to use my inner-line shadow idea, they can, otherwise, they can set the
-	// var to `false` and add their own however they like.
-	@if $button-focus-shadow != false {
-		&:hover,
-		&:active,
-		&:focus {
-			box-shadow: $button-focus-shadow;
-			outline: 0;
-		}
-	}
+    // Thinking about changing my mind how I do this. It's getting too complicated. I've thought
+    // harder about how to handle alternate state from an a11y perspective the old "Don't just rely
+    // on colour" keeps going around my head, so a subtle background-colour tint-shift doesn't
+    // really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a
+    // bigger difference.
+    // I mustn't forget StartCSS isn't supposed to provide configuration to add EVERYTHING directly
+    // to this one file - it's easy enough to add custom styling on top of this - I just want to
+    // make sure everthing I DO include is configurable, or turn-off-able.
+    // So, IF the user wants to use my inner-line shadow idea, they can, otherwise, they can set the
+    // var to `false` and add their own however they like.
+    @if $button-focus-shadow != false {
+        &:hover,
+        &:active,
+        &:focus {
+            box-shadow: $button-focus-shadow;
+            outline: 0;
+        }
+    }
 
 
     /*
-	&:hover,
+    &:hover,
     &:active,
     &:focus {
         // 9999px used for shadow to ensure it'll always be big enough. Better way? Performance? Not sure.
@@ -241,7 +241,7 @@
         //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
         //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
     }
-	*/
+    */
 }
 
 /*-------------------------------------------------------------------------------------------------|
@@ -496,6 +496,35 @@ $selection-text-shadow: none;
     ROOT STYLES
 
 |-------------------------------------------------------------------------------------------------*/
+/*
+    https://timkadlec.com/2012/10/ie10-snap-mode-and-responsive-design/
+    https://css-tricks.com/snippets/javascript/fix-ie-10-on-windows-phone-8-viewport/
+    
+    The following rule fixes a problem with IE10 on Windows 8 snap mode, but arrparently causes
+    problems on Windows Phone where the only fix seems to be a JS one.
+    
+    https://nostrongbeliefs.com/why-i-think-we-shouldnt-use-css-viewport-in-ie10-for-now/
+    
+    This reckons it's not worth it and as I can't seem to test the Windows Phone problem (emulator
+    on BrowserStack - not real device which is why I _think) I'm not seeing the problem) I think it
+    may be safest to keep this out for now.
+    - Hmmm affect 8.1 IE11 as well... not good.
+    UPDATE: using hack to only apply the viewport declaration to IE10-11 may work?
+    
+    https://timkadlec.com/2013/01/windows-phone-8-and-device-width/
+*/
+
+
+//@at-root {
+//  @-ms-viewport { width: device-width; }
+//}
+
+//@media screen and (-ms-view-state: snapped) {
+//    body {
+//        background: red !important;
+//    }
+//}
+
 
 /*
     1. Change the default box-sizing (-moz prefix for FF8-28).
@@ -665,9 +694,9 @@ body {
     &:focus {
         border-bottom: $anchor-border-bottom--hover;
 
-		@if $anchor-text-color--hover != $anchor-text-color {
-			color: $anchor-text-color--hover;
-		}
+        @if $anchor-text-color--hover != $anchor-text-color {
+            color: $anchor-text-color--hover;
+        }
 
         outline: 0;
     }
@@ -890,8 +919,8 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 /*
     1. Either of these will make lists behave properly next to floated items.
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
-	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
-	       bottom borders get cropped, so using b instead.
+       a. This causes problems with some decoration. E.g. if the last element in the list is a link,
+           bottom borders get cropped, so using b instead.
 */
 #{$namespace}dl {
     //overflow: hidden; /* 1a */
@@ -910,12 +939,14 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 //embed {}
 
 /*
-    Fieldsets and legends can be difficult to style so I'm keeping their appearance basically the 
+    Fieldsets and legends can be difficult to style so I'm keeping their appearance basically the
     same as the default - just a bit of theming.
     More info here: https://thatemil.com/blog/2015/01/03/reset-your-fieldset/
 */
 #{$namespace}fieldset {
     margin-bottom: $fallback--base-rem-space-unit;
+    
+    min-width: 0;
 
     @include bordered($fieldset-padding, $fieldset-border-width);
 }
@@ -1120,7 +1151,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 
     vertical-align: middle; /* 4 */
 
-	min-height: $input-min-height;
+    min-height: $input-min-height;
     margin: ($fallback--base-rem-space-unit / 8) 0;
 
     // Remove the inner border and padding in Firefox.
@@ -1147,32 +1178,32 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 }
 
 @if $input-focus-shadow != false {
-	//input:not([type="button"]):not([type="reset"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
-	// Specifying these individually, because using `:not` increases the specifity too much.
-	// (Except for special case of input with no type)
-	#{$namespace}input:not([type]):focus,
-	#{$namespace}[type="color"]:focus,
-	#{$namespace}[type="date"]:focus,
-	#{$namespace}[type="datetime"]:focus,
-	#{$namespace}[type="datetime-local"]:focus,
-	#{$namespace}[type="file"]:focus,
-	#{$namespace}[type="month"]:focus,
-	#{$namespace}[type="number"]:focus,
-	#{$namespace}[type="password"]:focus,
-	#{$namespace}[type="search"]:focus,
-	#{$namespace}[type="tel"]:focus,
-	#{$namespace}[type="text"]:focus,
-	#{$namespace}[type="time"]:focus,
-	#{$namespace}[type="url"]:focus,
-	#{$namespace}[type="week"]:focus {
-		box-shadow: $input-focus-shadow;
-		outline: 0;
-	}
+    //input:not([type="button"]):not([type="reset"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
+    // Specifying these individually, because using `:not` increases the specifity too much.
+    // (Except for special case of input with no type)
+    #{$namespace}input:not([type]):focus,
+    #{$namespace}[type="color"]:focus,
+    #{$namespace}[type="date"]:focus,
+    #{$namespace}[type="datetime"]:focus,
+    #{$namespace}[type="datetime-local"]:focus,
+    #{$namespace}[type="file"]:focus,
+    #{$namespace}[type="month"]:focus,
+    #{$namespace}[type="number"]:focus,
+    #{$namespace}[type="password"]:focus,
+    #{$namespace}[type="search"]:focus,
+    #{$namespace}[type="tel"]:focus,
+    #{$namespace}[type="text"]:focus,
+    #{$namespace}[type="time"]:focus,
+    #{$namespace}[type="url"]:focus,
+    #{$namespace}[type="week"]:focus {
+        box-shadow: $input-focus-shadow;
+        outline: 0;
+    }
 
     #{$namespace}[type="checkbox"]:focus,
     #{$namespace}[type="radio"]:focus {
         box-shadow: $input-focus-shadow-outset;
-		outline: 0;
+        outline: 0;
     }
 
     _::-webkit-full-page-media, _:future, :root #{$namespace}[type="checkbox"]:focus,
@@ -1313,10 +1344,10 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
 
 
 @if $input-focus-shadow != false {
-	#{$namespace}[type="file"]:focus::-ms-value {
-		box-shadow: $input-focus-shadow;
-		outline: 0;
-	}
+    #{$namespace}[type="file"]:focus::-ms-value {
+        box-shadow: $input-focus-shadow;
+        outline: 0;
+    }
 }
 
 /*
@@ -1355,10 +1386,10 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
         [type="file"]:hover::-ms-browse,
         [type="file"]:active::-ms-browse,
         [type="file"]:focus::-ms-browse {
-			box-shadow: $button-focus-shadow;
-			outline: 0;
-		}
-	}
+            box-shadow: $button-focus-shadow;
+            outline: 0;
+        }
+    }
 
 
 #{$namespace}[type="file"]::-webkit-file-upload-button {
@@ -1398,10 +1429,10 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
         #{$namespace}[type="file"]:hover::-webkit-file-upload-button,
         #{$namespace}[type="file"]:active::-webkit-file-upload-button,
         #{$namespace}[type="file"]:focus::-webkit-file-upload-button {
-			box-shadow: $button-focus-shadow;
-			outline: 0;
-		}
-	}
+            box-shadow: $button-focus-shadow;
+            outline: 0;
+        }
+    }
 
 /*
     iOS turns these inputs into selects which are a touch too high.
@@ -1583,16 +1614,34 @@ main {
 /*
     1. Either of these will make lists behave properly next to floated items.
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
-	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
-	      bottom borders get cropped, so using b instead.
-       b. `flow-root` is the better option but support is low, so using table-cell as well.
+       a. This causes problems with some decoration. E.g. if the last element in the list is a link,
+          bottom borders get cropped, so using b instead.
+       b. `flow-root` is the better option but support is low, so using table and flex fallbacks
+          as well.
 */
 #{$namespace}ol {
     //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
 
-    display: table-cell; /* 1b */
+    display: table; /* 1b */
+    //display: -ms-grid; /* 1b */
+    //display: grid; /* 1b */
+    
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+       -moz-box-orient: vertical;
+       -moz-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+
     display: flow-root;  /* 1b */
 }
 
@@ -1698,14 +1747,14 @@ main {
 /*
     1. Address odd `em`-unit font size rendering in all browsers. (N)
 
-	2. Correct the inheritance and scaling of font size in all browsers. (N)
+    2. Correct the inheritance and scaling of font size in all browsers. (N)
 
     3. Prevent the element increasing the line-height of the parent.
 */
 #{$namespace}samp {
-	font-size: 1em; /* 1 */
-	font-family: $monospace-font-family, monospace; /* 2 */
-	line-height: 0; /* 3 */
+    font-size: 1em; /* 1 */
+    font-family: $monospace-font-family, monospace; /* 2 */
+    line-height: 0; /* 3 */
 }
 
 //!script {}
@@ -1805,8 +1854,8 @@ main {
     background-position: 95% center; /* 1 */
 
     -moz-appearance: none; /* 2 */
-	-webkit-appearance: none;
-	appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
     padding-left: $input-h-padding / 2;
     // Give webkit extra padding:
     // (not sure this is the best way but it seems FF and IE add the option padding, but webkit
@@ -1823,10 +1872,10 @@ _::selection, #{$namespace}select:not([multiple]) {
 }
 
 @if $input-focus-shadow != false {
-	#{$namespace}select:focus {
-		box-shadow: $input-focus-shadow;
-		outline: 0;
-	}
+    #{$namespace}select:focus {
+        box-shadow: $input-focus-shadow;
+        outline: 0;
+    }
 }
 // FF
 /*
@@ -1999,13 +2048,13 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 // N: Prevent `sub` affecting `line-height` in all browsers.
 //
 #{$namespace}sub {
-	position: relative;
-	bottom: -0.25em;
+    position: relative;
+    bottom: -0.25em;
 
-	font-size: 75%;
-	line-height: 0;
+    font-size: 75%;
+    line-height: 0;
 
-	vertical-align: baseline;
+    vertical-align: baseline;
 }
 
 #{$namespace}summary {
@@ -2026,16 +2075,16 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     }
 
     #{$namespace}details > summary::before {
-		display: inline-block;
+        display: inline-block;
 
-		content: '\25BA';
+        content: '\25BA';
 
-		margin-right: 0.5em;
+        margin-right: 0.5em;
 
-		font-size: 0.75em;
-		font-family: serif;
+        font-size: 0.75em;
+        font-family: serif;
 
-		vertical-align: top;
+        vertical-align: top;
     }
 
     #{$namespace}details[open] > summary::before {
@@ -2045,13 +2094,13 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 
 // N: Prevent `sup` affecting `line-height` in all browsers.
 #{$namespace}sup {
-	position: relative;
-	top: -0.5em;
+    position: relative;
+    top: -0.5em;
 
-	font-size: 75%;
-	line-height: 0;
+    font-size: 75%;
+    line-height: 0;
 
-	vertical-align: baseline;
+    vertical-align: baseline;
 }
 
 /**
@@ -2073,19 +2122,19 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     2. Calc to deduct any border-width.
 */
 #{$namespace}table {
-	width: 100%;
-	/* @TODO - possibly make this configurable to be 'natural' width but centered instead. */
+    width: 100%;
+    /* @TODO - possibly make this configurable to be 'natural' width but centered instead. */
 
-	border-collapse: collapse;
+    border-collapse: collapse;
 
-	margin-bottom: $fallback--base-rem-space-unit; /* 1 */
-	margin-bottom: calc(#{$fallback--base-rem-space-unit} - #{$table-border-width}); /* 2 */
+    margin-bottom: $fallback--base-rem-space-unit; /* 1 */
+    margin-bottom: calc(#{$fallback--base-rem-space-unit} - #{$table-border-width}); /* 2 */
 
-	border: $table-border;
+    border: $table-border;
 
-	background-color: $table-background-color;
+    background-color: $table-background-color;
 
-	border-spacing: 0;
+    border-spacing: 0;
 }
 
 //tbody {}
@@ -2094,13 +2143,13 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     2. Calc to deduct any border-width.
 */
 #{$namespace}td {
-	padding-top: $table-cell-padding;
-	padding-right: $table-cell-padding;
-	padding-bottom: $table-cell-padding; /* 1 */
-	padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
-	padding-left: $table-cell-padding;
+    padding-top: $table-cell-padding;
+    padding-right: $table-cell-padding;
+    padding-bottom: $table-cell-padding; /* 1 */
+    padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
+    padding-left: $table-cell-padding;
 
-	border: $table-border;
+    border: $table-border;
 }
 
 #{$namespace}template {
@@ -2153,10 +2202,10 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 }
 
 @if $input-focus-shadow != false {
-	#{$namespace}textarea:focus {
-		box-shadow: $input-focus-shadow;
-		outline: 0;
-	}
+    #{$namespace}textarea:focus {
+        box-shadow: $input-focus-shadow;
+        outline: 0;
+    }
 }
 //tfoot {}
 /*
@@ -2164,13 +2213,13 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     2. Calc to deduct any border-width.
 */
 #{$namespace}th {
-	padding-top: $table-cell-padding;
-	padding-right: $table-cell-padding;
-	padding-bottom: $table-cell-padding; /* 1 */
-	padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
-	padding-left: $table-cell-padding;
+    padding-top: $table-cell-padding;
+    padding-right: $table-cell-padding;
+    padding-bottom: $table-cell-padding; /* 1 */
+    padding-bottom: calc(#{$table-cell-padding} - #{$table-border-width}); /* 2 */
+    padding-left: $table-cell-padding;
 
-	border: $table-border;
+    border: $table-border;
 }
 
 
@@ -2185,8 +2234,8 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 /*
     1. Either of these will make lists behave properly next to floated items.
        (https://paulbakaus.com/tutorials/css/block-formatting-contexts-and-lists)
-	   a. This causes problems with some decoration. E.g. if the last element in the list is a link,
-	      bottom borders get cropped, so using b instead.
+       a. This causes problems with some decoration. E.g. if the last element in the list is a link,
+          bottom borders get cropped, so using b instead.
        b. `flow-root` is the better option but support is low, so using table-cell as well.
 */
 #{$namespace}ul {
