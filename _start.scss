@@ -1628,19 +1628,19 @@ main {
     //display: -ms-grid; /* 1b */
     //display: grid; /* 1b */
     
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: flex;
+    display: -webkit-box; /* 1b */
+    display: -webkit-flex; /* 1b */
+    display: -moz-box; /* 1b */
+    display: -ms-flexbox; /* 1b */
+    display: flex; /* 1b */
     
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-       -moz-box-orient: vertical;
-       -moz-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    -webkit-box-orient: vertical; /* 1b */
+    -webkit-box-direction: normal; /* 1b */
+    -webkit-flex-direction: column; /* 1b */
+       -moz-box-orient: vertical; /* 1b */
+       -moz-box-direction: normal; /* 1b */
+        -ms-flex-direction: column; /* 1b */
+            flex-direction: column; /* 1b */
 
     display: flow-root;  /* 1b */
 }
@@ -2300,6 +2300,12 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
                 width: 0.4em;
                 height: 0.35em;
             }
+}
+
+// The above CSS causes problems for non-content lists, especially navigation lists.
+// I may consider scoping this to content blocks, but for now I'm excluding it from nav elements:
+nav ul li:before {
+    display: none;
 }
 
 //var {}

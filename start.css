@@ -1078,17 +1078,29 @@ ol {
   display: table;
   /* 1b */
   display: -webkit-box;
+  /* 1b */
   display: -webkit-flex;
+  /* 1b */
   display: -moz-box;
+  /* 1b */
   display: -ms-flexbox;
+  /* 1b */
   display: flex;
+  /* 1b */
   -webkit-box-orient: vertical;
+  /* 1b */
   -webkit-box-direction: normal;
+  /* 1b */
   -webkit-flex-direction: column;
+  /* 1b */
   -moz-box-orient: vertical;
+  /* 1b */
   -moz-box-direction: normal;
+  /* 1b */
   -ms-flex-direction: column;
+  /* 1b */
   flex-direction: column;
+  /* 1b */
   display: flow-root;
   /* 1b */ }
 
@@ -1581,7 +1593,7 @@ ul {
   /* 1b */ }
 
 /*
-    In IE, bullet charactes can affect line-height. Also, there are differences in how the bullet
+    In IE, bullet characters can affect line-height. Also, there are differences in how the bullet
     characters are displayed, so using custom ones.
     @TODO - make this configurable.
 */
@@ -1625,6 +1637,9 @@ ul ul ul li::before {
   ul ul ul li::before {
     width: 0.4em;
     height: 0.35em; } }
+
+nav ul li:before {
+  display: none; }
 
 /*
     1. Allow video to center if container larger than video.
