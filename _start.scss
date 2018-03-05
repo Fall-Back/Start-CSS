@@ -8,9 +8,9 @@
     CSS hacks from http://browserstrangeness.com/css_hacks.html
     (hack and browser support in comments above each usage)
 
-    !!! Maybe don't include custom properties in this, I think it overcomplicates things and needs
+    !!! Maybe don't include custom properties in this, I think it over complicates things and needs
     gradient background overlays to lighten/darken background colors dynamically.
-    Possibly include a seperate file to add custom property support that overrides what it needs,
+    Possibly include a separate file to add custom property support that overrides what it needs,
     all wrapped in an `@supports`.
 
     Resources:
@@ -18,7 +18,7 @@
     * https://24ways.org/2006/compose-to-a-vertical-rhythm
 
     NOTE TO SELF.
-    Where borders are concened, probably best to leave margins alone and use padding to maintain
+    Where borders are concerned, probably best to leave margins alone and use padding to maintain
     baseline-grid. After all, if there's a border, there will have to be padding too.
 
 
@@ -70,7 +70,7 @@
 //@debug calc-px-from-rem(1.5rem);
 
 /*
-    Apply a border and a paddind that offsets the border-width from one spacing unit so as not to
+    Apply a border and a padding that offsets the border-width from one spacing unit so as not to
     affect the vertical rhythm.
     Note the Opera Mini doesn't support `calc` so we need to include normal padding for that
     browser.
@@ -159,7 +159,7 @@
     // margin.
     // Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
     // FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
-    // Need to make sure height is goverened by line-height in case of breaks within buttons.
+    // Need to make sure height is governed by line-height in case of breaks within buttons.
 
     //line-height: calc(#{$input-min-height} - #{$button-border-width * 2});
     //min-height: calc(#{$input-min-height} - #{$input-border-width * 2});
@@ -208,12 +208,12 @@
 
     // Thinking about changing my mind how I do this. It's getting too complicated. I've thought
     // harder about how to handle alternate state from an a11y perspective the old "Don't just rely
-    // on colour" keeps going around my head, so a subtle background-colour tint-shift doesn't
+    // on color" keeps going around my head, so a subtle background-color tint-shift doesn't
     // really cut it. Adding 'inner-lines' via shadows (outline has NO rounded corners) creates a
     // bigger difference.
     // I mustn't forget StartCSS isn't supposed to provide configuration to add EVERYTHING directly
     // to this one file - it's easy enough to add custom styling on top of this - I just want to
-    // make sure everthing I DO include is configurable, or turn-off-able.
+    // make sure everything I DO include is configurable, or turn-off-able.
     // So, IF the user wants to use my inner-line shadow idea, they can, otherwise, they can set the
     // var to `false` and add their own however they like.
     @if $button-focus-shadow != false {
@@ -271,7 +271,7 @@ $ui-border-width: 1px !default;
 $ui-border-radius: 3px !default;
 $ui-border-style: solid !default;
 
-// Gradient better than shadow, I think, but no IE9 support. (filter is ok, but odd on the corners)
+// Gradient better than shadow, I think, but no IE9 support. (filter is OK, but odd on the corners)
 // Problem with shadow, though is if an actual shadow is needed, it would override this.
 $ui-shadow-dark: rgba(0,0,0,0.3) !default;
 $ui-shadow-light: rgba(255,255,255,0.3) !default;
@@ -363,8 +363,8 @@ $input-focus-indicator-color: lighten($ui-color--base, 40%) !default;
 $input-focus-shadow: 0 0 0 $input-focus-indicator-size $input-focus-indicator-color inset !default;
 $input-focus-shadow-outset: 0 0 0 $input-focus-indicator-size $input-focus-indicator-color !default;
 
-// File inputs' natural width varies between browers and is too wide for smaller screens.
-// The only way to get it to collapse on smaller screens is to speciify `width: 100%;` but this
+// File inputs' natural width varies between browsers and is too wide for smaller screens.
+// The only way to get it to collapse on smaller screens is to specify `width: 100%;` but this
 // isn't great on larger screens, so setting a `max-width` solves this and produces a consistent
 // width across browsers.
 // Override this with your preferred width or `false`:
@@ -481,7 +481,7 @@ $selection-text-shadow: none;
 // ^     = 'defined above'
 
 
-// Normalise, Sanitise, A bit of Reset, Scut and Inuit, plus some other opinionated styless.
+// Normalise, Sanitise, A bit of Reset, Scut and Inuit, plus some other opinionated styles.
 
 // Sources Key:
 // N = Normalise
@@ -499,18 +499,18 @@ $selection-text-shadow: none;
 /*
     https://timkadlec.com/2012/10/ie10-snap-mode-and-responsive-design/
     https://css-tricks.com/snippets/javascript/fix-ie-10-on-windows-phone-8-viewport/
-    
-    The following rule fixes a problem with IE10 on Windows 8 snap mode, but arrparently causes
+
+    The following rule fixes a problem with IE10 on Windows 8 snap mode, but apparently causes
     problems on Windows Phone where the only fix seems to be a JS one.
-    
+
     https://nostrongbeliefs.com/why-i-think-we-shouldnt-use-css-viewport-in-ie10-for-now/
-    
+
     This reckons it's not worth it and as I can't seem to test the Windows Phone problem (emulator
     on BrowserStack - not real device which is why I _think) I'm not seeing the problem) I think it
     may be safest to keep this out for now.
     - Hmmm affect 8.1 IE11 as well... not good.
     UPDATE: using hack to only apply the viewport declaration to IE10-11 may work?
-    
+
     https://timkadlec.com/2013/01/windows-phone-8-and-device-width/
 */
 
@@ -600,7 +600,7 @@ html {
 
 
 /*
-    1. Add box sizing inheritence in all browsers (opinionated).
+    1. Add box sizing inheritance in all browsers (opinionated).
        Supporting FF8+ due to Mustard Cut so including for completeness.
 
     2. Remove repeating backgrounds in all browsers (opinionated). (S)
@@ -619,17 +619,17 @@ html {
     -webkit-font-smoothing: inherit; /* 3 */
 
     /*border-style: inherit; /* AK */
-    // This had been commented out, but I can't remember why. I think I read it was detremental
-    // but I can't rember on what. Possible Google Maps or similar.
-    // However, removing it is detremental to many other FallBack patterns so reinstating it for now
-    // until I can specify borders on those elements explicity.
+    // This had been commented out, but I can't remember why. I think I read it was detrimental
+    // but I can't remember on what. Possible Google Maps or similar.
+    // However, removing it is detrimental to many other FallBack patterns so reinstating it for now
+    // until I can specify borders on those elements explicitly.
     //border-width: 0; /* AK */
     //border-color: $ui-color--base; /* AK1 */
 }
 
 /*
     1. Add text decoration inheritance in all browsers (opinionated). (s)
-    2. Add vertical alignment inheritence in all browsers (s).
+    2. Add vertical alignment inheritance in all browsers (s).
 */
 ::before,
 ::after {
@@ -802,7 +802,7 @@ body {
     font-style: italic;
     /*
         @TODO - set up vars and styles for the most common quote styles.
-        I.e. left-border, and enclosing qutoes.
+        I.e. left-border, and enclosing quotes.
     */
 }
 
@@ -945,7 +945,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 */
 #{$namespace}fieldset {
     margin-bottom: $fallback--base-rem-space-unit;
-    
+
     min-width: 0;
 
     @include bordered($fieldset-padding, $fieldset-border-width);
@@ -1179,7 +1179,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 
 @if $input-focus-shadow != false {
     //input:not([type="button"]):not([type="reset"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
-    // Specifying these individually, because using `:not` increases the specifity too much.
+    // Specifying these individually, because using `:not` increases the specificity too much.
     // (Except for special case of input with no type)
     #{$namespace}input:not([type]):focus,
     #{$namespace}[type="color"]:focus,
@@ -1252,7 +1252,7 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
 
     2. IE and Edge behave differently (both to other browsers and each other) and so min-height and
        line-height settings don't seem consistent.
-       Using height explictly for now.
+       Using height explicitly for now.
 
     3. Make sure button corners aren't visible.
 */
@@ -1627,13 +1627,13 @@ main {
     display: table; /* 1b */
     //display: -ms-grid; /* 1b */
     //display: grid; /* 1b */
-    
+
     display: -webkit-box; /* 1b */
     display: -webkit-flex; /* 1b */
     display: -moz-box; /* 1b */
     display: -ms-flexbox; /* 1b */
     display: flex; /* 1b */
-    
+
     -webkit-box-orient: vertical; /* 1b */
     -webkit-box-direction: normal; /* 1b */
     -webkit-flex-direction: column; /* 1b */
@@ -1807,7 +1807,7 @@ main {
     /* -moz-appearance: none;    // Firefox 35+ */
     /* -webkit-appearance: none; // Chrome 45+ */
 
-    /* Expand button style for IE. (not sure yet as alterntive means it's more similar to Chrome) */
+    /* Expand button style for IE. (not sure yet as alternative means it's more similar to Chrome) */
     /*&::-ms-expand {
         //display: none;        // Edge 12+, Internet Explorer 11-
         background-color: $ui-color--base;
@@ -2373,7 +2373,7 @@ nav ul li:before {
 }
 
 /*
-    Specify the unstyled cursor of disabled, not-editable, or otherwise inoperable elements. (S)
+    Specify the un-styled cursor of disabled, not-editable, or otherwise inoperable elements. (S)
 */
 [disabled],
 [aria-disabled] {

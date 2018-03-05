@@ -8,9 +8,9 @@
     CSS hacks from http://browserstrangeness.com/css_hacks.html
     (hack and browser support in comments above each usage)
 
-    !!! Maybe don't include custom properties in this, I think it overcomplicates things and needs
+    !!! Maybe don't include custom properties in this, I think it over complicates things and needs
     gradient background overlays to lighten/darken background colors dynamically.
-    Possibly include a seperate file to add custom property support that overrides what it needs,
+    Possibly include a separate file to add custom property support that overrides what it needs,
     all wrapped in an `@supports`.
 
     Resources:
@@ -18,7 +18,7 @@
     * https://24ways.org/2006/compose-to-a-vertical-rhythm
 
     NOTE TO SELF.
-    Where borders are concened, probably best to leave margins alone and use padding to maintain
+    Where borders are concerned, probably best to leave margins alone and use padding to maintain
     baseline-grid. After all, if there's a border, there will have to be padding too.
 
 
@@ -30,7 +30,7 @@
 
 |-------------------------------------------------------------------------------------------------*/
 /*
-    Apply a border and a paddind that offsets the border-width from one spacing unit so as not to
+    Apply a border and a padding that offsets the border-width from one spacing unit so as not to
     affect the vertical rhythm.
     Note the Opera Mini doesn't support `calc` so we need to include normal padding for that
     browser.
@@ -83,18 +83,18 @@
 /*
     https://timkadlec.com/2012/10/ie10-snap-mode-and-responsive-design/
     https://css-tricks.com/snippets/javascript/fix-ie-10-on-windows-phone-8-viewport/
-    
-    The following rule fixes a problem with IE10 on Windows 8 snap mode, but arrparently causes
+
+    The following rule fixes a problem with IE10 on Windows 8 snap mode, but apparently causes
     problems on Windows Phone where the only fix seems to be a JS one.
-    
+
     https://nostrongbeliefs.com/why-i-think-we-shouldnt-use-css-viewport-in-ie10-for-now/
-    
+
     This reckons it's not worth it and as I can't seem to test the Windows Phone problem (emulator
     on BrowserStack - not real device which is why I _think) I'm not seeing the problem) I think it
     may be safest to keep this out for now.
     - Hmmm affect 8.1 IE11 as well... not good.
     UPDATE: using hack to only apply the viewport declaration to IE10-11 may work?
-    
+
     https://timkadlec.com/2013/01/windows-phone-8-and-device-width/
 */
 /*
@@ -161,7 +161,7 @@ _:-ms-lang(x), html {
   padding: 0; }
 
 /*
-    1. Add box sizing inheritence in all browsers (opinionated).
+    1. Add box sizing inheritance in all browsers (opinionated).
        Supporting FF8+ due to Mustard Cut so including for completeness.
 
     2. Remove repeating backgrounds in all browsers (opinionated). (S)
@@ -184,7 +184,7 @@ _:-ms-lang(x), html {
 
 /*
     1. Add text decoration inheritance in all browsers (opinionated). (s)
-    2. Add vertical alignment inheritence in all browsers (s).
+    2. Add vertical alignment inheritance in all browsers (s).
 */
 ::before,
 ::after {
@@ -306,7 +306,7 @@ blockquote {
   font-style: italic;
   /*
         @TODO - set up vars and styles for the most common quote styles.
-        I.e. left-border, and enclosing qutoes.
+        I.e. left-border, and enclosing quotes.
     */ }
 
 button {
@@ -772,7 +772,7 @@ input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
 
     2. IE and Edge behave differently (both to other browsers and each other) and so min-height and
        line-height settings don't seem consistent.
-       Using height explictly for now.
+       Using height explicitly for now.
 
     3. Make sure button corners aren't visible.
 */
@@ -1218,7 +1218,7 @@ select {
   /* S: */
   /* -moz-appearance: none;    // Firefox 35+ */
   /* -webkit-appearance: none; // Chrome 45+ */
-  /* Expand button style for IE. (not sure yet as alterntive means it's more similar to Chrome) */
+  /* Expand button style for IE. (not sure yet as alternative means it's more similar to Chrome) */
   /*&::-ms-expand {
         //display: none;        // Edge 12+, Internet Explorer 11-
         background-color: $ui-color--base;
@@ -1671,7 +1671,7 @@ video {
   cursor: pointer; }
 
 /*
-    Specify the unstyled cursor of disabled, not-editable, or otherwise inoperable elements. (S)
+    Specify the un-styled cursor of disabled, not-editable, or otherwise inoperable elements. (S)
 */
 [disabled],
 [aria-disabled] {
