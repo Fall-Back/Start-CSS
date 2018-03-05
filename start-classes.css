@@ -1742,7 +1742,78 @@ a[hidden][aria-hidden="false"]:active {
     Resources:
     *
 */
-.button {
+/*
+    "Buttons" or "CTAs" that are really links should be distinguished from real buttons, so by
+    default we're swapping the foreground and background colors:
+*/
+a[href].button,
+a[href].cta {
+  display: inline-block;
+  /* AK. IE9 needs this. */
+  overflow: visible;
+  /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
+  background-color: #fff;
+  color: #663399;
+  font-size: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  min-height: 3rem;
+  line-height: 2.4rem;
+  margin: 0.3rem 0;
+  text-transform: none;
+  /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
+  /* -webkit-appearance: button; // [N2] */
+  -webkit-appearance: none;
+  /* AK */
+  cursor: pointer;
+  /* [N3] */
+  border-color: #663399;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  padding-top: 0.3rem;
+  padding-top: -moz-calc(0);
+  padding-top: calc(0.3rem - 1px);
+  padding-bottom: 0.3rem;
+  padding-bottom: -moz-calc(0);
+  padding-bottom: calc(0.3rem - 1px);
+  padding-left: 0.6rem;
+  padding-right: 0.6rem;
+  vertical-align: middle;
+  /* S: Remove the tapping delay from clickable elements */
+  -ms-touch-action: manipulation;
+  /* S: IE10 */
+  touch-action: manipulation;
+  /*
+    &:hover,
+    &:active,
+    &:focus {
+        // 9999px used for shadow to ensure it'll always be big enough. Better way? Performance? Not sure.
+        @if $bg-color--state-1 == light-shadow {
+            box-shadow: 0 0 0 9999px $ui-shadow-light inset, $button-focus-shadow;
+        } @else if $bg-color--state-1 == dark-shadow {
+            box-shadow: 0 0 0 9999px $ui-shadow-dark inset, $button-focus-shadow;
+        } @else {
+            background-color: $bg-color--state-1;
+        }
+        //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
+        //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
+    }
+    */ }
+  a[href].button:hover, a[href].button:active, a[href].button:focus,
+  a[href].cta:hover,
+  a[href].cta:active,
+  a[href].cta:focus {
+    box-shadow: 0 0 0 2px #b38cd9 inset;
+    outline: 0; }
+  a[href].button:hover, a[href].button:active, a[href].button:focus,
+  a[href].cta:hover,
+  a[href].cta:active,
+  a[href].cta:focus {
+    background-color: #f2ecf9; }
+
+.button[data-text][aria-hidden="true"] {
   display: inline-block;
   /* AK. IE9 needs this. */
   overflow: visible;
@@ -1796,7 +1867,7 @@ a[hidden][aria-hidden="false"]:active {
         //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
     }
     */ }
-  .button:hover, .button:active, .button:focus {
+  .button[data-text][aria-hidden="true"]:hover, .button[data-text][aria-hidden="true"]:active, .button[data-text][aria-hidden="true"]:focus {
     box-shadow: 0 0 0 2px #b38cd9 inset;
     outline: 0; }
 

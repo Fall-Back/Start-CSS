@@ -5,14 +5,34 @@ $custom-input-focus-shadow: 0 0 0 2px lighten($ui-color--base, 20%) !default;
     *
 */
 
-.button {
-    @include button;
+/*
+    "Buttons" or "CTAs" that are really links should be distinguished from real buttons, so by
+    default we're swapping the foreground and background colors:
+*/
+a[href].button,
+a[href].cta {
+    @include button(
+        $button-background-color,
+        $button-text-color,
+        light-shadow,
+        $button-background-color
+    );
+    
+        &:hover,
+        &:active,
+        &:focus {
+            background-color: lighten($button-background-color, 55%);
+        }
 }
 
     // 'Fake' buttons. Over qualified for clarity.
-    .button[data-text][aria-hidden="true"]::before {
-        content: attr(data-text);
+    .button[data-text][aria-hidden="true"] {
+        @include button;
     }
+    
+        .button[data-text][aria-hidden="true"]::before {
+            content: attr(data-text);
+        }
 
 .bordered {
     //@include bordered($fallback--base-line-height, $base-border-width);
