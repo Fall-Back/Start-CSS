@@ -607,6 +607,8 @@ a img {
     3. Remove the tapping delay from clickable elements (S)
 
     4. Keep adjacent elements in the middle.
+    
+    5. This helps prevent default 'normal' from increasing element height in webkit.
 */
 input {
   max-width: 100%;
@@ -635,6 +637,8 @@ input {
   /* 3 */
   vertical-align: middle;
   /* 4 */
+  line-height: 1;
+  /* 5 */
   min-height: 3rem;
   margin: 0.3rem 0; }
   input::-moz-focus-inner {
