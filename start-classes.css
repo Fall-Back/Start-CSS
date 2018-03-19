@@ -43,13 +43,13 @@
     browser.
     Also, since we're supporting FF 8+, we're including -moz-calc for versions up to 16.
     I may consider removing this as those browsers are dead, but I'm just being thorough for now.
-    
+
     Note on the 'last margin' issue/hack:
-    The pseudo element is intended to provide a collapsible margin to cancel out any 'trailing' 
-    margins from content elements. However, since we're reducing the whole padding space by the 
+    The pseudo element is intended to provide a collapsible margin to cancel out any 'trailing'
+    margins from content elements. However, since we're reducing the whole padding space by the
     border-width to maintain the vertical rhythm, that margin is also less, BUT the content margin
     is NOT being reduced, so that wins out - the reduction is ignored.
-    If the pseudo element bottom margin is adjusted to cancel out the height (1px) AS WELL AS 
+    If the pseudo element bottom margin is adjusted to cancel out the height (1px) AS WELL AS
     the amount of border-width, but the last element DOES NOT have a margin, then the space becomes
     too small.
     If pseudo-element height is 0, it doesn't work in IE, Chrome, Safari, without inline-block
@@ -504,7 +504,7 @@ fieldset {
     margin-bottom: calc(-1px - 1px);
     /*
         //height: 1px;
-        
+
         //margin-bottom: -1px;
         //margin-bottom: -moz-calc(-1px - 1px);
         //margin-bottom:      calc(-1px - 1px);
@@ -1087,15 +1087,17 @@ object {
           bottom borders get cropped, so using b instead.
        b. `flow-root` is the better option but support is low, so using table and flex fallbacks
           as well.
-          
-          
+
+
     Hmmm -moz-box / flex is causing numbering to mess up (always 0) on FF8-50.
-    
+
     2. This is the only thing that works in early FF. However, width is content-width, not available
        width so any 'boxy' decoration on the list might look weird.
-       
+
     3. This does a pretty good job of extending coverage:
        Chrome 29+, Edge 14+ (unable to test earlier)
+
+    4. Extend support to IE10-11
 */
 ol {
   margin-bottom: 2.4rem;
@@ -1106,9 +1108,9 @@ ol {
   -webkit-box-orient: vertical;
   /* 1b, 3 */
   display: -ms-flexbox;
-  /* 1b */
+  /* 1b, 4 */
   -ms-flex-direction: column;
-  /* 1b */
+  /* 1b, 4 */
   display: flow-root;
   /* 1b */ }
 
@@ -1845,7 +1847,7 @@ a[href].cta {
     margin-bottom: calc(-1px - 6px);
     /*
         //height: 1px;
-        
+
         //margin-bottom: -1px;
         //margin-bottom: -moz-calc(-1px - 6px);
         //margin-bottom:      calc(-1px - 6px);
@@ -1878,7 +1880,7 @@ a[href].cta {
     margin-bottom: calc(-1px - 0px);
     /*
         //height: 1px;
-        
+
         //margin-bottom: -1px;
         //margin-bottom: -moz-calc(-1px - 0px);
         //margin-bottom:      calc(-1px - 0px);
