@@ -35,12 +35,14 @@ a[href].cta {
         }
 
 .bordered {
-    //@include bordered($fallback--base-line-height, $base-border-width);
-    @include bordered($fallback--base-rem-space-unit, $ui-border-width);
+    @include bordered($fallback--base-line-height, 6px);
+    //@include bordered($fallback--base-rem-space-unit, $ui-border-width);
 }
 
 
 // Note: the 'collapsible bottom spacing' trick doesn't seem to work if there's no border.
+// Affects: IE9-11
+// Works if pseudo element height is 1px.
 // Adding a transparent border seems to fix it, as does setting it to an inline-block.
 // Not sure which is the best / most reliable approach at the moment, so leaving both in for ref.
 .padded {
@@ -48,9 +50,9 @@ a[href].cta {
     //border: 1px solid transparent;
     
     //@include bordered($fallback--base-line-height, 0);
-    @include bordered($fallback--base-rem-space-unit, 0);
-    display: inline-block;
-    width: 100%;
+    @include bordered($fallback--base-rem-space-unit, 0px);
+    //display: inline-block;
+    //width: 100%;
 }
 
 

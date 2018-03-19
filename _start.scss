@@ -92,6 +92,7 @@
     If the pseudo element bottom margin is adjusted to cancel out the height (1px) AS WELL AS 
     the amount of border-width, but the last element DOES NOT have a margin, then the space becomes
     too small.
+    If pseudo-element height is 0, it doesn't work in IE, Chrome, Safari, without inline-block
 */
 @mixin bordered($padding: 1em, $border-width: 1px, $border-color: uiColor, $border-style: solid) {
     border-width: $border-width;
@@ -118,10 +119,15 @@
 
         content: "";
 
-        height: 0;
+        height: 1px;
+        //height: 0;
 
-        margin-bottom: -$border-width;
+        //margin-bottom: -$border-width;
         margin-top: $padding;
+        
+        margin-bottom: -1px;
+        margin-bottom: -moz-calc(-1px - #{$border-width});
+        margin-bottom:      calc(-1px - #{$border-width});
         
         //margin-top: -$border-width;
         //margin-bottom: $padding;
@@ -1656,29 +1662,44 @@ main {
           bottom borders get cropped, so using b instead.
        b. `flow-root` is the better option but support is low, so using table and flex fallbacks
           as well.
+          
+          
+    Hmmm -moz-box / flex is causing numbering to mess up (always 0) on FF8-50.
+    
+    2. This is the only thing that works in early FF. However, width is content-width, not available
+       width so any 'boxy' decoration on the list might look weird.
+       
+    3. This does a pretty good job of extending coverage:
+       Chrome 29+, Edge 14+ (unable to test earlier)
 */
 #{$namespace}ol {
     //overflow: hidden; /* 1a */
 
     margin-bottom: $fallback--base-rem-space-unit;
 
-    display: table; /* 1b */
+    display: table; /* 1b, 2 */
     //display: -ms-grid; /* 1b */
     //display: grid; /* 1b */
-
-    display: -webkit-box; /* 1b */
-    display: -webkit-flex; /* 1b */
-    display: -moz-box; /* 1b */
+    
+    display: -webkit-box; /* 1b, 3 */
+    -webkit-box-orient: vertical; /* 1b, 3 */
+    
     display: -ms-flexbox; /* 1b */
-    display: flex; /* 1b */
+    -ms-flex-direction: column; /* 1b */
 
-    -webkit-box-orient: vertical; /* 1b */
-    -webkit-box-direction: normal; /* 1b */
-    -webkit-flex-direction: column; /* 1b */
-       -moz-box-orient: vertical; /* 1b */
-       -moz-box-direction: normal; /* 1b */
-        -ms-flex-direction: column; /* 1b */
-            flex-direction: column; /* 1b */
+    //display: -webkit-box; /* 1b */
+    //display: -webkit-flex; /* 1b */
+    //display: -moz-box; /* 1b */
+    //display: -ms-flexbox; /* 1b */
+    //display: flex; /* 1b */
+
+    //-webkit-box-orient: vertical; /* 1b */
+    //-webkit-box-direction: normal; /* 1b */
+    //-webkit-flex-direction: column; /* 1b */
+    //   -moz-box-orient: vertical; /* 1b */
+    //   -moz-box-direction: normal; /* 1b */
+    //    -ms-flex-direction: column; /* 1b */
+    //        flex-direction: column; /* 1b */
 
     display: flow-root;  /* 1b */
 }
@@ -1938,7 +1959,7 @@ _::selection, #{$namespace}select:not([multiple]) {
 
 
 /*
-    Apply padding to fudge height in Sarafi (we need to apply to iOS)...
+    Apply padding to fudge height in Safari (we need to apply to iOS)...
 */
 // _::-webkit-full-page-media, _:future, :root .selector { property:value; }
 // Safari 6.2,7.1+
@@ -1971,92 +1992,7 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     The following techniques are messy and break if the font-family or font size changes.
     Maybe move them to the test CSS only so I can see if OTHER elements are falling off the grid.
 */
-
-/*
-    Safari refuses to adjust the height of select[multiple] options.
-    The only way I've managed to get it to adhere to the vertical rhythm is by adjust the font-size
-    on the select:
-    select[multiple] {
-        font-size: 20px;
-        margin-bottom: 8px;
-    }
-
-    This is no good, of course as it makes the text HUGE. Scaling it back with transform works:
-
-        transform-origin: top;
-        transform: scale(0.7);
-
-    but of course the gaps around it are huge as well.
-
-    Hand-adjusting margins here so I can test the rest of the elements on grid properly and moving
-    on:
-*/
-// _:scope, _:future, _:not(*:root), .selector { property:value; }
-// Chrome 27+, Safari 6.1+ (and Opera 14+)
-/*
-_:scope, _:future, _:not(*:root), select[size="2"]  { margin-bottom: 0; }
-_:scope, _:future, _:not(*:root), select[size="3"]  { margin-bottom: 0; }
-_:scope, _:future, _:not(*:root), select[size="4"]  { margin-bottom: 0; }
-_:scope, _:future, _:not(*:root), select[size="5"]  { margin-bottom: calc(0.9rem - 2px); }
-_:scope, _:future, _:not(*:root), select[size="6"]  { margin-bottom: calc(0.4rem - 2px); }
-_:scope, _:future, _:not(*:root), select[size="7"]  { margin-bottom: calc(1.1rem - 2px); }
-_:scope, _:future, _:not(*:root), select[size="8"]  { margin-bottom: calc(0.6rem - 2px); }
-_:scope, _:future, _:not(*:root), select[size="9"]  { margin-bottom: calc(1.3rem - 2px); }
-_:scope, _:future, _:not(*:root), select[size="10"] { margin-bottom: calc(0.8rem - 2px); }
-*/
-
-
-
-// _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root .selector { property:value; }
-// Safari 6.2,7.1+ (Not iOS)
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="2"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.6em - #{$input-border-width * 2}); }
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="3"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.6em - #{$input-border-width * 2}); }
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="4"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.6em - #{$input-border-width * 2}); }
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="5"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 1.1em - #{$input-border-width * 2}); }
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="6"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.85em - #{$input-border-width * 2}); }
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="7"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.6em - #{$input-border-width * 2}); }
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="8"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 1.1em - #{$input-border-width * 2}); }
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="9"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.85em - #{$input-border-width * 2}); }
-_:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="10"] { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.6em - #{$input-border-width * 2}); }
-
-// Reset Chrome and Opera:
-// @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) { .selector { property:value; } }
-// Chrome 29+ (and Opera 16+)
-/*
-@media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
-    select[size] { margin-bottom: calc(#{($fallback--base-rem-space-unit / 8) * 3} - #{$input-border-width * 2}); }
-}
-*/
-
-
-
-/*
-    Similar problem with IE9-11:
-*/
-/* @media screen and (min-width:0\0) and (min-resolution:+72dpi) { .selector { property:value; } } */
-/* These sizings are for 14px sans-serif font: */
-/*
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="2"]  { margin-bottom: calc(1.3rem - #{$input-border-width * 2} - 0.2px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="3"]  { margin-bottom: calc(0.9rem - #{$input-border-width * 2} - 0.3px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="4"]  { margin-bottom: calc(0.5rem - #{$input-border-width * 2} - 0.4px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="5"]  { margin-bottom: calc(1.3rem - #{$input-border-width * 2} - 0.5px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="6"]  { margin-bottom: calc(0.9rem - #{$input-border-width * 2} - 0.6px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="7"]  { margin-bottom: calc(0.5rem - #{$input-border-width * 2} - 0.7px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="8"]  { margin-bottom: calc(1.3rem - #{$input-border-width * 2} - 0.8px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="9"]  { margin-bottom: calc(0.9rem - #{$input-border-width * 2} - 0.9px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="10"] { margin-bottom: calc(0.5rem - #{$input-border-width * 2} - 1px);   } }
-*/
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) {
-    select[size="2"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 1.1em - #{$input-border-width * 2}); }
-    select[size="3"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.75em - #{$input-border-width * 2}); }
-    select[size="4"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 1.25em - #{$input-border-width * 2}); }
-    select[size="5"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.95em - #{$input-border-width * 2}); }
-    select[size="6"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.65em - #{$input-border-width * 2}); }
-    select[size="7"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 1.1em - #{$input-border-width * 2}); }
-    select[size="8"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.75em - #{$input-border-width * 2}); }
-    select[size="9"]  { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 1.25em - #{$input-border-width * 2}); }
-    select[size="10"] { margin-bottom: calc(#{$fallback--base-rem-space-unit} - 0.95em - #{$input-border-width * 2}); }
-}
+/* Individual height fixes moved to '_start-experimental.scss' */
 
 
 //shadow {}
@@ -2292,7 +2228,19 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 */
 #{$namespace}ul li {
     list-style: none;
+    //list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0iY3VycmVudENvbG9yIj48Y2lyY2xlIGN4PSI4IiBjeT0iOCIgcj0iNSIvPjwvc3ZnPg==);
+    list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48Y2lyY2xlIGZpbGw9ImN1cnJlbnRDb2xvciIgY3g9IjQiIGN5PSI0IiByPSIzIi8+PC9zdmc+);
 }
+
+    #{$namespace}ul ul li {
+        list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48Y2lyY2xlIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGN4PSI0IiBjeT0iNCIgcj0iMi41Ii8+PC9zdmc+);
+    }
+
+        #{$namespace}ul ul ul li {
+            list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48cmVjdCBmaWxsPSJjdXJyZW50Q29sb3IiIHg9IjEiIHk9IjEiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiLz48L3N2Zz4=);
+        }
+
+/*
     #{$namespace}ul li::before {
         content: "";
         display: inline-block;
@@ -2321,8 +2269,9 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
         width: 0.4em;
         height: 0.4em;
     }
-
+*/
 /* In IE, the heights of the bullets is too big! */
+/*
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) {
     #{$namespace}ul li::before {
         width: 0.4em;
@@ -2339,7 +2288,7 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
                 height: 0.35em;
             }
 }
-
+*/
 // The above CSS causes problems for non-content lists, especially navigation lists.
 // I may consider scoping this to content blocks, but for now I'm excluding it from nav elements:
 nav ul li:before {
