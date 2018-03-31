@@ -1509,16 +1509,20 @@ ul {
     In IE, bullet characters can affect line-height. Also, there are differences in how the bullet
     characters are displayed, so using custom ones.
     @TODO - make this configurable.
+    Also - base64 is bad for performance. Using raw svg instead.
+    8px w/h means the bullets won't adjust to font-size.
+    In Chrome, setting w/h to 100% instead gets the desired behavior, but the bullets collapse on 
+    other browsers and are invisible. I can't find a fix for this.
 */
 ul li {
   list-style: none;
-  list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48Y2lyY2xlIGZpbGw9ImN1cnJlbnRDb2xvciIgY3g9IjQiIGN5PSI0IiByPSIzIi8+PC9zdmc+); }
+  list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="currentColor" cx="4" cy="4" r="3"/></svg>'); }
 
 ul ul li {
-  list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48Y2lyY2xlIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGN4PSI0IiBjeT0iNCIgcj0iMi41Ii8+PC9zdmc+); }
+  list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><rect fill="currentColor" x="1" y="1" width="6" height="6"/></svg>'); }
 
 ul ul ul li {
-  list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48cmVjdCBmaWxsPSJjdXJyZW50Q29sb3IiIHg9IjEiIHk9IjEiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiLz48L3N2Zz4=); }
+  list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="none" stroke="currentColor" stroke-miterlimit="10" cx="4" cy="4" r="2.5"/></svg>'); }
 
 /*
     ul li::before {
