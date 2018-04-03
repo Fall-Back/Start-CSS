@@ -28,6 +28,7 @@
     Where borders are concerned, probably best to leave margins alone and use padding to maintain
     baseline-grid. After all, if there's a border, there will have to be padding too.
 
+    overflow-y makes element focussable in FireFox.
 
 */
 
@@ -178,6 +179,9 @@
     input[type="button"] to that ruleset - actually that's not a bad idea).
 
 */
+/*
+    1. Remove the tapping delay from clickable elements. (S)
+*/
 @mixin button(
         $color: $button-text-color,
         $bg-color: $button-background-color,
@@ -241,9 +245,8 @@
     // Keep adjacent elements in the middle:
     vertical-align: middle;
 
-    /* S: Remove the tapping delay from clickable elements */
-    -ms-touch-action: manipulation; /* S: IE10 */
-    touch-action: manipulation;
+    -ms-touch-action: manipulation; /* 1 (IE10) */
+    touch-action: manipulation; /* 1 */
 
 
     // Thinking about changing my mind how I do this. It's getting too complicated. I've thought
@@ -262,6 +265,17 @@
         &:focus {
             box-shadow: $button-focus-shadow;
             outline: 0;
+        }
+    }
+    
+    @if $button-focus-outline-width != false {
+        &:hover,
+        &:active,
+        &:focus {
+            outline-width: $button-focus-outline-width;
+            outline-style: $button-focus-outline-style;
+            outline-color: $button-focus-outline-color;
+            outline-offset: $button-focus-outline-offset;
         }
     }
 
@@ -311,6 +325,12 @@ $ui-border-width: 1px !default;
 $ui-border-radius: 3px !default;
 $ui-border-style: solid !default;
 
+
+$ui-focus-outline-width: 2px !default;
+$ui-focus-outline-style: solid !default;
+$ui-focus-outline-color: rgba($ui-color--base, 0.6) !default;
+$ui-focus-outline-offset: 2px !default;
+
 // Gradient better than shadow, I think, but no IE9 support. (filter is OK, but odd on the corners)
 // Problem with shadow, though is if an actual shadow is needed, it would override this.
 $ui-shadow-dark: rgba(0,0,0,0.3) !default;
@@ -324,7 +344,7 @@ $max-main-line-length: 40em !default;
 
 /* Global focus style: */
 //$focus-outline-style: 1px dotted #000 !default;
-$focus-outline-style: 0 !default;
+//$focus-outline-style: 0 !default;
 
 
 // ELEMENTS
@@ -339,7 +359,10 @@ $anchor-border-bottom-offset: -3px;
 $anchor-padding-bottom: 0;
 $anchor-add-external-link-indicator: true !default;
 
-
+$anchor-focus-outline-width: $ui-focus-outline-width !default;
+$anchor-focus-outline-style: $ui-focus-outline-style !default;
+$anchor-focus-outline-color: $ui-focus-outline-color !default;
+$anchor-focus-outline-offset: $ui-focus-outline-offset !default;
 
 // <body>
 $body-padding: $fallback--base-rem-space-unit !default;
@@ -363,9 +386,15 @@ $button-border-width: $ui-border-width !default;
 $button-border-style: $ui-border-style !default;
 $button-border-radius: $ui-border-radius !default;
 
-$button-focus-shadow: 0 0 0 2px lighten($ui-color--base, 30%) inset !default;
+$button-focus-shadow: false !default;
+//$button-focus-shadow: 0 0 0 2px lighten($ui-color--base, 30%) inset !default;
 $button-focus-border: false !default;
 
+$button-focus-outline-width: $ui-focus-outline-width !default;
+$button-focus-outline-style: $ui-focus-outline-style !default;
+$button-focus-outline-color: rgba(255,255,255,0.6) !default;
+//$button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
+$button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
 
 
 // <fieldset>
@@ -401,8 +430,16 @@ $input-min-height: ($fallback--base-rem-space-unit * 1.25);
 
 $input-focus-indicator-size: 2px !default;
 $input-focus-indicator-color: lighten($ui-color--base, 40%) !default;
-$input-focus-shadow: 0 0 0 $input-focus-indicator-size $input-focus-indicator-color inset !default;
+//$input-focus-shadow: 0 0 0 $input-focus-indicator-size $input-focus-indicator-color inset !default;
+$input-focus-shadow: false !default;
 $input-focus-shadow-outset: 0 0 0 $input-focus-indicator-size $input-focus-indicator-color !default;
+
+$input-focus-outline-width: $ui-focus-outline-width !default;
+$input-focus-outline-style: $ui-focus-outline-style !default;
+$input-focus-outline-color: rgba($ui-color--base, 0.3) !default;
+//$button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
+$input-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
+
 
 // File inputs' natural width varies between browsers and is too wide for smaller screens.
 // The only way to get it to collapse on smaller screens is to specify `width: 100%;` but this
@@ -727,19 +764,25 @@ body {
     text-decoration: $anchor-text-decoration;
     -webkit-text-decoration-skip: objects; /* 2 */
 
-    -ms-touch-action: manipulation; /* 3 */
+    -ms-touch-action: manipulation; /* 3 (IE10) */
     touch-action: manipulation; /* 3 */
 
     &:hover,
-    &:active,
-    &:focus {
+    &:active {
         border-bottom: $anchor-border-bottom--hover;
 
         @if $anchor-text-color--hover != $anchor-text-color {
             color: $anchor-text-color--hover;
         }
-
-        outline: 0;
+    }
+    
+    @if $anchor-focus-outline-width != false { 
+        &:focus {
+            outline-width: $anchor-focus-outline-width;
+            outline-style: $anchor-focus-outline-style;
+            outline-color: $anchor-focus-outline-color;
+            outline-offset: $anchor-focus-outline-offset;
+        }
     }
 }
 
@@ -1256,6 +1299,45 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
     }
 }
 
+@if $input-focus-outline-width != false {
+    //input:not([type="button"]):not([type="reset"]):not([type="submit"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus {
+    // Specifying these individually, because using `:not` increases the specificity too much.
+    // (Except for special case of input with no type)
+    #{$namespace}input:not([type]):focus,
+    #{$namespace}[type="color"]:focus,
+    #{$namespace}[type="date"]:focus,
+    #{$namespace}[type="datetime"]:focus,
+    #{$namespace}[type="datetime-local"]:focus,
+    #{$namespace}[type="file"]:focus,
+    #{$namespace}[type="month"]:focus,
+    #{$namespace}[type="number"]:focus,
+    #{$namespace}[type="password"]:focus,
+    #{$namespace}[type="search"]:focus,
+    #{$namespace}[type="tel"]:focus,
+    #{$namespace}[type="text"]:focus,
+    #{$namespace}[type="time"]:focus,
+    #{$namespace}[type="url"]:focus,
+    #{$namespace}[type="week"]:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+
+    #{$namespace}[type="checkbox"]:focus,
+    #{$namespace}[type="radio"]:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+
+    _::-webkit-full-page-media, _:future, :root #{$namespace}[type="checkbox"]:focus,
+    _::-webkit-full-page-media, _:future, :root #{$namespace}[type="radio"]:focus {
+        border: $input-focus-indicator-size solid $input-focus-indicator-color;
+    }
+}
+
 /*
 input:not([type="checkbox"]):not([type="radio"]):not([type="file"]) {
     min-height: $input-min-height;
@@ -1395,6 +1477,15 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
     }
 }
 
+@if $input-focus-outline-width != false {
+    #{$namespace}[type="file"]:focus::-ms-value {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+}
+
 /*
     1. IE10 doesn't like rem so convert to px.
 */
@@ -1433,6 +1524,17 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
         [type="file"]:focus::-ms-browse {
             box-shadow: $button-focus-shadow;
             outline: 0;
+        }
+    }
+    
+    @if $button-focus-outline-width != false {
+        [type="file"]:hover::-ms-browse,
+        [type="file"]:active::-ms-browse,
+        [type="file"]:focus::-ms-browse {
+            outline-width: $button-focus-outline-width;
+            outline-style: $button-focus-outline-style;
+            outline-color: $button-focus-outline-color;
+            outline-offset: $button-focus-outline-offset;
         }
     }
 
@@ -1476,6 +1578,17 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
         #{$namespace}[type="file"]:focus::-webkit-file-upload-button {
             box-shadow: $button-focus-shadow;
             outline: 0;
+        }
+    }
+    
+    @if $button-focus-outline-width != false {
+        #{$namespace}[type="file"]:hover::-webkit-file-upload-button,
+        #{$namespace}[type="file"]:active::-webkit-file-upload-button,
+        #{$namespace}[type="file"]:focus::-webkit-file-upload-button {
+            outline-width: $button-focus-outline-width;
+            outline-style: $button-focus-outline-style;
+            outline-color: $button-focus-outline-color;
+            outline-offset: $button-focus-outline-offset;
         }
     }
 
@@ -1562,7 +1675,9 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
 }
 
 //keygen {}
-
+/*
+    1. Remove the tapping delay from clickable elements. (S)
+*/
 #{$namespace}label {
     display: inline-block;
     font-weight: bold;
@@ -1573,9 +1688,8 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
     padding-top: $fallback--base-rem-space-unit / 4;
     padding-bottom: $fallback--base-rem-space-unit / 4;
 
-    /* S: Remove the tapping delay from clickable elements */
-    -ms-touch-action: manipulation; /* S: IE10 */
-    touch-action: manipulation;
+    -ms-touch-action: manipulation; /* 1 (IE10) */
+    touch-action: manipulation; /* 1 */
 }
 
 /*
@@ -1830,6 +1944,9 @@ main {
 // N1: Address inconsistent `text-transform` inheritance for `select`.
 // All other form control elements do not inherit `text-transform` values.
 //  Correct `select` style inheritance in Firefox.
+/*
+    1. Remove the tapping delay from clickable elements. (S)
+*/
 #{$namespace}select {
     cursor: pointer; /* Sc */
 
@@ -1859,9 +1976,8 @@ main {
     margin: ($fallback--base-rem-space-unit / 8) 0;
     vertical-align: top; /* AK: For FF */
 
-    /* S: Remove the tapping delay from clickable elements */
-    -ms-touch-action: manipulation; /* S: IE10 */
-    touch-action: manipulation;
+    -ms-touch-action: manipulation; /* 1 (IE10) */
+    touch-action: manipulation; /* 1 */
 
     /* margin: calc(#{($fallback--base-rem-space-unit / 8)} * 1.1) 0; // AK: calc for IE rounding issue */
 
@@ -1939,6 +2055,15 @@ _::selection, #{$namespace}select:not([multiple]) {
         outline: 0;
     }
 }
+@if $input-focus-outline-width != false {
+    #{$namespace}select:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+}
+
 // FF
 /*
 @supports (-moz-appearance: meterbar) {
@@ -2021,9 +2146,9 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
 
 //!style {}
 
-//
-// N: Prevent `sub` affecting `line-height` in all browsers.
-//
+/*
+    Prevent `sub` affecting `line-height` in all browsers.
+*/
 #{$namespace}sub {
     position: relative;
     bottom: -0.25em;
@@ -2034,16 +2159,22 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     vertical-align: baseline;
 }
 
+/*
+    1. Correct display in unsupported browsers (https://caniuse.com/#feat=details).
+    2. Remove the tapping delay from clickable elements. (S)
+*/
 #{$namespace}summary {
-    /* S: Firefox 40+, Internet Explorer 11-, Windows Phone 8.1+ */
-    /* N: Correct `block` display not defined for `details` or `summary` in IE 10/11 */
-    display: block;
+    display: block; /* 1 */
 
-    /* S: Remove the tapping delay from clickable elements */
-    -ms-touch-action: manipulation; /* S: IE10 */
-    touch-action: manipulation;
+    -ms-touch-action: manipulation; /* 2 (IE10) */
+    touch-action: manipulation; /* 2 */
 
     cursor: pointer; /* AK */
+    
+    &:focus {
+        outline: 2px solid rgba($ui-color--base, 0.6);
+        outline-offset: 2px;
+    }
 }
 
     /* AK: Normalise summary appearance: (note IE support issue )*/
@@ -2062,6 +2193,8 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
         font-family: serif;
 
         vertical-align: top;
+
+        transition: transform 0.2s ease;
     }
 
     #{$namespace}details[open] > summary::before {
@@ -2069,7 +2202,9 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     }
 
 
-// N: Prevent `sup` affecting `line-height` in all browsers.
+/*
+    Prevent `sup` affecting `line-height` in all browsers.
+*/
 #{$namespace}sup {
     position: relative;
     top: -0.5em;
@@ -2080,19 +2215,22 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     vertical-align: baseline;
 }
 
-/**
- * S1: Change the fill color to match the text color in all browsers (opinionated).
- */
+/*
+    1. Change the fill color to match the text color in all browsers.
+       (needs more testing)
+*/
 #{$namespace}svg {
-    /* H, S */
     vertical-align: $media-element-vertical-align;
 
-    fill: currentColor; /* S1 (@UNTESTED)*/
+    fill: currentColor; /* 1 */
 }
-    // N: Correct overflow not hidden in IE 9/10/11.
-    svg:not(:root) {
-      overflow: hidden;
-    }
+
+/*
+    1. Correct overflow not hidden in IE 9-11.
+*/
+#{$namespace}svg:not(:root) {
+  overflow: hidden; /* 1 */
+}
 
 /*
     1. Opera Mini (no calc support).
@@ -2129,59 +2267,66 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     border: $table-border;
 }
 
+/*
+    1. Hide `template` in unsupported browsers (https://caniuse.com/#feat=template)
+*/
 #{$namespace}template {
-    // S: Android 4.3-, Internet Explorer 11-, iOS 7-, Safari 7-, Windows Phone 8.1+
-    // N: Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.
-    display: none;
+    display: none; /* 1 */
 }
 
-/**
- * S1. Remove the default styling in all browsers (opinionated).
- * S3. Remove the margin in Firefox and Safari.
- */
+/*
+    1. For IE, mainly.
+    2. Edge 12+, Internet Explorer 11-. Without this it acts like overflow: scroll.
+    3. Remove the margin in Firefox and Safari.
+    4. Keep labels at the top of the container.
+    5. Remove the tapping delay from clickable elements.
+    5a. IE 10.
+*/
 #{$namespace}textarea {
+    min-height: $fallback--base-rem-space-unit * 3.5 - calc-rem-from-px($input-border-width * 2); /* 1 */
 
-    resize: $textarea-resize; // S
-    overflow: auto; // N, S: Edge 12+, Internet Explorer 11- // AK without this it acts like overflow: scroll.
+    overflow: auto; /* 2 */
 
+    margin-top: $fallback--base-rem-space-unit / 12;
+    margin-bottom: 0; /* 3 */
 
-    font-size: inherit; // S
-    font-family: inherit; // S
-    font-style: inherit; // S
-    font-weight: inherit; // S
-
-    ////min-height: $input-min-height * 2; // ~S
-    min-height: $fallback--base-rem-space-unit * 3.5 - calc-rem-from-px($input-border-width * 2); // ~S
-    // AK: mainly for IE
-
-    color: $input-text-color;
-    background-color: $input-background-color;
+    padding-left: $input-h-padding;
+    padding-right: $input-h-padding;
 
     border-width: $input-border-width;
     border-radius: $input-border-radius;
     border-color: $input-border-color;
     border-style: $input-border-style;
 
-    //padding-top: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
-    //padding-bottom: ($fallback--base-rem-space-unit / 8) - calc-rem-from-px($input-border-width);
-    padding-left: $input-h-padding;
-    padding-right: $input-h-padding;
-    margin-top: $fallback--base-rem-space-unit / 12;
-    margin-bottom: 0; /* 3 */
-    //margin-bottom: ($fallback--base-rem-space-unit / 8);
-    //margin-bottom: ($fallback--base-rem-space-unit / 6);
+    color: $input-text-color;
+    background-color: $input-background-color;
 
-    vertical-align: top; // AK: Keep labels at the top of the container.
+    font-size: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    font-weight: inherit;
 
-    // S: Remove the tapping delay from clickable elements
-    -ms-touch-action: manipulation; /* S: IE10 */
-    touch-action: manipulation;
+    vertical-align: top; /* 4 */
+
+    -ms-touch-action: manipulation; /* 5a */
+    touch-action: manipulation; /* 5 */
+
+    resize: $textarea-resize;
 }
 
 @if $input-focus-shadow != false {
     #{$namespace}textarea:focus {
         box-shadow: $input-focus-shadow;
         outline: 0;
+    }
+}
+
+@if $input-focus-outline-width != false {
+    #{$namespace}textarea:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
     }
 }
 //tfoot {}
@@ -2230,9 +2375,9 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     @TODO - make this configurable.
     Also - base64 is bad for performance. Using raw svg instead.
     8px w/h means the bullets won't adjust to font-size.
-    In Chrome, setting w/h to 100% instead gets the desired behavior, but the bullets collapse on 
+    In Chrome, setting w/h to 100% instead gets the desired behavior, but the bullets collapse on
     other browsers and are invisible. I can't find a fix for this.
-    
+
     Keep this for reference:
     #{$namespace}ul li {
         list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="currentColor" cx="4" cy="4" r="3"/></svg>');
@@ -2258,7 +2403,7 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
         #{$namespace}ul ul li {
             margin-bottom: -0.06em; /* 1 */
         }
-       
+
             /*
                 1. This is a bit of a magic number. It works - but I'm not sure why.
                    Probably to do with IE rounding.
@@ -2325,6 +2470,7 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     text-shadow: $selection-text-shadow;
 }
 
+}
 
 /*-------------------------------------------------------------------------------------------------|
 
@@ -2345,5 +2491,4 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
 
 @import '_start-utilities.scss';
 
-}
 /*! End Start CSS */

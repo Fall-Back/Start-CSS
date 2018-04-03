@@ -250,7 +250,14 @@ p.subtitle {
 }
 
 
-
+@if $input-focus-outline-width != false {
+    .custom-input:focus + .custom-input-label {
+        outline-width: $anchor-focus-outline-width;
+        outline-style: $anchor-focus-outline-style;
+        outline-color: $anchor-focus-outline-color;
+        outline-offset: $anchor-focus-outline-offset;
+    }
+}
 
 
 
