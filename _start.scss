@@ -15,7 +15,7 @@
     CSS hacks from http://browserstrangeness.com/css_hacks.html
     (hack and browser support in comments above each usage)
 
-    !!! Maybe don't include custom properties in this, I think it over complicates things and needs
+    !!! Maybe don't include custom properties in this, I think it over-complicates things and needs
     gradient background overlays to lighten/darken background colors dynamically.
     Possibly include a separate file to add custom property support that overrides what it needs,
     all wrapped in an `@supports`.
@@ -1334,7 +1334,8 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
     background-color: $ui-color--base;
 }
 
-/* IE 9 (I think): */
+// @media screen and (min-width:0\0) and (min-resolution:+72dpi) { .selector { property:value; } }
+// Internet Explorer 9-11
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) {
     #{$namespace}[type="file"] {
         padding-left: $input-h-padding;
@@ -2231,76 +2232,51 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     8px w/h means the bullets won't adjust to font-size.
     In Chrome, setting w/h to 100% instead gets the desired behavior, but the bullets collapse on 
     other browsers and are invisible. I can't find a fix for this.
-*/
-#{$namespace}ul li {
-    list-style: none;
-    //list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48Y2lyY2xlIGZpbGw9ImN1cnJlbnRDb2xvciIgY3g9IjQiIGN5PSI0IiByPSIzIi8+PC9zdmc+);
-    list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="currentColor" cx="4" cy="4" r="3"/></svg>');
-}
-
-    #{$namespace}ul ul li {
-        //list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48Y2lyY2xlIGZpbGw9Im5vbmUiIHN0cm9rZT0iY3VycmVudENvbG9yIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGN4PSI0IiBjeT0iNCIgcj0iMi41Ii8+PC9zdmc+);
-        list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><rect fill="currentColor" x="1" y="1" width="6" height="6"/></svg>');
+    
+    Keep this for reference:
+    #{$namespace}ul li {
+        list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="currentColor" cx="4" cy="4" r="3"/></svg>');
     }
 
-        #{$namespace}ul ul ul li {
-            //list-style-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4IDgiIHdpZHRoPSI4cHgiIGhlaWdodD0iOHB4Ij48cmVjdCBmaWxsPSJjdXJyZW50Q29sb3IiIHg9IjEiIHk9IjEiIHdpZHRoPSI2IiBoZWlnaHQ9IjYiLz48L3N2Zz4=);
+        #{$namespace}ul ul li {
             list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="none" stroke="currentColor" stroke-miterlimit="10" cx="4" cy="4" r="2.5"/></svg>');
         }
 
-/*
-    #{$namespace}ul li::before {
-        content: "";
-        display: inline-block;
-        width: 0.4em;
-        height: 0.4em;
-        background-color: currentColor;
-        border-radius: 50%;
-        vertical-align: top;
-        top: 0.6em;
-        position: relative;
-        left: -1em;
-        margin-right: -0.4em;
-    }
-
-    #{$namespace}ul ul li::before {
-        background-color: transparent;
-        border: 1px solid currentColor;
-        width: 0.45em;
-        height: 0.45em;
-    }
-
-    #{$namespace}ul ul ul li::before {
-        background-color: currentColor;
-        border: none;
-        border-radius: 0;
-        width: 0.4em;
-        height: 0.4em;
-    }
+            #{$namespace}ul ul ul li {
+                list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><rect fill="currentColor" x="1" y="1" width="6" height="6"/></svg>');
+            }
 */
-/* In IE, the heights of the bullets is too big! */
-/*
+// @media screen and (min-width:0\0) and (min-resolution:+72dpi) { .selector { property:value; } }
+// Internet Explorer 9-11
 @media screen and (min-width:0\0) and (min-resolution:+72dpi) {
-    #{$namespace}ul li::before {
-        width: 0.4em;
-        height: 0.35em;
+    #{$namespace}ul li {
     }
 
-        #{$namespace}ul ul li::before {
-            width: 0.45em;
-            height: 0.4em;
+        /*
+            1. 1px at 16px font-size. Should be 0.0625 but IE is 2 decimal-places only.
+        */
+        #{$namespace}ul ul li {
+            margin-bottom: -0.06em; /* 1 */
         }
-
-            #{$namespace}ul ul ul li::before {
-                width: 0.4em;
-                height: 0.35em;
+       
+            /*
+                1. This is a bit of a magic number. It works - but I'm not sure why.
+                   Probably to do with IE rounding.
+            */
+            #{$namespace}ul ul ul li {
+                margin-bottom: -0.02em; /* 1 */
             }
 }
+
+/*
+    IE9 needs a further tweak to get it on the baseline:
 */
-// The above CSS causes problems for non-content lists, especially navigation lists.
-// I may consider scoping this to content blocks, but for now I'm excluding it from nav elements:
-nav ul li:before {
-    display: none;
+// @media screen and (min-width:0\0) and (min-resolution:.001dpcm) { .selector { property:value; } }
+// Internet Explorer 9
+@media screen and (min-width:0\0) and (min-resolution:.001dpcm) {
+    #{$namespace}ul ul ul li {
+        margin-bottom: -0.04em;
+    }
 }
 
 //var {}

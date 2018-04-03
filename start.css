@@ -34,7 +34,7 @@
     CSS hacks from http://browserstrangeness.com/css_hacks.html
     (hack and browser support in comments above each usage)
 
-    !!! Maybe don't include custom properties in this, I think it over complicates things and needs
+    !!! Maybe don't include custom properties in this, I think it over-complicates things and needs
     gradient background overlays to lighten/darken background colors dynamically.
     Possibly include a separate file to add custom property support that overrides what it needs,
     all wrapped in an `@supports`.
@@ -849,7 +849,6 @@ _:-moz-any-link, :root [type="file"] {
 _:-ms-input-placeholder, :root [type="file"] {
   background-color: #663399; }
 
-/* IE 9 (I think): */
 @media screen and (min-width: 0\0) and (min-resolution: 72dpi) {
   [type="file"] {
     padding-left: 0.6rem; } }
@@ -1532,68 +1531,41 @@ ul {
     8px w/h means the bullets won't adjust to font-size.
     In Chrome, setting w/h to 100% instead gets the desired behavior, but the bullets collapse on 
     other browsers and are invisible. I can't find a fix for this.
-*/
-ul li {
-  list-style: none;
-  list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="currentColor" cx="4" cy="4" r="3"/></svg>'); }
-
-ul ul li {
-  list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><rect fill="currentColor" x="1" y="1" width="6" height="6"/></svg>'); }
-
-ul ul ul li {
-  list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="none" stroke="currentColor" stroke-miterlimit="10" cx="4" cy="4" r="2.5"/></svg>'); }
-
-/*
-    ul li::before {
-        content: "";
-        display: inline-block;
-        width: 0.4em;
-        height: 0.4em;
-        background-color: currentColor;
-        border-radius: 50%;
-        vertical-align: top;
-        top: 0.6em;
-        position: relative;
-        left: -1em;
-        margin-right: -0.4em;
+    
+    Keep this for reference:
+    ul li {
+        list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="currentColor" cx="4" cy="4" r="3"/></svg>');
     }
 
-    ul ul li::before {
-        background-color: transparent;
-        border: 1px solid currentColor;
-        width: 0.45em;
-        height: 0.45em;
-    }
-
-    ul ul ul li::before {
-        background-color: currentColor;
-        border: none;
-        border-radius: 0;
-        width: 0.4em;
-        height: 0.4em;
-    }
-*/
-/* In IE, the heights of the bullets is too big! */
-/*
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) {
-    ul li::before {
-        width: 0.4em;
-        height: 0.35em;
-    }
-
-        ul ul li::before {
-            width: 0.45em;
-            height: 0.4em;
+        ul ul li {
+            list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><circle fill="none" stroke="currentColor" stroke-miterlimit="10" cx="4" cy="4" r="2.5"/></svg>');
         }
 
-            ul ul ul li::before {
-                width: 0.4em;
-                height: 0.35em;
+            ul ul ul li {
+                list-style-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8" width="8px" height="8px"><rect fill="currentColor" x="1" y="1" width="6" height="6"/></svg>');
             }
-}
 */
-nav ul li:before {
-  display: none; }
+@media screen and (min-width: 0\0) and (min-resolution: 72dpi) {
+  /*
+            1. 1px at 16px font-size. Should be 0.0625 but IE is 2 decimal-places only.
+        */
+  ul ul li {
+    margin-bottom: -0.06em;
+    /* 1 */ }
+  /*
+                1. This is a bit of a magic number. It works - but I'm not sure why.
+                   Probably to do with IE rounding.
+            */
+  ul ul ul li {
+    margin-bottom: -0.02em;
+    /* 1 */ } }
+
+/*
+    IE9 needs a further tweak to get it on the baseline:
+*/
+@media screen and (min-width: 0\0) and (min-resolution: 0.001dpcm) {
+  ul ul ul li {
+    margin-bottom: -0.04em; } }
 
 /*
     1. Allow video to center if container larger than video.
@@ -1781,19 +1753,6 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
 */
 /*
     Similar problem with IE9-11:
-*/
-/* @media screen and (min-width:0\0) and (min-resolution:+72dpi) { .selector { property:value; } } */
-/* These sizings are for 14px sans-serif font: */
-/*
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="2"]  { margin-bottom: calc(1.3rem - 2px - 0.2px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="3"]  { margin-bottom: calc(0.9rem - 2px - 0.3px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="4"]  { margin-bottom: calc(0.5rem - 2px - 0.4px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="5"]  { margin-bottom: calc(1.3rem - 2px - 0.5px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="6"]  { margin-bottom: calc(0.9rem - 2px - 0.6px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="7"]  { margin-bottom: calc(0.5rem - 2px - 0.7px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="8"]  { margin-bottom: calc(1.3rem - 2px - 0.8px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="9"]  { margin-bottom: calc(0.9rem - 2px - 0.9px); } }
-@media screen and (min-width:0\0) and (min-resolution:+72dpi) { select[size="10"] { margin-bottom: calc(0.5rem - 2px - 1px);   } }
 */
 @media screen and (min-width: 0\0) and (min-resolution: 72dpi) {
   select[size="2"] {
