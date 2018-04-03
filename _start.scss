@@ -2325,101 +2325,25 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     text-shadow: $selection-text-shadow;
 }
 
+
 /*-------------------------------------------------------------------------------------------------|
 
     ACCESSIBILITY / ARIA
+    Moved to it's own file. Still debating this.
 
 |-------------------------------------------------------------------------------------------------*/
 
-[aria-busy="true"] {
-    cursor: progress;
-}
-
-/*
-    Specify the pointer cursor of trigger elements. (S)
-*/
-
-[aria-controls] {
-    cursor: pointer;
-}
-
-/*
-    Specify the un-styled cursor of disabled, not-editable, or otherwise inoperable elements. (S)
-*/
-[disabled],
-[aria-disabled] {
-    cursor: default;
-}
-
-
-/*
-    Address `[hidden]` styling not present in IE 8/9/10. (N)
-*/
-[hidden] {
-    display: none;
-}
-
-/*
-    Specify the style of visually hidden yet accessible elements. (S)
-*/
-[hidden][aria-hidden="false"] {
-    clip: rect(0 0 0 0);
-    position: absolute;
-
-    display: inline;
-    /*border: 0;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    width: 1px;*/
-}
-
-    a[hidden][aria-hidden="false"]:focus,
-    a[hidden][aria-hidden="false"]:active {
-        clip: auto;
-        position: static;
-
-        /*height: auto;
-        margin: 0;
-        overflow: visible;
-        width: auto;*/
-    }
+@import '_start-accessibility.scss';
 
 
 /*-------------------------------------------------------------------------------------------------|
 
     UTILITIES
+    Moved to it's own file. Still debating this.
 
 -|------------------------------------------------------------------------------------------------*/
 
+@import '_start-utilities.scss';
 
-/*
-    Clearfix: contain floats for modern browsers
-
-    1. The space content is one way to avoid an Opera bug when the `contenteditable` attribute is #
-       included anywhere else in the document.
-       Otherwise it causes space to appear at the top and bottom of elements that receive the#
-       `clearfix` class.
-
-    2. The use of `table` rather than `block` is only necessary if using
-       `:before` to contain the top-margins of child elements.
-*/
-
-.clearfix:before,
-.clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
-}
-
-.clearfix,
-.clearfix:after {
-    clear: both;
-}
-
-
-.no-css-only {
-    display: none;
 }
 /*! End Start CSS */
-}
