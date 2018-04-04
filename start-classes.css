@@ -292,9 +292,7 @@ body {
     a:link a:visited a:hover a:active a:focus
 
     1. Remove the gray background on active links in IE 10.
-
     2. Remove the gaps in underlines in iOS 8+ and Safari 8+.
-
     3. Remove the tapping delay from clickable elements .
 */
 a[href] {
@@ -540,18 +538,7 @@ fieldset {
     margin-top: 2.4rem;
     margin-bottom: -1px;
     margin-bottom: -moz-calc(-1px - 1px);
-    margin-bottom: calc(-1px - 1px);
-    /*
-        //height: 1px;
-
-        //margin-bottom: -1px;
-        //margin-bottom: -moz-calc(-1px - 1px);
-        //margin-bottom:      calc(-1px - 1px);
-
-        //margin-top: 2.4rem;
-        //margin-top: -moz-calc(2.4rem - 1px);
-        //margin-top:      calc(2.4rem - 1px);
-        */ }
+    margin-bottom: calc(-1px - 1px); }
 
 fieldset fieldset {
   margin: 0;
@@ -1754,18 +1741,7 @@ a[href].cta {
     margin-top: 24px;
     margin-bottom: -1px;
     margin-bottom: -moz-calc(-1px - 6px);
-    margin-bottom: calc(-1px - 6px);
-    /*
-        //height: 1px;
-
-        //margin-bottom: -1px;
-        //margin-bottom: -moz-calc(-1px - 6px);
-        //margin-bottom:      calc(-1px - 6px);
-
-        //margin-top: 24px;
-        //margin-top: -moz-calc(24px - 6px);
-        //margin-top:      calc(24px - 6px);
-        */ }
+    margin-bottom: calc(-1px - 6px); }
 
 .padded {
   border-width: 0px;
@@ -1787,18 +1763,7 @@ a[href].cta {
     margin-top: 2.4rem;
     margin-bottom: -1px;
     margin-bottom: -moz-calc(-1px - 0px);
-    margin-bottom: calc(-1px - 0px);
-    /*
-        //height: 1px;
-
-        //margin-bottom: -1px;
-        //margin-bottom: -moz-calc(-1px - 0px);
-        //margin-bottom:      calc(-1px - 0px);
-
-        //margin-top: 2.4rem;
-        //margin-top: -moz-calc(2.4rem - 0px);
-        //margin-top:      calc(2.4rem - 0px);
-        */ }
+    margin-bottom: calc(-1px - 0px); }
 
 /*
     1. Prevent element increasing height of parent.

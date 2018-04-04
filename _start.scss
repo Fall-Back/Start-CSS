@@ -95,38 +95,14 @@
         content: "";
 
         height: 1px;
-        //height: 0;
 
-        //margin-bottom: -$border-width;
         margin-top: $padding;
 
         margin-bottom: -1px;
         margin-bottom: -moz-calc(-1px - #{$border-width});
         margin-bottom:      calc(-1px - #{$border-width});
-
-        //margin-top: -$border-width;
-        //margin-bottom: $padding;
-
-        /*
-        //height: 1px;
-
-        //margin-bottom: -1px;
-        //margin-bottom: -moz-calc(-1px - #{$border-width});
-        //margin-bottom:      calc(-1px - #{$border-width});
-
-        //margin-top: #{$padding};
-        //margin-top: -moz-calc(#{$padding} - #{$border-width});
-        //margin-top:      calc(#{$padding} - #{$border-width});
-        */
     }
 }
-
-// [N0] Address inconsistent `text-transform` inheritance for `button`.
-// All other form control elements do not inherit `text-transform` values.
-// Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
-// 2. Correct inability to style clickable `input` types in iOS.
-// 3. Improve usability and consistency of cursor style between image-type
-//    `input` and others.
 
 /*
     This button mixin isn't really meant for generating specific/themed _types_ of button - there
@@ -694,9 +670,7 @@ body {
     a:link a:visited a:hover a:active a:focus
 
     1. Remove the gray background on active links in IE 10.
-
     2. Remove the gaps in underlines in iOS 8+ and Safari 8+.
-
     3. Remove the tapping delay from clickable elements .
 */
 #{$namespace}a[href] {
