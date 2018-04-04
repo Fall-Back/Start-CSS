@@ -115,6 +115,11 @@
 */
 /*
     1. Remove the tapping delay from clickable elements.
+    
+    Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom margin.
+    Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
+    FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
+    Need to make sure height is governed by line-height in case of breaks within buttons.
 */
 /*-------------------------------------------------------------------------------------------------|
 
@@ -122,6 +127,14 @@
 
 |-------------------------------------------------------------------------------------------------*/
 /* Global focus style: */
+/*
+//$button-focus-outline-width: $ui-focus-outline-width !default;
+$button-focus-outline-width: false !default;
+$button-focus-outline-style: $ui-focus-outline-style !default;
+$button-focus-outline-color: rgba(255,255,255,0.6) !default;
+//$button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
+$button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
+*/
 /*$input-focus-indicator-color: false !default;
 @if color_light_or_dark($input-background-color) == 'light' {
     $input-focus-indicator-color: darken($input-background-color, 30%);
@@ -279,9 +292,7 @@ body {
     a:link a:visited a:hover a:active a:focus
 
     1. Remove the gray background on active links in IE 10.
-
     2. Remove the gaps in underlines in iOS 8+ and Safari 8+.
-
     3. Remove the tapping delay from clickable elements .
 */
 a[href] {
@@ -371,55 +382,50 @@ blockquote {
     */ }
 
 button {
-  background-color: #663399;
-  color: #fff;
-  font-size: inherit;
-  font-family: inherit;
-  font-style: inherit;
-  font-weight: inherit;
+  display: inline-block;
+  /* AK. IE9 needs this. Hmmm, for what exactly?*/
   min-height: 3rem;
-  line-height: 2.4rem;
+  overflow: visible;
+  /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
   margin: 0.3rem 0;
-  text-transform: none;
-  /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
-  /* -webkit-appearance: button; // [N2] */
-  -webkit-appearance: none;
-  /* AK */
-  cursor: pointer;
-  /* [N3] */
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 3px;
   padding-top: 0.3rem;
   padding-top: -moz-calc(0);
   padding-top: calc(0.3rem - 1px);
+  padding-right: 0.6rem;
   padding-bottom: 0.3rem;
   padding-bottom: -moz-calc(0);
   padding-bottom: calc(0.3rem - 1px);
   padding-left: 0.6rem;
-  padding-right: 0.6rem;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  color: #fff;
+  background-color: #663399;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: 2.4rem;
   vertical-align: middle;
+  text-transform: none;
+  /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
+  cursor: pointer;
   -ms-touch-action: manipulation;
   /* 1 (IE10) */
   touch-action: manipulation;
   /* 1 */
-  /*
-    &:hover,
-    &:active,
-    &:focus {
-        // 9999px used for shadow to ensure it'll always be big enough. Better way? Performance? Not sure.
-        @if $bg-color--state-1 == light-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-light inset, $button-focus-shadow;
-        } @else if $bg-color--state-1 == dark-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-dark inset, $button-focus-shadow;
-        } @else {
-            background-color: $bg-color--state-1;
+  -webkit-appearance: none;
+  /*@if $button-focus-outline-width != false {
+        &:hover,
+        &:active,
+        &:focus {
+            outline-width: $button-focus-outline-width;
+            outline-style: $button-focus-outline-style;
+            outline-color: $button-focus-outline-color;
+            outline-offset: $button-focus-outline-offset;
         }
-        //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
-        //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
-    }
-    */ }
+    }*/ }
   button:hover, button:active, button:focus {
     box-shadow: 0 0 0 2px #b38cd9 inset;
     outline: 0; }
@@ -532,18 +538,7 @@ fieldset {
     margin-top: 2.4rem;
     margin-bottom: -1px;
     margin-bottom: -moz-calc(-1px - 1px);
-    margin-bottom: calc(-1px - 1px);
-    /*
-        //height: 1px;
-
-        //margin-bottom: -1px;
-        //margin-bottom: -moz-calc(-1px - 1px);
-        //margin-bottom:      calc(-1px - 1px);
-
-        //margin-top: 2.4rem;
-        //margin-top: -moz-calc(2.4rem - 1px);
-        //margin-top:      calc(2.4rem - 1px);
-        */ }
+    margin-bottom: calc(-1px - 1px); }
 
 fieldset fieldset {
   margin: 0;
@@ -730,55 +725,50 @@ _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
 [type="button"],
 [type="reset"],
 [type="submit"] {
-  background-color: #663399;
-  color: #fff;
-  font-size: inherit;
-  font-family: inherit;
-  font-style: inherit;
-  font-weight: inherit;
+  display: inline-block;
+  /* AK. IE9 needs this. Hmmm, for what exactly?*/
   min-height: 3rem;
-  line-height: 2.4rem;
+  overflow: visible;
+  /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
   margin: 0.3rem 0;
-  text-transform: none;
-  /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
-  /* -webkit-appearance: button; // [N2] */
-  -webkit-appearance: none;
-  /* AK */
-  cursor: pointer;
-  /* [N3] */
-  border-color: rgba(0, 0, 0, 0.2);
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 3px;
   padding-top: 0.3rem;
   padding-top: -moz-calc(0);
   padding-top: calc(0.3rem - 1px);
+  padding-right: 0.6rem;
   padding-bottom: 0.3rem;
   padding-bottom: -moz-calc(0);
   padding-bottom: calc(0.3rem - 1px);
   padding-left: 0.6rem;
-  padding-right: 0.6rem;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  color: #fff;
+  background-color: #663399;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: 2.4rem;
   vertical-align: middle;
+  text-transform: none;
+  /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
+  cursor: pointer;
   -ms-touch-action: manipulation;
   /* 1 (IE10) */
   touch-action: manipulation;
   /* 1 */
-  /*
-    &:hover,
-    &:active,
-    &:focus {
-        // 9999px used for shadow to ensure it'll always be big enough. Better way? Performance? Not sure.
-        @if $bg-color--state-1 == light-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-light inset, $button-focus-shadow;
-        } @else if $bg-color--state-1 == dark-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-dark inset, $button-focus-shadow;
-        } @else {
-            background-color: $bg-color--state-1;
+  -webkit-appearance: none;
+  /*@if $button-focus-outline-width != false {
+        &:hover,
+        &:active,
+        &:focus {
+            outline-width: $button-focus-outline-width;
+            outline-style: $button-focus-outline-style;
+            outline-color: $button-focus-outline-color;
+            outline-offset: $button-focus-outline-offset;
         }
-        //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
-        //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
-    }
-    */ }
+    }*/ }
   [type="button"]:hover, [type="button"]:active, [type="button"]:focus,
   [type="reset"]:hover,
   [type="reset"]:active,
@@ -1673,6 +1663,16 @@ a[hidden][aria-hidden="false"]:active {
   box-shadow: true;
   outline: 0; }
 
+/*@if $button-focus-outline-width != false {
+        [type="file"]:hover::-ms-browse,
+        [type="file"]:active::-ms-browse,
+        [type="file"]:focus::-ms-browse {
+            outline-width: $button-focus-outline-width;
+            outline-style: $button-focus-outline-style;
+            outline-color: $button-focus-outline-color;
+            outline-offset: $button-focus-outline-offset;
+        }
+    }*/
 /*
     1. Spacing height + 2 sets of input padding, minus border width.
 */
@@ -1704,6 +1704,16 @@ a[hidden][aria-hidden="false"]:active {
   box-shadow: true;
   outline: 0; }
 
+/*@if $button-focus-outline-width != false {
+        [type="file"]:hover::-webkit-file-upload-button,
+        [type="file"]:active::-webkit-file-upload-button,
+        [type="file"]:focus::-webkit-file-upload-button {
+            outline-width: $button-focus-outline-width;
+            outline-style: $button-focus-outline-style;
+            outline-color: $button-focus-outline-color;
+            outline-offset: $button-focus-outline-offset;
+        }
+    }*/
 /*
     Safari refuses to adjust the height of select[multiple] options.
     The only way I've managed to get it to adhere to the vertical rhythm is by adjust the font-size

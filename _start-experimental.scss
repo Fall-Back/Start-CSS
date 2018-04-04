@@ -88,7 +88,7 @@
         }
     }
 
-    @if $button-focus-outline-width != false {
+    /*@if $button-focus-outline-width != false {
         [type="file"]:hover::-ms-browse,
         [type="file"]:active::-ms-browse,
         [type="file"]:focus::-ms-browse {
@@ -97,7 +97,7 @@
             outline-color: $button-focus-outline-color;
             outline-offset: $button-focus-outline-offset;
         }
-    }
+    }*/
 
 /*
     1. Spacing height + 2 sets of input padding, minus border width.
@@ -142,7 +142,7 @@
         }
     }
 
-    @if $button-focus-outline-width != false {
+    /*@if $button-focus-outline-width != false {
         #{$namespace}[type="file"]:hover::-webkit-file-upload-button,
         #{$namespace}[type="file"]:active::-webkit-file-upload-button,
         #{$namespace}[type="file"]:focus::-webkit-file-upload-button {
@@ -151,7 +151,7 @@
             outline-color: $button-focus-outline-color;
             outline-offset: $button-focus-outline-offset;
         }
-    }
+    }*/
 
 /*
     Safari refuses to adjust the height of select[multiple] options.
