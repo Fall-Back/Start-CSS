@@ -155,6 +155,11 @@
 */
 /*
     1. Remove the tapping delay from clickable elements.
+    
+    Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom margin.
+    Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
+    FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
+    Need to make sure height is governed by line-height in case of breaks within buttons.
 */
 @mixin button(
         $color: $button-text-color,
@@ -162,67 +167,51 @@
         $bg-color--state-1: $button-background-color--state-1,
         $border-color: $button-border-color
     ) {
-    //display: inline-block; /* AK. IE9 needs this. Hmmm, for what exactly?*/
+    display: inline-block; /* AK. IE9 needs this. Hmmm, for what exactly?*/
+    
+    min-height: $input-min-height;
 
     overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
-    background-color: $bg-color;
-    color: $color;
-
-    font-size: inherit; // S
-    font-family: inherit;
-    font-style: inherit;
-    font-weight: inherit;
-
-    // Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom
-    // margin.
-    // Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
-    // FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
-    // Need to make sure height is governed by line-height in case of breaks within buttons.
-
-    //line-height: calc(#{$input-min-height} - #{$button-border-width * 2});
-    //min-height: calc(#{$input-min-height} - #{$input-border-width * 2});
-
-    //box-sizing: content-box;
-    min-height: $input-min-height;
-    line-height: $fallback--base-rem-space-unit;
-
+    
     margin: ($fallback--base-rem-space-unit / 8) 0;
-
-
-    text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
-    /* -webkit-appearance: button; // [N2] */
-    -webkit-appearance: none; /* AK */
-    cursor: pointer; /* [N3] */
-
-
+    
+    padding-top: #{$fallback--base-rem-space-unit / 8}; // Opera Mini needs this:
+    //padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-top: -moz-calc(0);
+    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-right: $button-h-padding;
+    padding-bottom: #{$fallback--base-rem-space-unit / 8}; // Opera Mini needs this:
+    //padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-bottom: -moz-calc(0);
+    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    padding-left: $button-h-padding;
+    
     border-color: $border-color;
     border-style: $button-border-style;
     border-width: $button-border-width;
     border-radius: $button-border-radius;
+    
+    color: $color;
+    background-color: $bg-color;
+    
 
-    // Opera Mini needs this:
-    padding-top: #{$fallback--base-rem-space-unit / 8};
-    //padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
-    padding-top: -moz-calc(0);
-    padding-top: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
-    // Opera Mini needs this:
-    padding-bottom: #{$fallback--base-rem-space-unit / 8};
-    //padding-bottom: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
-    padding-bottom: -moz-calc(0);
-    padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
+    font-weight: inherit;
+    font-style: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    line-height: $fallback--base-rem-space-unit;
 
+    vertical-align: middle; // Keep adjacent elements in the middle:
 
-    padding-left: $button-h-padding;
-    padding-right: $button-h-padding;
-
-    //vertical-align: baseline;
-    // Keep adjacent elements in the middle:
-    vertical-align: middle;
-
+    text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
+    
+    cursor: pointer;
+    
     -ms-touch-action: manipulation; /* 1 (IE10) */
     touch-action: manipulation; /* 1 */
-
-
+    
+    -webkit-appearance: none;
+    
     // Thinking about changing my mind how I do this. It's getting too complicated. I've thought
     // harder about how to handle alternate state from an a11y perspective the old "Don't just rely
     // on color" keeps going around my head, so a subtle background-color tint-shift doesn't
@@ -247,7 +236,7 @@
         }
     }
 
-    @if $button-focus-outline-width != false {
+    /*@if $button-focus-outline-width != false {
         &:hover,
         &:active,
         &:focus {
@@ -256,25 +245,7 @@
             outline-color: $button-focus-outline-color;
             outline-offset: $button-focus-outline-offset;
         }
-    }
-
-
-    /*
-    &:hover,
-    &:active,
-    &:focus {
-        // 9999px used for shadow to ensure it'll always be big enough. Better way? Performance? Not sure.
-        @if $bg-color--state-1 == light-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-light inset, $button-focus-shadow;
-        } @else if $bg-color--state-1 == dark-shadow {
-            box-shadow: 0 0 0 9999px $ui-shadow-dark inset, $button-focus-shadow;
-        } @else {
-            background-color: $bg-color--state-1;
-        }
-        //background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.2) 100%)  $bg-color;
-        //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#33000000',GradientType=0 );
-    }
-    */
+    }*/
 }
 
 /*-------------------------------------------------------------------------------------------------|
@@ -372,14 +343,14 @@ $button-border-radius: $ui-border-radius !default;
 $button-focus-shadow: true !default;
 
 //unused? $button-focus-border: false !default;
-
+/*
 //$button-focus-outline-width: $ui-focus-outline-width !default;
 $button-focus-outline-width: false !default;
 $button-focus-outline-style: $ui-focus-outline-style !default;
 $button-focus-outline-color: rgba(255,255,255,0.6) !default;
 //$button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
 $button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
-
+*/
 
 // <fieldset>
 $fieldset-border-width: $ui-border-width !default;

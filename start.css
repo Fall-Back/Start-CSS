@@ -371,8 +371,6 @@ blockquote {
     */ }
 
 button {
-  overflow: visible;
-  /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
   background-color: #663399;
   color: #fff;
   font-size: inherit;
@@ -732,8 +730,6 @@ _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
 [type="button"],
 [type="reset"],
 [type="submit"] {
-  overflow: visible;
-  /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
   background-color: #663399;
   color: #fff;
   font-size: inherit;
