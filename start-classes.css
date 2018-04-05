@@ -308,10 +308,13 @@ a[href] {
   -ms-touch-action: manipulation;
   /* 3 (IE10) */
   touch-action: manipulation;
-  /* 3 */ }
-  a[href]:hover, a[href]:active, a[href]:focus {
-    border-bottom: 3px solid;
-    outline: none; }
+  /* 3 */
+  outline: none; }
+  a[href]:hover, a[href]:active {
+    border-bottom: 3px solid; }
+  a[href]:focus {
+    color: white;
+    background-color: #663399; }
 
 a[href][rel="external"]::after {
   display: inline-block;
@@ -697,6 +700,7 @@ input:not([type]):focus,
 [type="number"]:focus,
 [type="password"]:focus,
 [type="search"]:focus,
+[type="range"]:focus,
 [type="tel"]:focus,
 [type="text"]:focus,
 [type="time"]:focus,
@@ -705,22 +709,65 @@ input:not([type]):focus,
   box-shadow: 0 0 0 2px #b38cd9 inset;
   outline: 0; }
 
+/*
+        Without custom styling (appearance: none), Safari doesn't apply the shadow, so breaks
+        accessibility ...
+    */
 [type="checkbox"]:focus,
 [type="radio"]:focus {
   box-shadow: 0 0 0 2px #b38cd9;
   outline: 0; }
 
+/*
+        ... so reinstating the outline:
+    */
 _::-webkit-full-page-media, _:future, :root [type="checkbox"]:focus,
 _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
-  border: 2px solid #b38cd9; }
+  outline: auto 5px -webkit-focus-ring-color; }
 
+/*@if $input-focus-outline-width != false {
+    input:not([type]):focus,
+    [type="color"]:focus,
+    [type="date"]:focus,
+    [type="datetime"]:focus,
+    [type="datetime-local"]:focus,
+    [type="file"]:focus,
+    [type="month"]:focus,
+    [type="number"]:focus,
+    [type="password"]:focus,
+    [type="search"]:focus,
+    [type="tel"]:focus,
+    [type="text"]:focus,
+    [type="time"]:focus,
+    [type="url"]:focus,
+    [type="week"]:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+
+    [type="checkbox"]:focus,
+    [type="radio"]:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+
+    _::-webkit-full-page-media, _:future, :root [type="checkbox"]:focus,
+    _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
+        border: $input-focus-indicator-size solid $input-focus-indicator-color;
+    }
+}*/
 /*
     IE9 adds the border and background:
 */
 [type="checkbox"],
 [type="radio"] {
   border: 0;
-  background: transparent; }
+  background: transparent;
+  cursor: pointer; }
 
 [type="button"],
 [type="reset"],
@@ -1181,6 +1228,14 @@ select:focus {
   box-shadow: 0 0 0 2px #b38cd9 inset;
   outline: 0; }
 
+/*@if $input-focus-outline-width != false {
+    select:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+}*/
 /*
     Note that Opera 25- and Safari(all - 11 latest at time of writing) treat select [size]s of
     less than 4 as 4.
@@ -1385,6 +1440,14 @@ textarea:focus {
   box-shadow: 0 0 0 2px #b38cd9 inset;
   outline: 0; }
 
+/*@if $input-focus-outline-width != false {
+    textarea:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+}*/
 /*
     1. Opera Mini (no calc support).
     2. Calc to deduct any border-width.
@@ -1481,11 +1544,7 @@ video {
 /*
     Specify the background color, font color, and drop shadow of text selections.
 */
-::-moz-selection {
-  color: #fff;
-  background-color: #b38cd9;
-  text-shadow: none; }
-
+::-moz-selection,
 ::selection {
   color: #fff;
   background-color: #b38cd9;
@@ -1846,7 +1905,7 @@ p.subtitle {
 
 /* CUSTOM INPUTS: RADIOS AND CHECKBOXES */
 /* Hide the real inputs: */
-/* (note this method is important to persist accessiblity and keyboard navigation) */
+/* (note this method is important to persist accessibility and keyboard navigation) */
 .custom-input[type="checkbox"],
 .custom-input[type="radio"] {
   position: absolute;

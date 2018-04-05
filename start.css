@@ -308,10 +308,13 @@ a[href] {
   -ms-touch-action: manipulation;
   /* 3 (IE10) */
   touch-action: manipulation;
-  /* 3 */ }
-  a[href]:hover, a[href]:active, a[href]:focus {
-    border-bottom: 3px solid;
-    outline: none; }
+  /* 3 */
+  outline: none; }
+  a[href]:hover, a[href]:active {
+    border-bottom: 3px solid; }
+  a[href]:focus {
+    color: white;
+    background-color: #663399; }
 
 a[href][rel="external"]::after {
   display: inline-block;
@@ -697,6 +700,7 @@ input:not([type]):focus,
 [type="number"]:focus,
 [type="password"]:focus,
 [type="search"]:focus,
+[type="range"]:focus,
 [type="tel"]:focus,
 [type="text"]:focus,
 [type="time"]:focus,
@@ -705,22 +709,65 @@ input:not([type]):focus,
   box-shadow: 0 0 0 2px #b38cd9 inset;
   outline: 0; }
 
+/*
+        Without custom styling (appearance: none), Safari doesn't apply the shadow, so breaks
+        accessibility ...
+    */
 [type="checkbox"]:focus,
 [type="radio"]:focus {
   box-shadow: 0 0 0 2px #b38cd9;
   outline: 0; }
 
+/*
+        ... so reinstating the outline:
+    */
 _::-webkit-full-page-media, _:future, :root [type="checkbox"]:focus,
 _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
-  border: 2px solid #b38cd9; }
+  outline: auto 5px -webkit-focus-ring-color; }
 
+/*@if $input-focus-outline-width != false {
+    input:not([type]):focus,
+    [type="color"]:focus,
+    [type="date"]:focus,
+    [type="datetime"]:focus,
+    [type="datetime-local"]:focus,
+    [type="file"]:focus,
+    [type="month"]:focus,
+    [type="number"]:focus,
+    [type="password"]:focus,
+    [type="search"]:focus,
+    [type="tel"]:focus,
+    [type="text"]:focus,
+    [type="time"]:focus,
+    [type="url"]:focus,
+    [type="week"]:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+
+    [type="checkbox"]:focus,
+    [type="radio"]:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+
+    _::-webkit-full-page-media, _:future, :root [type="checkbox"]:focus,
+    _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
+        border: $input-focus-indicator-size solid $input-focus-indicator-color;
+    }
+}*/
 /*
     IE9 adds the border and background:
 */
 [type="checkbox"],
 [type="radio"] {
   border: 0;
-  background: transparent; }
+  background: transparent;
+  cursor: pointer; }
 
 [type="button"],
 [type="reset"],
@@ -1181,6 +1228,14 @@ select:focus {
   box-shadow: 0 0 0 2px #b38cd9 inset;
   outline: 0; }
 
+/*@if $input-focus-outline-width != false {
+    select:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+}*/
 /*
     Note that Opera 25- and Safari(all - 11 latest at time of writing) treat select [size]s of
     less than 4 as 4.
@@ -1385,6 +1440,14 @@ textarea:focus {
   box-shadow: 0 0 0 2px #b38cd9 inset;
   outline: 0; }
 
+/*@if $input-focus-outline-width != false {
+    textarea:focus {
+        outline-width: $input-focus-outline-width;
+        outline-style: $input-focus-outline-style;
+        outline-color: $input-focus-outline-color;
+        outline-offset: $input-focus-outline-offset;
+    }
+}*/
 /*
     1. Opera Mini (no calc support).
     2. Calc to deduct any border-width.
@@ -1481,11 +1544,7 @@ video {
 /*
     Specify the background color, font color, and drop shadow of text selections.
 */
-::-moz-selection {
-  color: #fff;
-  background-color: #b38cd9;
-  text-shadow: none; }
-
+::-moz-selection,
 ::selection {
   color: #fff;
   background-color: #b38cd9;
@@ -1798,3 +1857,77 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     margin-bottom: calc(2.4rem - 1.25em - 2px); }
   select[size="10"] {
     margin-bottom: calc(2.4rem - 0.95em - 2px); } }
+
+/*
+    These may be experimental, but they actually make Safari usable with a keyboard, so long as
+    you enable an "Accessibility" setting located in the advanced tab of Safari preferences.
+    ("Press TAB to highlight each item on a web page.)
+    That is - the default outline focus style works, but shadows don't unless appearance: none
+    is used.
+    
+    1. Safari 9.1 doesn't recognize 'auto' but I suspect others won't recognize 'initial', so
+       keeping both for now.
+*/
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  input[type="checkbox"],
+  input[type="radio"] {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    min-height: auto;
+    /* 1 */
+    min-height: initial;
+    /* 1 */
+    border-width: 1px;
+    border-style: solid;
+    border-color: #333;
+    background-color: #fff;
+    -webkit-appearance: none;
+    -moz-appearance: none; }
+  input[type="radio"] {
+    border-radius: 50%; }
+  input[type="radio"]:checked {
+    background-image: -moz-radial-gradient(center, ellipse cover, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    /* FF3.6-15 */
+    background-image: -webkit-radial-gradient(center, ellipse cover, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background-image: radial-gradient(ellipse at center, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */ }
+  input[type="checkbox"]:checked::after {
+    content: "";
+    display: inline-block;
+    width: 0.6em;
+    height: 0.3em;
+    border: solid #333;
+    border-width: 0 0 0.125em 0.125em;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -70%) rotate(-50deg);
+    -ms-transform: translate(-50%, -70%) rotate(-50deg);
+    transform: translate(-50%, -70%) rotate(-50deg); }
+  /*
+            Turn off the outline we reinstated for non-experimental styles in Safari:
+        */
+  _::-webkit-full-page-media, _:future, :root [type="checkbox"]:focus,
+  _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
+    outline: 0; } }
+
+/*
+        Turn off checkbox styling for Edge for now.
+    */
+@supports (-ms-ime-align: auto) {
+  input[type="checkbox"] {
+    -webkit-appearance: checkbox; } }
+
+/*
+        Turn off checkradio styling for UCBrowser for now.
+    */
+.ucbrowser input[type="checkbox"] {
+  min-height: 0;
+  -webkit-appearance: checkbox; }
+
+.ucbrowser input[type="radio"] {
+  min-height: 0;
+  -webkit-appearance: radio; }

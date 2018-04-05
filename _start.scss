@@ -235,6 +235,8 @@ $using-start-css: true;
 // Allow suppression of styles so this file can be imported only for its variables etc.
 $suppress_styles: false !default;
 
+$experimental_checkradios: false !default;
+
 // Use $namespace to scope all body > *:not(main) styles:
 $namespace: '' !default;
 
@@ -293,6 +295,17 @@ $anchor-focus-outline-style: $ui-focus-outline-style !default;
 $anchor-focus-outline-color: $ui-focus-outline-color !default;
 $anchor-focus-outline-offset: $ui-focus-outline-offset !default;
 
+//$anchor-focus-background-color: false !default;
+$anchor-focus-background-color: $anchor-text-color !default;
+//$anchor-focus-background-color: lighten($anchor-text-color, 30%) !default;
+$anchor-focus-text-color: false;
+@if color_light_or_dark($anchor-focus-background-color) == 'light' {
+    $anchor-focus-text-color: darken($anchor-text-color, 50%);
+} @else {
+    $anchor-focus-text-color: lighten($anchor-text-color, 70%);
+}
+
+@debug $anchor-focus-text-color;
 // <body>
 $body-padding: $fallback--base-rem-space-unit !default;
 $body-margin: 0 !default;
@@ -327,6 +340,13 @@ $button-focus-outline-color: rgba(255,255,255,0.6) !default;
 //$button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
 $button-focus-outline-offset: -($ui-focus-outline-offset + $button-border-width) !default;
 */
+
+
+$checkradio-background-color: #fff !default;
+$checkradio-text-color: $ui-color--text !default;
+$checkradio-border-color: $checkradio-text-color !default;
+$checkradio-border-width: $ui-border-width !default;
+$checkradio-border-style: $ui-border-style !default;
 
 // <fieldset>
 $fieldset-border-width: $ui-border-width !default;
@@ -690,23 +710,31 @@ body {
     touch-action: manipulation; /* 3 */
 
     &:hover,
-    &:active,
-    &:focus {
+    &:active {
         border-bottom: $anchor-border-bottom--hover;
 
         @if $anchor-text-color--hover != $anchor-text-color {
             color: $anchor-text-color--hover;
         }
-
-        outline: none;
     }
 
     @if $anchor-focus-outline-width != false {
+        outline: none;
+        
         &:focus {
             outline-width: $anchor-focus-outline-width;
             outline-style: $anchor-focus-outline-style;
             outline-color: $anchor-focus-outline-color;
             outline-offset: $anchor-focus-outline-offset;
+        }
+    }
+    
+    @if $anchor-focus-background-color != false {
+        outline: none;
+        
+        &:focus {
+            color: $anchor-focus-text-color;
+            background-color: $anchor-focus-background-color;
         }
     }
 }
@@ -1150,6 +1178,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
     #{$namespace}[type="number"]:focus,
     #{$namespace}[type="password"]:focus,
     #{$namespace}[type="search"]:focus,
+    #{$namespace}[type="range"]:focus,
     #{$namespace}[type="tel"]:focus,
     #{$namespace}[type="text"]:focus,
     #{$namespace}[type="time"]:focus,
@@ -1159,19 +1188,29 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
         outline: 0;
     }
 
+    /*
+        Without custom styling (appearance: none), Safari doesn't apply the shadow, so breaks
+        accessibility ...
+    */
     #{$namespace}[type="checkbox"]:focus,
     #{$namespace}[type="radio"]:focus {
         box-shadow: $input-focus-shadow-outset;
         outline: 0;
     }
+    
+    /*
+        ... so reinstating the outline:
+    */
+    // _::-webkit-full-page-media, _:future, :root .selector { property:value; }
+    // Safari 6.2,7.1+
 
     _::-webkit-full-page-media, _:future, :root #{$namespace}[type="checkbox"]:focus,
     _::-webkit-full-page-media, _:future, :root #{$namespace}[type="radio"]:focus {
-        border: $input-focus-indicator-size solid $input-focus-indicator-color;
+        outline: auto 5px -webkit-focus-ring-color;
     }
 }
 
-@if $input-focus-outline-width != false {
+/*@if $input-focus-outline-width != false {
     #{$namespace}input:not([type]):focus,
     #{$namespace}[type="color"]:focus,
     #{$namespace}[type="date"]:focus,
@@ -1205,7 +1244,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
     _::-webkit-full-page-media, _:future, :root #{$namespace}[type="radio"]:focus {
         border: $input-focus-indicator-size solid $input-focus-indicator-color;
     }
-}
+}*/
 
 /*
     IE9 adds the border and background:
@@ -1215,6 +1254,8 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
     border: 0;
 
     background: transparent;
+    
+    cursor: pointer;
 }
 
 #{$namespace}[type="button"],
@@ -1752,14 +1793,15 @@ _:-moz-tree-row(hover), #{$namespace}select:not([multiple]) {
         outline: 0;
     }
 }
-@if $input-focus-outline-width != false {
+
+/*@if $input-focus-outline-width != false {
     #{$namespace}select:focus {
         outline-width: $input-focus-outline-width;
         outline-style: $input-focus-outline-style;
         outline-color: $input-focus-outline-color;
         outline-offset: $input-focus-outline-offset;
     }
-}
+}*/
 
 /*
     Note that Opera 25- and Safari(all - 11 latest at time of writing) treat select [size]s of
@@ -2016,14 +2058,14 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
     }
 }
 
-@if $input-focus-outline-width != false {
+/*@if $input-focus-outline-width != false {
     #{$namespace}textarea:focus {
         outline-width: $input-focus-outline-width;
         outline-style: $input-focus-outline-style;
         outline-color: $input-focus-outline-color;
         outline-offset: $input-focus-outline-offset;
     }
-}
+}*/
 //tfoot {}
 /*
     1. Opera Mini (no calc support).
@@ -2151,13 +2193,7 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[multip
 /*
     Specify the background color, font color, and drop shadow of text selections.
 */
-::-moz-selection {
-    color: $selection-text-color;
-    background-color: $selection-background-color;
-
-    text-shadow: $selection-text-shadow;
-}
-
+::-moz-selection,
 ::selection {
     color: $selection-text-color;
     background-color: $selection-background-color;
