@@ -32,6 +32,7 @@
 
 */
 
+@import '_start__settings.scss';
 /*-------------------------------------------------------------------------------------------------|
 
     FUNCTIONS AND MIXINS
@@ -131,7 +132,7 @@
 */
 /*
     1. Remove the tapping delay from clickable elements.
-    
+
     Sort out the height of buttons. At 12px spacing, should be 30px high with 3px top/bottom margin.
     Note Edge doesn't like: `line-height: calc(3rem - 2px)` if `display: inline-flex`
     FF8 - ? doesn't like `line-height: -moz-calc()` and ignores
@@ -144,13 +145,13 @@
         $border-color: $button-border-color
     ) {
     display: inline-block; /* AK. IE9 needs this. Hmmm, for what exactly?*/
-    
+
     min-height: $input-min-height;
 
     overflow: visible; /* S: Internet Explorer 11-, N: Show the overflow in Edge, Firefox, and IE. */
-    
+
     margin: ($fallback--base-rem-space-unit / 8) 0;
-    
+
     padding-top: #{$fallback--base-rem-space-unit / 8}; // Opera Mini needs this:
     //padding-top: -moz-calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
     padding-top: -moz-calc(0);
@@ -161,15 +162,15 @@
     padding-bottom: -moz-calc(0);
     padding-bottom: calc(#{$fallback--base-rem-space-unit / 8} - #{$button-border-width});
     padding-left: $button-h-padding;
-    
+
     border-color: $border-color;
     border-style: $button-border-style;
     border-width: $button-border-width;
     border-radius: $button-border-radius;
-    
+
     color: $color;
     background-color: $bg-color;
-    
+
 
     font-weight: inherit;
     font-style: inherit;
@@ -180,14 +181,14 @@
     vertical-align: middle; // Keep adjacent elements in the middle:
 
     text-transform: none; /* [N0], N: Remove the inheritance of text transform in Edge, Firefox, and IE. */
-    
+
     cursor: pointer;
-    
+
     -ms-touch-action: manipulation; /* 1 (IE10) */
     touch-action: manipulation; /* 1 */
-    
+
     -webkit-appearance: none;
-    
+
     // Thinking about changing my mind how I do this. It's getting too complicated. I've thought
     // harder about how to handle alternate state from an a11y perspective the old "Don't just rely
     // on color" keeps going around my head, so a subtle background-color tint-shift doesn't
@@ -720,7 +721,7 @@ body {
 
     @if $anchor-focus-outline-width != false {
         outline: none;
-        
+
         &:focus {
             outline-width: $anchor-focus-outline-width;
             outline-style: $anchor-focus-outline-style;
@@ -728,10 +729,10 @@ body {
             outline-offset: $anchor-focus-outline-offset;
         }
     }
-    
+
     @if $anchor-focus-background-color != false {
         outline: none;
-        
+
         &:focus {
             color: $anchor-focus-text-color;
             background-color: $anchor-focus-background-color;
@@ -1197,7 +1198,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
         box-shadow: $input-focus-shadow-outset;
         outline: 0;
     }
-    
+
     /*
         ... so reinstating the outline:
     */
@@ -1254,7 +1255,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
     border: 0;
 
     background: transparent;
-    
+
     cursor: pointer;
 }
 
@@ -1430,7 +1431,7 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
     1. Correct the text wrapping in Edge and IE.
     2. Offset border width.
     3. Correct the color inheritance from `fieldset` elements in IE.
-    
+
     Note $fieldset-border-width used deliberately (not $legend-border-width)- this is to account for
     the fact that fieldset top border width is ignored if there's a legend so the spacing is wrong.
 */
@@ -1450,8 +1451,8 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
 
     font-weight: bold;
     white-space: normal; /* 1 */
-    
-    
+
+
     /*  */
 }
 
@@ -1472,7 +1473,7 @@ _:-ms-input-placeholder, :root #{$namespace}[type="file"] {
 */
 main {
     display: block; /* 1 */
-    
+
     @if $max-main-line-length > 0 {
         max-width: $max-main-line-length;
 
@@ -1614,7 +1615,7 @@ main {
        Most browsers have a scrollbar height of 17px (calculated in settings section), however Edge
        appears to have a scrollbar height of 12px, so we override it with a hack.
     2. Correct the odd `em` font sizing in all browsers.
-    3. Correct the inheritance and scaling of font size in all browsers.   
+    3. Correct the inheritance and scaling of font size in all browsers.
 */
 #{$namespace}pre {
     overflow-x: scroll; /* 1 */
