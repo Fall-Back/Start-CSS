@@ -5,7 +5,7 @@
 $fallback--root-font-size: 10px;
 $fallback--base-font-family: 'Lato', sans-serif;
 
-@import '../dist/_start.scss';
-@import '../dist/_start-classes.scss';
+@import 'scss/_start.scss';
+@import 'scss/_start-classes.scss';
 
-@import '../dist/_start-experimental.scss';
+@import 'scss/_start-experimental.scss';

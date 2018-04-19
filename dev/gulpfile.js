@@ -1,7 +1,7 @@
 const gulp        = require('gulp');
-const gutil       = require( 'gulp-util' );
 const runSequence = require('run-sequence');
 const pump        = require('pump');
+
 
 /*------------------------------------------------------------------------------------------------*\
     CSS    
@@ -10,13 +10,14 @@ const sass   = require('gulp-sass');
 const cssmin = require('gulp-cssmin');
 const rename = require('gulp-rename');
 
-var css_src  = './build/';
-var css_dest = './build/css/';
+var css_src  = './';
+var css_dest = './css/';
+
 
 // Compile SCSS in expanded mode so it's easier to inspect the result.
 gulp.task('sass', (cb) =>
     pump([
-        gulp.src(css_src + '**/*.scss'),
+        gulp.src(['!node_modules', '!node_modules/**', css_src + '**/*.scss']),
         sass({outputStyle: 'expanded'}),
         gulp.dest(css_dest)
     ],
@@ -47,12 +48,15 @@ gulp.task('css', () => {
 const ftp         = require( 'vinyl-ftp' );
 const ftpcrd      = require('./ftpcrd.json');
 
-
+/*
 var ftp_src_base = '..';
 var ftp_src      = [
     ftp_src_base + '/dist/*',
     '!css'
 ];
+*/
+var ftp_src = './';
+
 
 // Upload files
 gulp.task('ftp', () => {
@@ -62,13 +66,16 @@ gulp.task('ftp', () => {
         host:     ftpcrd.host,
         user:     ftpcrd.user,
         password: ftpcrd.pass,
-        parallel: 10,
-        log:      gutil.log
+        parallel: 10
     } );
 
-    return gulp.src( ftp_src, { base: ftp_src_base, buffer: false } )
+    return gulp.src(['!node_modules', '!node_modules/**', '!ftpcrd.json', ftp_src + '/**/*'], { base: '.', buffer: false })
         //.pipe( conn.newer( '/public_html' ) ) // only upload newer files
         .pipe( conn.dest(ftpcrd.dest) );
+    
+    /*return gulp.src( ftp_src, { base: ftp_src_base, buffer: false } )
+        //.pipe( conn.newer( '/public_html' ) ) // only upload newer files
+        .pipe( conn.dest(ftpcrd.dest) );*/
 });
 
 
@@ -78,7 +85,7 @@ gulp.task('ftp', () => {
 
 // Watch CSS:
 gulp.task('watch_css', function(){
-    gulp.watch(css_src + '**/*.scss', ['css']); 
+    gulp.watch([css_src + '*.scss', css_src + '**/*.scss'], ['css']); 
 });
 
 
