@@ -13,7 +13,7 @@
         only screen and (min-resolution: 0.1dpcm),
         only screen and (-webkit-min-device-pixel-ratio:0) and (min-color-index:0)
     ">-->
-    <link rel="stylesheet" href="start.css" media="
+    <link rel="stylesheet" href="css/start.css" media="
         only screen and (min-resolution: 0.1dpcm),
         only screen and (-webkit-min-device-pixel-ratio:0) and (min-color-index:0)
     ">
@@ -25,7 +25,7 @@
 </head>
 <body role="document" class="tb-baseline  tb-outlines">
 
-    <main>
+    <main id="main">
 		<header>
 			<h1>Start CSS Test Page</h1>
 		</header>
@@ -48,8 +48,8 @@
        <!-- <p>
             Double bottom space fix needs thought in how it relates to borders.
             The border/padding combination works fine, but the bottom margin of the inner elements will be a full spacing-unit, not adjusted for border-width.
-            This means the comined margin is 1 full spacing unit and this negates the BCT.
-            Maybe will have to make BCT margin-based and not padding based afterall?
+            This means the combined margin is 1 full spacing unit and this negates the BCT.
+            Maybe will have to make BCT margin-based and not padding based after all?
         </p>-->
 
         <h2>Forms</h2>
