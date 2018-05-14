@@ -127,6 +127,17 @@
 |-------------------------------------------------------------------------------------------------*/
 /* Global focus style: */
 /*
+$anchor-focus-text-color: false;
+@if $anchor-focus-background-color != false {
+    @if color_light_or_dark($anchor-focus-background-color) == 'light' {
+        $anchor-focus-text-color: darken($anchor-text-color, 50%);
+    } @else {
+        $anchor-focus-text-color: lighten($anchor-text-color, 70%);
+    }
+}
+@debug $anchor-focus-text-color;
+*/
+/*
 //$button-focus-outline-width: $ui-focus-outline-width !default;
 $button-focus-outline-width: false !default;
 $button-focus-outline-style: $ui-focus-outline-style !default;
@@ -318,16 +329,36 @@ a[href] {
   /* 3 (IE10) */
   touch-action: manipulation;
   /* 3 */
-  outline: none;
+  /*
+    @if $anchor-focus-outline-width != false {
+        outline: none;
+
+        &:focus {
+            outline-width: $anchor-focus-outline-width;
+            outline-style: $anchor-focus-outline-style;
+            outline-color: $anchor-focus-outline-color;
+            outline-offset: $anchor-focus-outline-offset;
+        }
+    }
+
+    @if $anchor-focus-background-color != false {
+        outline: none;
+
+        &:focus {
+            color: $anchor-focus-text-color;
+            background-color: $anchor-focus-background-color;
+        }
+    }*/
 }
 
 a[href]:hover, a[href]:active {
   border-bottom: 3px solid;
+  color: #4d2673;
 }
 
 a[href]:focus {
-  color: white;
-  background-color: #663399;
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.5);
 }
 
 a[href][rel="external"]::after {
@@ -457,9 +488,13 @@ button {
     }*/
 }
 
-button:hover, button:active, button:focus {
-  box-shadow: 0 0 0 2px #b38cd9 inset;
+button:hover, button:active {
+  background-color: #4d2673;
+}
+
+button:focus {
   outline: 0;
+  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.5);
 }
 
 _:-o-prefocus, :root button {
@@ -734,7 +769,7 @@ input {
   padding-left: 0.6rem;
   border-width: 1px;
   border-style: solid;
-  border-color: #4d2673;
+  border-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   color: #333;
   background-color: #fff;
@@ -770,7 +805,7 @@ input:not([type]):focus,
 [type="time"]:focus,
 [type="url"]:focus,
 [type="week"]:focus {
-  box-shadow: 0 0 0 2px #b38cd9 inset;
+  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.5);
   outline: 0;
 }
 
@@ -780,7 +815,7 @@ input:not([type]):focus,
     */
 [type="checkbox"]:focus,
 [type="radio"]:focus {
-  box-shadow: 0 0 0 2px #b38cd9;
+  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.5);
   outline: 0;
 }
 
@@ -886,15 +921,19 @@ _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
     }*/
 }
 
-[type="button"]:hover, [type="button"]:active, [type="button"]:focus,
+[type="button"]:hover, [type="button"]:active,
 [type="reset"]:hover,
 [type="reset"]:active,
-[type="reset"]:focus,
 [type="submit"]:hover,
-[type="submit"]:active,
+[type="submit"]:active {
+  background-color: #4d2673;
+}
+
+[type="button"]:focus,
+[type="reset"]:focus,
 [type="submit"]:focus {
-  box-shadow: 0 0 0 2px #b38cd9 inset;
   outline: 0;
+  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.5);
 }
 
 /*
@@ -1255,7 +1294,7 @@ select {
   margin: 0.3rem 0;
   border-width: 1px;
   border-style: solid;
-  border-color: #4d2673;
+  border-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   color: #333;
   background-color: #fff;
@@ -1341,7 +1380,7 @@ _:-moz-tree-row(hover), select:not([multiple]) {
 }
 
 select:focus {
-  box-shadow: 0 0 0 2px #b38cd9 inset;
+  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.5);
   outline: 0;
 }
 
@@ -1555,7 +1594,7 @@ textarea {
   padding-right: 0.6rem;
   border-width: 1px;
   border-radius: 3px;
-  border-color: #4d2673;
+  border-color: rgba(0, 0, 0, 0.2);
   border-style: solid;
   color: #333;
   background-color: #fff;
@@ -1573,7 +1612,7 @@ textarea {
 }
 
 textarea:focus {
-  box-shadow: 0 0 0 2px #b38cd9 inset;
+  box-shadow: 0 0 0 3px rgba(102, 51, 153, 0.5);
   outline: 0;
 }
 
@@ -1847,7 +1886,7 @@ a[hidden][aria-hidden="false"]:active {
 }
 
 [type="file"]:focus::-ms-value {
-  box-shadow: 0 0 0 2px #b38cd9 inset;
+  box-shadow: true;
   outline: 0;
 }
 
@@ -1864,7 +1903,7 @@ a[hidden][aria-hidden="false"]:active {
   /* 1 */
   border-width: 0 0 0 1px;
   border-style: solid;
-  border-color: #4d2673;
+  border-color: rgba(0, 0, 0, 0.2);
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px;
   color: #fff;
@@ -1906,7 +1945,7 @@ a[hidden][aria-hidden="false"]:active {
   padding-left: 0.6rem;
   border-width: 0 1px 0 0;
   border-style: solid;
-  border-color: #4d2673;
+  border-color: rgba(0, 0, 0, 0.2);
   border-radius: 0;
   color: #fff;
   background-color: #663399;
@@ -2051,3 +2090,76 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     1. Safari 9.1 doesn't recognize 'auto' but I suspect others won't recognize 'initial', so
        keeping both for now.
 */
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  input[type="checkbox"],
+  input[type="radio"] {
+    position: relative;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    min-height: auto;
+    /* 1 */
+    min-height: initial;
+    /* 1 */
+    border-width: 1px;
+    border-style: solid;
+    border-color: #333;
+    background-color: #fff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  input[type="radio"] {
+    border-radius: 50%;
+  }
+  input[type="radio"]:checked {
+    background-image: -moz-radial-gradient(center, ellipse cover, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    /* FF3.6-15 */
+    background-image: -webkit-radial-gradient(center, ellipse cover, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background-image: radial-gradient(ellipse at center, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
+  input[type="checkbox"]:checked::after {
+    content: "";
+    display: inline-block;
+    width: 0.6em;
+    height: 0.3em;
+    border: solid #333;
+    border-width: 0 0 0.125em 0.125em;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -70%) rotate(-50deg);
+    -ms-transform: translate(-50%, -70%) rotate(-50deg);
+    transform: translate(-50%, -70%) rotate(-50deg);
+  }
+  /*
+            Turn off the outline we reinstated for non-experimental styles in Safari:
+        */
+  _::-webkit-full-page-media, _:future, :root [type="checkbox"]:focus,
+  _::-webkit-full-page-media, _:future, :root [type="radio"]:focus {
+    outline: 0;
+  }
+}
+
+/*
+        Turn off checkbox styling for Edge for now.
+    */
+@supports (-ms-ime-align: auto) {
+  input[type="checkbox"] {
+    -webkit-appearance: checkbox;
+  }
+}
+
+/*
+        Turn off checkradio styling for UCBrowser for now.
+    */
+.ucbrowser input[type="checkbox"] {
+  min-height: 0;
+  -webkit-appearance: checkbox;
+}
+
+.ucbrowser input[type="radio"] {
+  min-height: 0;
+  -webkit-appearance: radio;
+}

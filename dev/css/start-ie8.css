@@ -145,6 +145,17 @@
 |-------------------------------------------------------------------------------------------------*/
 /* Global focus style: */
 /*
+$anchor-focus-text-color: false;
+@if $anchor-focus-background-color != false {
+    @if color_light_or_dark($anchor-focus-background-color) == 'light' {
+        $anchor-focus-text-color: darken($anchor-text-color, 50%);
+    } @else {
+        $anchor-focus-text-color: lighten($anchor-text-color, 70%);
+    }
+}
+@debug $anchor-focus-text-color;
+*/
+/*
 //$button-focus-outline-width: $ui-focus-outline-width !default;
 $button-focus-outline-width: false !default;
 $button-focus-outline-style: $ui-focus-outline-style !default;
