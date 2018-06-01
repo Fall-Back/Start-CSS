@@ -79,7 +79,7 @@
                 <p>
                     <label for="input1-3">Select unit type:</label>
                     <select id="input1-3">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -101,7 +101,7 @@
                 <p>
                     <label for="input1-3a">Select unit types (<code>size="2"</code>):</label>
                     <select id="input1-3a" multiple size="2">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -119,7 +119,7 @@
                 <p>
                     <label for="input1-3b">Select unit types (<code>size="3"</code>):</label>
                     <select id="input1-3b" multiple size="3">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -136,7 +136,7 @@
                 <p>
                     <label for="input1-3c">Select unit types (<code>size="4"</code>):</label>
                     <select id="input1-3c" multiple size="4">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -154,7 +154,7 @@
                 <p>
                     <label for="input1-3d">Select unit types (<code>size="5"</code>):</label>
                     <select id="input1-3d" multiple size="5">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -172,7 +172,7 @@
                 <p>
                     <label for="input1-3e">Select unit types (<code>size="6"</code>):</label>
                     <select id="input1-3e" multiple size="6">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -190,7 +190,7 @@
                 <p>
                     <label for="input1-3f">Select unit types (<code>size="7"</code>):</label>
                     <select id="input1-3f" multiple size="7">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -208,7 +208,7 @@
                 <p>
                     <label for="input1-3g">Select unit types (<code>size="8"</code>):</label>
                     <select id="input1-3g" multiple size="8">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -226,7 +226,7 @@
                 <p>
                     <label for="input1-3h">Select unit types (<code>size="9"</code>):</label>
                     <select id="input1-3h" multiple size="9">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -244,7 +244,7 @@
                 <p>
                     <label for="input1-3i">Select unit types (<code>size="10"</code>):</label>
                     <select id="input1-3i" multiple size="10">
-                        <option value="1">Miner</option>
+                        <option value="1">Miner Long Name Jones Bones</option>
                         <option value="2">Puffer</option>
                         <option value="3">Snipey</option>
                         <option value="4">Max</option>
@@ -374,7 +374,7 @@ lines.</textarea>
         <blockquote>
              The people recognize themselves in their commodities; they find their
              soul in their automobile, hi-fi set, split-level home, kitchen equipment.
-             — <cite><a href="http://en.wikipedia.org/wiki/Herbert_Marcuse">Herbert Marcuse</a></cite>
+             — <cite><a href="https://en.wikipedia.org/wiki/Herbert_Marcuse">Herbert Marcuse</a></cite>
         </blockquote>
 
         <blockquote>
@@ -633,14 +633,14 @@ lines.</textarea>
         -->
 
         <div class="box">
-            <object type="image/svg+xml" data="http://lab.gridlight-design.co.uk/fallback/img/fallback-logo.svg" height="144" class="svg__image">
+            <object type="image/svg+xml" data="https://lab.gridlight-design.co.uk/fallback/img/fallback-logo.svg" height="144" class="svg__image">
                 <p>Object failed to load.</p>
             </object>
         </div>
 
         <p>
             <a href="#">
-                <img src="http://lab.gridlight-design.co.uk/images/blogish/pexels-photo-172256.jpg" alt="" width="300">
+                <img src="https://lab.gridlight-design.co.uk/images/blogish/pexels-photo-172256.jpg" alt="" width="300">
             </a>
         </p>
 

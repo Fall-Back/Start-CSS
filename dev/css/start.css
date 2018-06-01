@@ -1344,7 +1344,7 @@ select:not([multiple]) {
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4.95 10" fill="%23444"><polygon points="1.41 4.67 2.48 3.18 3.54 4.67 1.41 4.67"/><polygon points="3.54 5.33 2.48 6.82 1.41 5.33 3.54 5.33"/></svg>');
   /* 2 */
   background-repeat: no-repeat;
-  background-position: 95% center;
+  background-position: right 0.3em bottom 0;
   /* 3 */
   -moz-appearance: none;
   /* 4 */

@@ -758,7 +758,7 @@ body {
             color: $anchor-text-color--alt;
         }
     }
-    
+
     @if $anchor-focus-shadow != false {
         &:focus {
             outline: 0;
@@ -1232,7 +1232,7 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
     #{$namespace}[type="text"]:focus,
     #{$namespace}[type="time"]:focus,
     #{$namespace}[type="url"]:focus,
-    #{$namespace}[type="week"]:focus {        
+    #{$namespace}[type="week"]:focus {
         box-shadow: 0 0 0 $input-focus-shadow-width rgba($ui-color--base, 0.5);
 
         outline: 0;
@@ -1801,7 +1801,7 @@ main {
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4.95 10" fill="%23444"><polygon points="1.41 4.67 2.48 3.18 3.54 4.67 1.41 4.67"/><polygon points="3.54 5.33 2.48 6.82 1.41 5.33 3.54 5.33"/></svg>'); /* 2 */
     //background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgNC45NSAxMCI+PHBvbHlnb24gZmlsbD0iIzQ0NCIgcG9pbnRzPSIxLjQxIDQuNjcgMi40OCAzLjE4IDMuNTQgNC42NyAxLjQxIDQuNjciLz48cG9seWdvbiBmaWxsPSIjNDQ0IiBwb2ludHM9IjMuNTQgNS4zMyAyLjQ4IDYuODIgMS40MSA1LjMzIDMuNTQgNS4zMyIvPjwvc3ZnPg==);
     background-repeat: no-repeat;
-    background-position: 95% center; /* 3 */
+    background-position: right 0.3em bottom 0; /* 3 */
 
     -moz-appearance: none; /* 4 */
     -webkit-appearance: none;
