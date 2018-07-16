@@ -1,5 +1,6 @@
 /*! Start CSS. See SCSS file for documentation. */
 /*
+
     Start CSS is designed for use with the basic
     [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
 
@@ -304,9 +305,9 @@ $anchor-text-color: $ui-color--base !default;
 $anchor-text-color--alt: darken($anchor-text-color, 10%) !default;
 $anchor-text-decoration: none !default;
 
-$anchor-border-bottom: 3px double !default;
-$anchor-border-bottom--alt: 3px solid !default;
-$anchor-border-bottom-offset: -3px;
+$anchor-border-bottom: 2px solid !default;
+$anchor-border-bottom--alt: 2px dashed !default;
+$anchor-border-bottom-offset: -2px;
 $anchor-padding-bottom: 0;
 
 $anchor-add-external-link-indicator: true !default;

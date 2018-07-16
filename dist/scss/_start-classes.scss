@@ -14,10 +14,10 @@ a[href].cta {
     @include button(
         $button-background-color,
         $button-text-color,
-        light-shadow,
+        20,
         $button-background-color
     );
-    
+
         &:hover,
         &:active,
         &:focus {
@@ -29,7 +29,7 @@ a[href].cta {
     .button[data-text][aria-hidden="true"] {
         @include button;
     }
-    
+
         .button[data-text][aria-hidden="true"]::before {
             content: attr(data-text);
         }
@@ -48,7 +48,7 @@ a[href].cta {
 .padded {
     //@include bordered($fallback--base-line-height, 1px);
     //border: 1px solid transparent;
-    
+
     //@include bordered($fallback--base-line-height, 0);
     @include bordered($fallback--base-rem-space-unit, 0px);
     //display: inline-block;
@@ -106,10 +106,10 @@ p.subtitle {
 
 /*
     IE9
-    
-    1. Make sure there are no spaces between elements in the markup as the as the whitespace won't 
+
+    1. Make sure there are no spaces between elements in the markup as the as the whitespace won't
        collapse.
-       
+
     2. Hide button.
 */
 @media screen and (min-width:0\0) and (min-resolution:.001dpcm) {
@@ -118,7 +118,7 @@ p.subtitle {
         white-space: nowrap; /* 1 */
         overflow: hidden; /* 2 */
     }
-    
+
     .composite > * {
         vertical-align: top;
         display: inline-block;
@@ -187,11 +187,11 @@ p.subtitle {
     position: absolute;
     left: 0;
     top: 50%;
-	
+
     -webkit-transform: translate(0px, -53%);
     -ms-transform: translate(0px, -53%);
     transform: translate(0px, -53%);
-    
+
 }
 
 /* Make the radio elements circular: */
@@ -216,7 +216,7 @@ p.subtitle {
     position: absolute;
     left: 0.22em;
     top: 50%;
-	
+
     -webkit-transform: translate(0px, -80%) rotate(-50deg);
     -ms-transform: translate(0px, -80%) rotate(-50deg);
     transform: translate(0px, -80%) rotate(-50deg);
@@ -299,7 +299,7 @@ p.subtitle {
         .button + .custom-input[type=file] {
             margin-left: -5.35em;
         }
-        
+
         .custom-input[type="file"] + .button {
             min-width: 7em;
             margin-left: -7em;
