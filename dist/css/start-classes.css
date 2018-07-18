@@ -1,5 +1,6 @@
 /*! Start CSS. See SCSS file for documentation. */
 /*
+
     Start CSS is designed for use with the basic
     [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
 
@@ -316,9 +317,9 @@ body {
     3. Remove the tapping delay from clickable elements .
 */
 a[href] {
-  margin-bottom: -3px;
-  padding-bottom: 0;
-  border-bottom: 3px double;
+  margin-bottom: -2px;
+  padding-bottom: 2px;
+  border-bottom: 2px solid;
   color: #663399;
   background-color: transparent;
   /* 1 */
@@ -352,7 +353,7 @@ a[href] {
 }
 
 a[href]:hover, a[href]:active {
-  border-bottom: 3px solid;
+  border-bottom: 2px dashed;
   color: #4d2673;
 }
 
@@ -744,7 +745,7 @@ img {
     Special treatment for images inside links.
 */
 a img {
-  margin-bottom: -3px;
+  margin-bottom: -2px;
   border-width: inherit;
   border-style: inherit;
 }

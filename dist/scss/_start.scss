@@ -1,5 +1,6 @@
 /*! Start CSS. See SCSS file for documentation. */
 /*
+
     Start CSS is designed for use with the basic
     [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
 
@@ -33,12 +34,14 @@
 */
 
 @import '_start__settings.scss';
+
 /*-------------------------------------------------------------------------------------------------|
 
     FUNCTIONS AND MIXINS
    (These must come before the Setting, as the settings make use of some of these)
 
 |-------------------------------------------------------------------------------------------------*/
+
 @import '_start__functions.scss';
 //@debug ($fallback--base-rem-space-unit / 8) - ((($input-border-width + 0px) / 1px) * $fallback--base-rem-1px);
 
@@ -245,6 +248,7 @@
     SETTINGS
 
 |-------------------------------------------------------------------------------------------------*/
+
 // Let the other Fall-Back patterns know that start is being used:
 $using-start-css: true;
 
@@ -307,7 +311,7 @@ $anchor-text-decoration: none !default;
 $anchor-border-bottom: 2px solid !default;
 $anchor-border-bottom--alt: 2px dashed !default;
 $anchor-border-bottom-offset: -2px;
-$anchor-padding-bottom: 0;
+$anchor-padding-bottom: 2px;
 
 $anchor-add-external-link-indicator: true !default;
 
@@ -564,6 +568,7 @@ $selection-text-shadow: none;
     ROOT STYLES
 
 |-------------------------------------------------------------------------------------------------*/
+
 /*
     https://timkadlec.com/2012/10/ie10-snap-mode-and-responsive-design/
     https://css-tricks.com/snippets/javascript/fix-ie-10-on-windows-phone-8-viewport/
