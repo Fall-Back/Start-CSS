@@ -1,6 +1,6 @@
 dev/media/
 
-package.lock
+package-lock.json
 
 .sass-cache/
 *.css.map
