@@ -318,7 +318,7 @@ body {
 */
 a[href] {
   margin-bottom: -2px;
-  padding-bottom: 0;
+  padding-bottom: 2px;
   border-bottom: 2px solid;
   color: #663399;
   background-color: transparent;
