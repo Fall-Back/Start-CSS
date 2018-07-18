@@ -1,5 +1,7 @@
 dev/media/
 
+package.lock
+
 .sass-cache/
 *.css.map
 
