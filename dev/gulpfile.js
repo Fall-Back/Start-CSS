@@ -7,7 +7,7 @@ const pump        = require('pump');
     FTP
     
     Note: this always uploads everything (with obvious exceptions) DELIBERATELY.
-    This is because not everything is watched all the time, and I may make chances to unwatched
+    This is because not everything is watched all the time, and I may make changes to unwatched
     files without thinking or remembering to upload them.
     This method ensures that the host will always have the latest files, including THIS.
 \*------------------------------------------------------------------------------------------------*/
