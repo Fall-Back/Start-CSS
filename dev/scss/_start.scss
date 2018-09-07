@@ -1014,6 +1014,13 @@ _:-moz-meter-optimum, :root button::-moz-focus-inner {margin: 0; }
 
 //element {}
 //em {}
+/*
+    1. De-italicize nested ems
+*/
+#{$namespace}em em {
+    font-style: normal; /* 1 */
+}
+
 //embed {}
 
 /*
