@@ -1,11 +1,18 @@
 const gulp        = require('gulp');
-const runSequence = require('run-sequence');
+
+const { series }  = require('gulp');
+const { watch }   = require('gulp');
+
 const pump        = require('pump');
+
+
+require('make-promises-safe');
+
 
 
 /*------------------------------------------------------------------------------------------------*\
     FTP
-    
+
     Note: this always uploads everything (with obvious exceptions) DELIBERATELY.
     This is because not everything is watched all the time, and I may make changes to unwatched
     files without thinking or remembering to upload them.
@@ -18,7 +25,7 @@ var ftp_src = './';
 
 
 // Upload files
-gulp.task('ftp', () => {
+function do_ftp(cb) {
     console.log('Running FTP. See gulpfile.js for details.');
 
     var conn = ftp.create( {
@@ -28,55 +35,68 @@ gulp.task('ftp', () => {
         parallel: 10
     } );
 
-    return gulp.src([
-        '!node_modules', '!node_modules/**',
-        '!media', '!media/**',
-        '!ftpcrd.json',
-        ftp_src + '/**/*'
-        ], { base: '.', buffer: false })
-        //.pipe(conn.newer(ftpcrd.dest));// only upload newer files
-        .pipe(conn.dest(ftpcrd.dest));
-});
+    pump([
+        gulp.src([
+        './**',
+        '!./{node_modules,node_modules/**}',
+        '!./{media,media/**}',
+        '!ftpcrd.json'
+        ], { base: '.', buffer: false }),
+        conn.dest(ftpcrd.dest)
+    ],
+    cb);
+}
+
+exports.ftp = do_ftp;
+
 
 
 /*------------------------------------------------------------------------------------------------*\
     CSS
 \*------------------------------------------------------------------------------------------------*/
+//var css_base = './';
+//var css_src  =  ['!node_modules', '!node_modules/**', css_base + '*.scss', css_base + '**/*.scss'];
+var css_src  =  './*.scss';
+var css_dest = './css/';
+
 const sass   = require('gulp-sass');
 const cssmin = require('gulp-cssmin');
 const rename = require('gulp-rename');
 
-var css_base = './';
-var css_src  =  ['!node_modules', '!node_modules/**', css_base + '*.scss', css_base + '**/*.scss'];
-var css_dest = './css/';
-
 
 // Compile SCSS in expanded mode so it's easier to inspect the result.
-gulp.task('sass', (cb) =>
+function do_sass(cb) {
+    console.log('Running sass...');
+
     pump([
         gulp.src(css_src),
         sass({outputStyle: 'expanded'}),
         gulp.dest(css_dest)
     ],
-    cb)
-);
+    cb);
+}
+
 
 // Then create a minified version in the output folder.
-gulp.task('cssmin', (cb) =>
+function do_cssmin(cb) {
+    console.log('Running cssmin...');
+
     pump([
         gulp.src(css_dest + '**/!(*.min)*.css'),
         cssmin(),
         rename({extname: '.min.css'}),
         gulp.dest(css_dest)
     ],
-    cb)
-);
+    cb);
+}
+
+
+exports.sass   = do_sass;
+exports.cssmin = do_cssmin;
 
 // This combined task makes it convenient to run all the steps together.
-gulp.task('css', () => {
-    console.log('Processing (S)CSS. See gulpfile.js for details.');
-    runSequence('sass', 'cssmin', 'ftp');
-})
+exports.css = series(do_sass, do_cssmin, do_ftp);
+
 
 
 /*------------------------------------------------------------------------------------------------*\
@@ -84,9 +104,18 @@ gulp.task('css', () => {
 \*------------------------------------------------------------------------------------------------*/
 
 // Watch CSS:
-gulp.task('watch_css', function(){
-    gulp.watch(css_src, ['css']);
-});
+function do_watch_css(cb) {
+    watch(css_src + '**/*.scss', exports.css);
+}
+exports.watch_css = do_watch_css;
+
+
+// Watch all of the above:
+/*function do_watch_all(cb) {
+    watch(css_src + '** /*.scss', exports.css);
+    watch(js_src + '** /!(script)*.js', exports.js);
+}
+exports.watch_all = do_watch_all;*/
 
 
 // Watch FTP:
@@ -96,15 +125,6 @@ gulp.task('watch_css', function(){
 
 
 // Watch PHP files:
-gulp.task('watch_php', function(){
-    gulp.watch('./**/*.php', ['ftp']);
-});
-
-
-
-// Watch all of the above:
-gulp.task('watch_all', function(){
-    gulp.watch(css_src, ['css']);
-    //gulp.watch(css_base + '**/*.scss', ['css']);
-    //gulp.watch(['!node_modules', '!node_modules/**', '!ftpcrd.json', ftp_src + '/**/*'], ['ftp']);
-});
+/*gulp.task('watch_php', function(){
+    gulp.watch('./** /*.php', ['ftp']);
+});*/
