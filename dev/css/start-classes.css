@@ -1942,6 +1942,25 @@ a[href].cta:focus {
   background-color: #f2ecf9;
 }
 
+a[href].button--has-icon,
+a[href].cta--has-icon {
+  position: relative;
+}
+
+a[href].button--has-icon::after,
+a[href].cta--has-icon::after {
+  content: "";
+  display: inline;
+  padding-left: 1.25em;
+}
+
+a[href].button--has-icon .icon,
+a[href].cta--has-icon .icon {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(-25%);
+}
+
 .button[data-text][aria-hidden="true"] {
   display: inline-block;
   /* AK. IE9 needs this. Hmmm, for what exactly?*/
