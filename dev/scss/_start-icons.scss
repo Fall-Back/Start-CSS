@@ -91,7 +91,6 @@
     */
     .icon {
         display: inline; /* [1] */
-        fill: currentColor;
 
         fill: none;
         stroke: currentColor;
@@ -120,5 +119,6 @@
     }
 
 }
+
 
 $start-css-icons-loaded: true;

@@ -1959,7 +1959,6 @@ a[hidden][aria-hidden="false"]:active {
 .icon {
   display: inline;
   /* [1] */
-  fill: currentColor;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
