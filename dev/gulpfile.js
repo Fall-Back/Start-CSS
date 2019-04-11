@@ -37,10 +37,10 @@ function do_ftp(cb) {
 
     pump([
         gulp.src([
-        './**',
-        '!./{node_modules,node_modules/**}',
-        '!./{media,media/**}',
-        '!ftpcrd.json'
+            './**',
+            '!./{node_modules,node_modules/**}',
+            '!./{media,media/**}',
+            '!ftpcrd.json'
         ], { base: '.', buffer: false }),
         conn.dest(ftpcrd.dest)
     ],
@@ -56,7 +56,7 @@ exports.ftp = do_ftp;
 \*------------------------------------------------------------------------------------------------*/
 //var css_base = './';
 //var css_src  =  ['!node_modules', '!node_modules/**', css_base + '*.scss', css_base + '**/*.scss'];
-var css_src  =  './*.scss';
+var css_src  =  './';
 var css_dest = './css/';
 
 const sass   = require('gulp-sass');
@@ -69,7 +69,10 @@ function do_sass(cb) {
     console.log('Running sass...');
 
     pump([
-        gulp.src(css_src),
+        gulp.src([
+            './**/*.scss',
+            '!./{node_modules,node_modules/**}'
+        ]),
         sass({outputStyle: 'expanded'}),
         gulp.dest(css_dest)
     ],
@@ -111,11 +114,11 @@ exports.watch_css = do_watch_css;
 
 
 // Watch all of the above:
-/*function do_watch_all(cb) {
-    watch(css_src + '** /*.scss', exports.css);
-    watch(js_src + '** /!(script)*.js', exports.js);
+function do_watch_all(cb) {
+    watch(css_src + '**/*.scss', exports.css);
+    //watch(js_src + '** /!(script)*.js', exports.js);
 }
-exports.watch_all = do_watch_all;*/
+exports.watch_all = do_watch_all;
 
 
 // Watch FTP:
