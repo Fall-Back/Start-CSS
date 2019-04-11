@@ -363,16 +363,17 @@ a[href]:focus {
 }
 
 a[href][rel="external"]::after {
-  display: inline-block;
+  display: inline;
   content: "";
-  width: 0;
-  height: 0;
-  margin-right: 0.2em;
-  margin-left: 0.2em;
-  border-width: 0 0.4em 0.4em 0;
-  border-style: solid;
-  border-color: transparent  currentColor;
+  padding-left: 1.25em;
+  background: linear-gradient(45deg, transparent 50%, currentColor 50%);
+  font-size: 0.4em;
+  line-height: 0;
   vertical-align: super;
+}
+
+a[href][rel="external"]:hover::after {
+  background: linear-gradient(45deg, transparent 50%, currentColor 50%);
 }
 
 /*
@@ -588,6 +589,14 @@ dl {
 
 dt {
   font-weight: bold;
+}
+
+/*
+    1. De-italicize nested ems
+*/
+em em {
+  font-style: normal;
+  /* 1 */
 }
 
 /*
@@ -2113,11 +2122,11 @@ _:-webkit-full-screen, _::-webkit-full-page-media, _:future, :root select[size="
     border-radius: 50%;
   }
   input[type="radio"]:checked {
-    background-image: -moz-radial-gradient(center, ellipse cover, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    background-image: -moz-radial-gradient(center, ellipse cover, #333333 0%, #333333 35%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0) 100%);
     /* FF3.6-15 */
-    background-image: -webkit-radial-gradient(center, ellipse cover, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    background-image: -webkit-radial-gradient(center, ellipse cover, #333333 0%, #333333 35%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0) 100%);
     /* Chrome10-25,Safari5.1-6 */
-    background-image: radial-gradient(ellipse at center, #333333 0%, #333333 35%, transparent 35%, transparent 100%);
+    background-image: radial-gradient(ellipse at center, #333333 0%, #333333 35%, rgba(0, 0, 0, 0) 35%, rgba(0, 0, 0, 0) 100%);
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   }
   input[type="checkbox"]:checked::after {

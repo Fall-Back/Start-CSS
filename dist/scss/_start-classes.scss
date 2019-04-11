@@ -25,6 +25,27 @@ a[href].cta {
         }
 }
 
+    a[href].button--has-icon,
+    a[href].cta--has-icon {
+        position: relative;
+    }
+
+    a[href].button--has-icon::after,
+    a[href].cta--has-icon::after {
+        content: "";
+        display: inline;
+        padding-left: 1.25em;
+        line-height: 0;
+    }
+
+    a[href].button--has-icon .icon,
+    a[href].cta--has-icon .icon {
+        position: absolute;
+        bottom: 0;
+        transform: translateY(-15%);
+    }
+
+
     // 'Fake' buttons. Over qualified for clarity.
     .button[data-text][aria-hidden="true"] {
         @include button;
@@ -93,15 +114,21 @@ p.subtitle {
     display: -ms-inline-flexbox; /* 1 */
     display: inline-flex; /* 1 */
     vertical-align: middle; /* 2 */
+    
+    -webkit-flex-wrap: wrap;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+
 }
 
 /*
     1. Prevent extra height being added.
 */
 .composite > * {
-    /*display: flex; /* 1 */
     vertical-align: top; /* 1 */
-    flex: 1 1 auto;
+    -webkit-flex: 0 1 auto;
+        -ms-flex: 0 1 auto;
+            flex: 0 1 auto;
 }
 
 /*
