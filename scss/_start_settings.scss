@@ -1,0 +1,82 @@
+/*-------------------------------------------------------------------------------------------------|
+    Fall-Back Start-CSS Settings
+
+    Fall-Back is designed for use with the basic
+    [CSS Mustard Cut](https://github.com/Fall-Back/CSS-Mustard-Cut)
+
+    This determines a browser support base of:
+
+    IE 9+, FF 8+, Opera 12, [Chrome 29+, Android ~4.4+]
+    Chrome 29+, Opera 16+, Safari 6.1+, iOS 7+, Android ~4.4+
+
+
+    Any double-classing (e.g. `.class.class`) is deliberate and intended to increase specifity.
+    This allows any applicable Start-CSS declarations to be overidden.
+    E.g. `.{pattern} .{pattern}__child` would `a[href]`, but just `.{pattern}` wouldn't, so we use
+    `.{pattern}.{pattren}`
+
+    https://coolors.co/50514f-f25f5c-ffe066-247ba0-70c1b3
+
+|-------------------------------------------------------------------------------------------------*/
+
+$f__root-font-size:         16px !default;
+$f__base-font-size:         16px !default;
+$f__base-line-height:       24px !default; // 1.25
+
+$f__base-em-ratio:          $f__base-line-height / $f__base-font-size; // 1.71428571429
+$f__root-font-size-percent: ($f__root-font-size / 16px) * 100;
+//@debug $f__base-line-height;
+//@debug ($f__base-line-height / $f__root-font-size);
+//@debug ($f__base-line-height / $f__root-font-size) * 1rem;
+
+$f__base-rem-space-unit:    ($f__base-line-height / $f__root-font-size) * 1rem;
+$f__base-rem-1px:           1px / $f__root-font-size * 1rem;
+$f__base-em-1px:            1px / $f__root-font-size * 1em;
+$f__mq-1-em-px:             0.0625em;
+
+$f__base-font-family:       sans-serif !default;
+// Consider:
+//$f__base-font-family:       -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif !default;
+// https://bitsofco.de/the-new-system-font-stack/ https://github.com/necolas/normalize.css/issues/665
+
+
+$f__breakpoint--enhanced:   50em !default;
+
+
+
+// UI:
+$f__base-ui-color:          #247BA0 !default;
+
+$f__base-background-color:  #fff !default;
+$f__base-text-color:        #333 !default;
+
+
+$f__border-color: rgba(0,0,0,0.2) !default;
+// IMPORTANT: don't make this LESS than 1px or focus styles will break. If you want the appearance
+// of no border, set the color to transparent.
+$f__border-width: 1px !default;
+$f__border-radius: 3px !default;
+$f__border-style: solid !default;
+
+
+$f__focus-outline-width: 2px !default;
+$f__focus-outline-style: solid !default;
+$f__focus-outline-color: rgba($f__base-ui-color, 0.6) !default;
+$f__focus-outline-offset: 2px !default;
+// Note that IE and earlier Edge don't support outline-offset, so aesthetically, outline isn't a
+// great choice.
+
+
+
+
+
+
+// MQ hacks (https://browserstrangeness.github.io/css_hacks.html)
+// Hacks with 0\0 encoded to preserve hack so appear as \0030\005C\0030.
+// @media hacks
+$f__ie9:                    "all and (min-width: \0030\005C\0030) and (min-resolution: .001dpcm)";
+$f__ie9-11:                 "screen and (min-width:\0030\005C\0030) and (min-resolution:+72dpi)";
+//$f__ff8+:                   "screen and (min--moz-device-pixel-ratio:0) and (min-resolution:.001dpcm)";
+
+// @support hacks:
+//$f__22+:                    "(-moz-appearance:none) and (display:flex)";

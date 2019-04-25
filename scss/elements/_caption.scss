@@ -1,0 +1,21 @@
+/*-------------------------------------------------------------------------------------------------|
+    Fall-Back Start-CSS Element: caption
+|-------------------------------------------------------------------------------------------------*/
+
+$f__caption-background-color: $f__base-ui-color !default;
+$f__caption-text-color: #fff !default;
+$f__caption-padding: $f__base-rem-space-unit / 2 !default;
+
+#{$f__namespace}caption {
+    display: table-caption;
+
+    padding-top: $f__caption-padding;
+    padding-right: $f__caption-padding;
+    padding-bottom: $f__caption-padding;
+    padding-left: $f__caption-padding;
+
+    color: $f__caption-text-color;
+    background-color: $f__caption-background-color;
+
+    font-weight: bold;
+}
