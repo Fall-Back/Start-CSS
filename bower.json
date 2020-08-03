@@ -12,6 +12,6 @@
         "fallback",
         "css"
     ],
-    "license": "Apache",
+    "license": "MIT",
     "dependencies": {}
 }
