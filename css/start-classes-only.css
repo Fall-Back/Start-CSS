@@ -34,7 +34,7 @@ $ff__include_class_poem:          false;
 |-------------------------------------------------------------------------------------------------*/
 /*
     Colour contrast from https://gist.github.com/FStop/8959422
-    
+
     Usage:
     @if f__color_contrast($colour, #fff) < 2 {
         color: #333;
@@ -480,6 +480,7 @@ p.subtitle {
   /* 1 */
   vertical-align: middle;
   /* 2 */
+  max-width: 100%;
   -webkit-flex-wrap: wrap;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
