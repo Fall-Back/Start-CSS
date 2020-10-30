@@ -601,6 +601,29 @@ dd {
 details {
   display: block;
   /* N: IE 10/11 */
+  margin-bottom: 2.4rem;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #247BA0;
+  padding-top: 2.4rem;
+  padding-top: -moz-calc(2.4rem - 1px);
+  padding-top: calc(2.4rem - 1px);
+  padding-left: 2.4rem;
+  padding-left: -moz-calc(2.4rem - 1px);
+  padding-left: calc(2.4rem - 1px);
+  padding-right: 2.4rem;
+  padding-right: -moz-calc(2.4rem - 1px);
+  padding-right: calc(2.4rem - 1px);
+}
+
+details::after {
+  display: block;
+  content: "";
+  height: 1px;
+  margin-top: 2.4rem;
+  margin-bottom: -1px;
+  margin-bottom: -moz-calc(-1px - 1px);
+  margin-bottom: calc(-1px - 1px);
 }
 
 details > * {
@@ -1630,6 +1653,10 @@ details > summary::before {
   font-family: serif;
   vertical-align: top;
   transition: transform 0.2s ease;
+}
+
+details[open] > summary {
+  margin-bottom: 2.4rem;
 }
 
 details[open] > summary::before {

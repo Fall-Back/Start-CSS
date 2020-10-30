@@ -40,6 +40,10 @@
         transition: transform 0.2s ease;
     }
 
+    #{$f__namespace}details[open] > summary {
+        margin-bottom: $f__base-rem-space-unit;
+    }
+    
     #{$f__namespace}details[open] > summary::before {
         transform: rotate(90deg);
     }

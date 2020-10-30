@@ -4,6 +4,9 @@
 
 #{$f__namespace}details {
     display: block; /* N: IE 10/11 */
+    margin-bottom: $f__base-rem-space-unit;
+    
+    @include f__bordered($f__details-padding, $f__details-border-width);
     
     // Fix Chrome bug as described on https://caniuse.com/#feat=details:
     > * {
