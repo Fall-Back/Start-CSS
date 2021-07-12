@@ -97,6 +97,16 @@
     }
 }
 
+@function s__set_color_for_background($bg-color, $light-text-color, $dark-text-color) {
+    @if s__color_light_or_dark($bg-color) == 'light' {
+        @return $dark-text-color;
+    }
+
+    @else {
+        @return $light-text-color;
+    }
+}
+
 // https://github.com/pentzzsolt/sass-s__is-int/blob/master/_s__is-int.scss
 @function s__is-int($value) {
     @if type-of($value) != number {
