@@ -19,3 +19,10 @@
 
     background-color: $s__video-background-color;
 }
+
+@if $s__use-focus-shadow {
+    #{$s__namespace}video:focus {
+        outline: 0;
+        box-shadow: $s__outline-shadow;
+    }
+}

@@ -107,7 +107,7 @@ $s__using-Start-CSS: true;
 //    }
 //}
 
-// For multi-language quotes, consider including the quotes from from CSS Rememdy:
+// For multi-language quotes, consider including the quotes from from CSS Remedy:
 // https://github.com/mozdevs/cssremedy/blob/master/quotes.css
 
 :root {
@@ -232,10 +232,13 @@ html {
 
 /*
     1. Ensure that absolutely positioned child elements expand to the full height of the body.
-    2. Reset any FOUC font match fallback. @TODO Make these vars.
+    2. Allows for layouts such as sticky footers.
+    3. Reset any FOUC font match fallback. @TODO Make these vars.
 */
 body {
     position: relative; /* 1 */
+
+    display: flex; /* 2 */
 
     width: 100%;
     min-width: $s__body-min-width;
@@ -257,12 +260,12 @@ body {
     font-family: $s__base-font-family;
     font-size: ($s__base-font-size / $s__root-font-size * 1em);
     line-height: $s__base-rem-space-unit;
-    letter-spacing: initial; /* 2 */
-    word-spacing: initial; /* 2 */
+    letter-spacing: initial; /* 3 */
+    word-spacing: initial; /* 3 */
 
     background-color: $s__body-background-color;
     color: $s__body-text-color;
-    
+
     @if $s__use-layout {
         display: -webkit-flex;
         display: -moz-box;
@@ -278,13 +281,13 @@ body {
 }
 
 /* IE9-11 */
-@media #{$s__ie9-11} {
+/*@media #{$s__ie9-11} {
 
     body {
         height: 100%;
     }
 
-}
+}*/
 
 /*
     @DEPRECATED - use the clearer method below:
@@ -302,7 +305,7 @@ body {
 }
 
 /*
-    This method duplicates [hidden="false"][aria-hidden="false"] in accessibilty.scss, but I'm
+    This method duplicates [hidden="false"][aria-hidden="false"] in accessibility.scss, but I'm
     thinking of maybe deprecating that.
 */
 [data-if-css="visually-hide"] {
@@ -527,107 +530,12 @@ main :target {
     scroll-margin-top: $s__scroll-margin-top;
 }
 
-@if $s__use-last-child-margin-zero {
-    /*
-        Some inline elements have margin deliberately to help with size/position.
-        We don't want to zero-out those.
-    */
-    :last-child:not(a):not(button):not(img):not(input):not(select) {
-        margin-bottom: 0;
-    }
-}
 
 @if $s__use-layout {
     body > * {
         margin-bottom: 0;
     }
 }
-
-/* Alt margins */
-/*
-Shelving this for now
-@if $s__procedural-margins == false {
-    /* this is too generic 
-    * + * {
-        margin-top: $s__base-rem-space-unit;
-    }
-    /
-    
-    /* This is the full list but it's not exactly what we want:
-    * + address,
-    * + article,
-    * + aside,
-    * + blockquote,
-    * + details,
-    * + dialog,
-    * + dd,
-    * + div,
-    * + dl,
-    * + dt,
-    * + fieldset,
-    * + figcaption,
-    * + figure,
-    * + footer,
-    * + form,
-    * + h1,
-    * + h2,
-    * + h3,
-    * + h4,
-    * + h5,
-    * + h6,
-    * + header,
-    * + hgroup,
-    * + hr,
-    * + li,
-    * + main,
-    * + nav,
-    * + ol,
-    * + p,
-    * + pre,
-    * + section,
-    * + table,
-    * + ul
-    /
-    
-    /*
-        Taking out list items, hr and div:
-    /
-    *:not(legend):not(figcaption) + address,
-    *:not(legend):not(figcaption) + article,
-    *:not(legend):not(figcaption) + aside,
-    *:not(legend):not(figcaption) + blockquote,
-    *:not(legend):not(figcaption) + details,
-    *:not(legend):not(figcaption) + dialog,
-    *:not(legend):not(figcaption) + dl,
-    *:not(legend):not(figcaption) + fieldset,
-    *:not(legend):not(figcaption) + figure,
-    *:not(legend):not(figcaption) + footer,
-    *:not(legend):not(figcaption) + form,
-    *:not(legend):not(figcaption) + h1,
-    *:not(legend):not(figcaption) + h2,
-    *:not(legend):not(figcaption) + h3,
-    *:not(legend):not(figcaption) + h4,
-    *:not(legend):not(figcaption) + h5,
-    *:not(legend):not(figcaption) + h6,
-    *:not(legend):not(figcaption) + header,
-    *:not(legend):not(figcaption) + hgroup,
-    *:not(legend):not(figcaption) + main,
-    *:not(legend):not(figcaption) + nav,
-    *:not(legend):not(figcaption) + ol,
-    *:not(legend):not(figcaption) + p,
-    *:not(legend):not(figcaption) + pre,
-    *:not(legend):not(figcaption) + section,
-    *:not(legend):not(figcaption) + table,
-    *:not(legend):not(figcaption) + ul {
-        margin-top: $s__base-rem-space-unit;
-    }
-    
-    hr {
-        margin-top: calc(#{$s__base-rem-space-unit} - #{$s__hr-border-width};
-    }
-} 
-*/
-
 
 
 @import '_start-accessibility.scss';

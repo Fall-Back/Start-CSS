@@ -14,11 +14,7 @@
     5a. IE 10.
 */
 #{$s__namespace}textarea {
-    @if $s__text_zoom_scales_all {
-        min-height: $s__base-rem-space-unit * 3.5 - ($s__textarea-border-width * 2); /* 1 */
-    } @else {
-        min-height: $s__base-rem-space-unit * 3.5 - s__calc-rem-from-px($s__textarea-border-width * 2); /* 1 */
-    }
+    min-height: $s__base-rem-space-unit * 3.5 - ($s__textarea-border-width * 2); /* 1 */
 
     overflow: auto; /* 2 */
 
@@ -49,10 +45,9 @@
     resize: $s__textarea-resize;
 }
 
-@if $s__textarea-focus-shadow != false {
+@if $s__use-focus-shadow {
     #{$s__namespace}textarea:focus {
-        box-shadow: 0 0 0 $s__textarea-focus-shadow-width rgba($s__base-ui-color, 0.5);
-
         outline: 0;
+        box-shadow: $s__outline-shadow;
     }
 }

@@ -23,7 +23,9 @@
     color: $s__anchor-text-color;
     background-color: transparent; /* 1 */
 
-    text-decoration: $s__anchor-text-decoration;
+    //text-decoration: $s__anchor-text-decoration;
+    text-decoration: underline;
+
 
     text-decoration-style: $s__anchor-text-decoration;
     text-decoration-thickness: $s__anchor-text-decoration-width;
@@ -42,6 +44,8 @@
         text-decoration: none; /* [1] */
         text-decoration: underline $s__anchor-text-decoration-style--alt; /* [1] */
 
+        //box-shadow: none;
+
         //border-bottom: $s__anchor-border-bottom--alt;
         //text-decoration-style: $s__anchor-text-decoration-style--alt;
 
@@ -50,16 +54,13 @@
         }
 
         // @TODO - maybe support filters here too, e.g. filter: brightness(0.5);
+
     }
 
-    @if $s__anchor-focus-shadow != false {
+    @if $s__use-focus-shadow {
         &:focus {
             outline: 0;
-            @if typeof($s__anchor-focus-shadow) == color {
-                box-shadow: 0 0 0 $s__anchor-focus-shadow-width rgba($s__anchor-text-color, 0.5);
-            } @else {
-                box-shadow: 0 0 0 $s__anchor-focus-shadow-width rgba($s__base-ui-color, 0.5);
-            }
+            box-shadow: $s__outline-shadow;
         }
     }
 
@@ -84,24 +85,16 @@
 }
 
     @if $s__anchor-add-external-link-indicator == true {
-        #{$s__namespace}a[href][rel~="external"]::after {
-            display: inline;
 
-            content: "";
-
-            padding-left: 1.16666666667em;
-
-            margin: 0 0.5em;
-
-            background: linear-gradient(45deg, transparent 50%, currentColor 50%);
-
-            font-size: 0.375em;
-            line-height: 0;
-
-            vertical-align: super;
+        #{$s__namespace}a[href][rel~="external"] {
+            padding-right: 1em;
+            background-image: linear-gradient(45deg, transparent 65%, $s__anchor-text-color 65%);
+            background-repeat: no-repeat;
+            background-position: right 0.4em bottom 0.4em;
+            background-size: 0.6em 0.6em;
         }
 
-        #{$s__namespace}a[href][rel~="external"]:hover::after {
-            background: linear-gradient(45deg, transparent 50%, currentColor 50%);
+        #{$s__namespace}a[href][rel~="external"]:hover {
+            background-image: linear-gradient(45deg, transparent 65%, $s__anchor-text-color--alt 65%);
         }
     }
