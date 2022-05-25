@@ -39,6 +39,8 @@
 
         @if $s__anchor-text-color--alt != $s__anchor-text-color {
             color: $s__anchor-text-color--alt;
+        } @else {
+            color: inherit;
         }
 
         // @TODO - maybe support filters here too, e.g. filter: brightness(0.5);
