@@ -1245,7 +1245,6 @@ img .gm-style {
     Special treatment for images inside links.
 */
 a[href] img {
-  border-top: 0;
   border-left: 0;
   border-right: 0;
   border-bottom: 0.1875em solid #247BA0;
@@ -1253,8 +1252,15 @@ a[href] img {
 }
 
 a[href] img:active, a[href] img:hover {
-  border-bottom: 0.375em double #1b5b76;
+  border-bottom: 0.375em solid transparent;
   padding-bottom: 0;
+}
+
+@supports (text-decoration-line: underline) {
+  a[href] img:active, a[href] img:hover {
+    border-bottom: 0.375em double #1b5b76;
+    padding-bottom: 0;
+  }
 }
 
 /*
@@ -2471,34 +2477,28 @@ main :target {
 
 @-moz-keyframes target-fade {
   0% {
-    background-color: rgba(124, 195, 225, 0.4);
-    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0.4);
+    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0.4), 0 0 0 100vmax rgba(124, 195, 225, 0.4) inset;
   }
   100% {
-    background-color: rgba(124, 195, 225, 0);
-    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0);
+    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0), 0 0 0 100vmax rgba(124, 195, 225, 0) inset;
   }
 }
 
 @-webkit-keyframes target-fade {
   0% {
-    background-color: rgba(124, 195, 225, 0.4);
-    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0.4);
+    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0.4), 0 0 0 100vmax rgba(124, 195, 225, 0.4) inset;
   }
   100% {
-    background-color: rgba(124, 195, 225, 0);
-    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0);
+    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0), 0 0 0 100vmax rgba(124, 195, 225, 0) inset;
   }
 }
 
 @keyframes target-fade {
   0% {
-    background-color: rgba(124, 195, 225, 0.4);
-    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0.4);
+    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0.4), 0 0 0 100vmax rgba(124, 195, 225, 0.4) inset;
   }
   100% {
-    background-color: rgba(124, 195, 225, 0);
-    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0);
+    box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0), 0 0 0 100vmax rgba(124, 195, 225, 0) inset;
   }
 }
 
