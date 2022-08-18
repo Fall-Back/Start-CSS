@@ -355,7 +355,7 @@ body {
   /* 3 */
   word-spacing: initial;
   /* 3 */
-  background-color: transparent;
+  background-color: #fff;
   color: #333;
   /*@if $s__use-layout {
         display: -webkit-flex;

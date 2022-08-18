@@ -34,6 +34,7 @@ $s__base-em-1px:            1px / $s__root-font-size * 1em;
 $s__mq-1-em-px:             0.0625em;
 
 
+
 $s__margin-type: default !default;
 //$s__procedural-margins: true !default;
 //$s__use-last-child-margin-zero: false !default;
@@ -128,7 +129,8 @@ $s__body-margin: 0 !default;
 $s__body-min-width: 250px !default;
 $s__body-max-width: 50em !default;
 $s__body-text-color: $s__base-text-color !default;
-$s__body-background-color: transparent !default;
+//$s__body-background-color: transparent !default;
+$s__body-background-color: #fff !default;
 
 
 
