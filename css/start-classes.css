@@ -195,7 +195,7 @@
 /*
     ASIDE
 */
-@supports (font-size: clamp(10px, 1vw, 12px)) {
+@supports (selector(:has(*))) and (color: color-mix(in lab, white, black 50%)) {
   @property --background-color {
     syntax: "<color>";
     inherits: true;
@@ -203,7 +203,7 @@
   }
   :root {
     --base-rem-space-unit: 2.4rem;
-    --base-ui-color: #247BA0;
+    --base-ui-color: #d0ba98;
     --base-ui-color-lightest: color-mix(in lab, var(--base-ui-color), white 80%);
     --base-ui-color-lighter: color-mix(in lab, var(--base-ui-color), white 60%);
     --base-ui-color-light: color-mix(in lab, var(--base-ui-color), white 40%);
@@ -216,7 +216,7 @@
     /* This is the fallback text color - SOMETHING needs to switch this based on ui base color contrast: */
     /*--text-ui-color: var(--color--inverse);
     --text-ui-color: var(--color);*/
-    --base-ui-color--text: var(--color--inverse);
+    --base-ui-color--text: var(--color);
     --base-border-width: 0.1rem;
     --base-border-style: solid;
     --base-border-color: var(--base-ui-color);
@@ -316,19 +316,28 @@
     margin: 0;
     padding: 0;
   }
+  /*
+  @supports (color: oklch(from red l c h)) {
+      :is(.class, *) {
+          --color: oklch(from var(--background-color) var(--l) 0 h / 0.9);
+          color: var(--color);
+      }
+  }
+  */
   @supports (color: oklch(from red l c h)) {
     * {
-      color: oklch(from var(--background-color) var(--l) 0 h/0.9);
+      --color: oklch(from var(--background-color) var(--l) 0 h / 0.9);
+      color: var(--color);
     }
   }
   /*
-      Button colour is declared in TFS, so need to redclare here as above * too low specificity:
-  */
-  @supports (color: oklch(from red l c h)) {
-    button {
-      color: oklch(from var(--background-color) var(--l) 0 h/0.9);
+      Some colours are declared in TFS, so need to redeclare here as above * too low specificity:
+  */ /*
+button, th {
+    @supports (color: oklch(from red l c h)) {
+        color: oklch(from var(--background-color) var(--l) 0 h / 0.9);
     }
-  }
+}*/
   /*
       1. Add box sizing inheritance in all browsers.
       2. Remove repeating backgrounds in all browsers.
@@ -411,13 +420,20 @@
   a[href]:hover, a[href]:active {
     text-decoration: underline solid currentColor 0.0625em;
   }
+  a[href] img:hover, a[href] svg:hover {
+    outline-color: transparent;
+  }
   a[href]:focus, a[href]:focus-visible {
     outline: 1px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
+  /*
+      Fix for linked images:
+  */
   @supports selector(:has(> img)) {
     a[href]:has(> img) {
       display: inline-block;
+      vertical-align: middle;
     }
   }
   /*
@@ -610,6 +626,12 @@
     cursor: pointer;
     touch-action: manipulation; /* 1 */
     -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    /*
+        1. Make sure focus is still visible in Forced Colour modes.
+           (https://www.sarasoueidan.com/blog/focus-indicators/)
+    */
   }
   @supports not (color: oklch(from red l c h)) {
     button {
@@ -621,8 +643,8 @@
     --background-color: var(--button-background-color-alt, var(--base-ui-color-light));
     background-color: var(--background-color);
   }
-  button:focus {
-    outline: 0;
+  button:focus, button:focus-visible {
+    outline: 2px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   button svg {
@@ -645,8 +667,14 @@
       ============================================================================================
 
   |-------------------------------------------------------------------------------------------------*/
+  /*
+      1. If table is in a figure which is scrolling the caption may be so wide as to not be visible.
+         Limiting the width to the figure's width helps keep this in view.
+         Note this is a magic number and needs work. May need to jet left-align the caption.
+  */
   caption {
     display: table-caption;
+    max-width: 44em; /* [1] */
     padding-top: var(--caption-padding, calc(var(--base-rem-space-unit) / 2));
     padding-right: var(--caption-padding, calc(var(--base-rem-space-unit) / 2));
     padding-bottom: var(--caption-padding, calc(var(--base-rem-space-unit) / 2));
@@ -733,6 +761,39 @@
   }
   details:last-child {
     margin-bottom: 0;
+  }
+  /*
+      Animate to auto height if supported and user doesn't prefer reduced motion:
+  */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @supports (interpolate-size: allow-keywords) {
+      /*
+          If you want to style ::details-content with a background you'll likely need padding,
+          but that isn't clipped by height: 0 so we need to transition that with the rest. To
+          save having to redeclare this whole block padding transition is catered for - you just
+          need to update the --content-padding var.
+      */
+      ::details-content {
+        --content-padding: 0;
+        --duration: 0.5s;
+        --duration-2: 0.75s;
+        transition: height var(--duration) ease, opacity var(--duration) ease, content-visibility var(--duration) ease allow-discrete, margin-top var(--duration-2) ease, padding var(--duration-2) ease;
+        height: 0;
+        margin-top: 0;
+        padding: 0;
+        opacity: 0;
+        overflow: clip;
+      }
+      :root {
+        interpolate-size: allow-keywords;
+      }
+      [open]::details-content {
+        height: auto;
+        margin-top: var(--base-rem-space-unit);
+        padding: var(--content-padding);
+        opacity: 1;
+      }
+    }
   }
   /*-------------------------------------------------------------------------------------------------|
 
@@ -883,6 +944,10 @@
     margin-right: 2.4rem;
     margin-top: var(--m);
     margin-bottom: var(--m);
+    /*
+        1. Make sure focus is still visible in Forced Colour modes.
+            (https://www.sarasoueidan.com/blog/focus-indicators/)
+    */
   }
   figure:first-child {
     margin-top: 0;
@@ -890,59 +955,67 @@
   figure:last-child {
     margin-bottom: 0;
   }
-  @supports not (scroll-timeline: none) {
-    figure:has(> table) {
-      background-image: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 60%, rgb(255, 255, 255) 100%), linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 60%, rgb(255, 255, 255) 100%), linear-gradient(to right, rgba(0, 0, 20, 0.5), rgba(255, 255, 255, 0)), linear-gradient(to left, rgba(0, 0, 20, 0.5), rgba(255, 255, 255, 0));
-      background-position: left center, right center, left center, right center;
-      background-repeat: no-repeat;
-      background-color: white;
-      background-size: 2em 100%, 2em 100%, 1em 100%, 1em 100%;
-      background-attachment: local, local, scroll, scroll;
-    }
+  figure:focus-within {
+    outline: 2px solid transparent; /* [1] */
   }
-  @supports (scroll-timeline: none) {
-    figure:has(> table) {
-      border-width: var(--table-border-width, var(--base-border-width));
-      border-style: var(--table-border-style, var(--base-border-style));
-      border-color: var(---th-border-color, var(--table-base-color, var(--base-ui-color)));
-      max-width: 100%;
-      --shadow-color: rgb(0 0 0 / 0.4);
-      --shadow-size: 1.2rem;
-      --shadow-spread: calc(var(--shadow-size) * -0.5);
-      overflow-x: auto;
-      animation: scroll-shadow-inset linear;
-      scroll-timeline: --scroll-shadow-timeline inline;
-      animation-timeline: --scroll-shadow-timeline;
+  figure:focus-within {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
+  }
+  @media (forced-colors: none) {
+    @supports not (scroll-timeline: none) {
+      figure:has(> table) {
+        background-image: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 60%, rgb(255, 255, 255) 100%), linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgb(255, 255, 255) 60%, rgb(255, 255, 255) 100%), linear-gradient(to right, rgba(0, 0, 20, 0.5), rgba(255, 255, 255, 0)), linear-gradient(to left, rgba(0, 0, 20, 0.5), rgba(255, 255, 255, 0));
+        background-position: left center, right center, left center, right center;
+        background-repeat: no-repeat;
+        background-color: white;
+        background-size: 2em 100%, 2em 100%, 1em 100%, 1em 100%;
+        background-attachment: local, local, scroll, scroll;
+      }
+    }
+    @supports (scroll-timeline: none) {
+      figure:has(> table) {
+        border-width: var(--table-border-width, var(--base-border-width));
+        border-style: var(--table-border-style, var(--base-border-style));
+        border-color: var(---th-border-color, var(--table-base-color, var(--base-ui-color)));
+        max-width: 100%;
+        --shadow-color: rgb(0 0 0 / 0.4);
+        --shadow-size: 1.2rem;
+        --shadow-spread: calc(var(--shadow-size) * -0.5);
+        overflow-x: auto;
+        animation: scroll-shadow-inset linear;
+        scroll-timeline: --scroll-shadow-timeline inline;
+        animation-timeline: --scroll-shadow-timeline;
+      }
+      figure:has(> table) > table {
+        border-width: 0;
+        mix-blend-mode: multiply;
+      }
+      figure:has(> table) > table td:first-child, figure:has(> table) > table th:first-child {
+        border-left-width: 0;
+      }
+      figure:has(> table) > table td:last-child, figure:has(> table) > table th:last-child {
+        border-right-width: 0;
+      }
+      figure:has(> table) > table tr:last-child td {
+        border-bottom-width: 0;
+      }
+      @keyframes scroll-shadow-inset {
+        from {
+          box-shadow: inset calc(var(--shadow-size) * -1) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), inset 0 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
+          margin-bottom: calc(2.4rem + 0.7rem);
+        }
+        6%, 94% {
+          box-shadow: inset calc(var(--shadow-size) * -1) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), inset var(--shadow-size) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
+        }
+        to {
+          box-shadow: inset 0 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), inset var(--shadow-size) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
+          margin-bottom: calc(2.4rem + 0.7rem);
+        }
+      }
     }
     figure:has(> table) > table {
-      border-width: 0;
       mix-blend-mode: multiply;
     }
-    figure:has(> table) > table td:first-child, figure:has(> table) > table th:first-child {
-      border-left-width: 0;
-    }
-    figure:has(> table) > table td:last-child, figure:has(> table) > table th:last-child {
-      border-right-width: 0;
-    }
-    figure:has(> table) > table tr:last-child td {
-      border-bottom-width: 0;
-    }
-    @keyframes scroll-shadow-inset {
-      from {
-        box-shadow: inset calc(var(--shadow-size) * -1) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), inset 0 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
-        margin-bottom: calc(2.4rem + 0.7rem);
-      }
-      6%, 94% {
-        box-shadow: inset calc(var(--shadow-size) * -1) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), inset var(--shadow-size) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
-      }
-      to {
-        box-shadow: inset 0 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color), inset var(--shadow-size) 0 var(--shadow-size) var(--shadow-spread) var(--shadow-color);
-        margin-bottom: calc(2.4rem + 0.7rem);
-      }
-    }
-  }
-  figure:has(> table) > table {
-    mix-blend-mode: multiply;
   }
   /*-------------------------------------------------------------------------------------------------|
 
@@ -1205,9 +1278,23 @@
       rounded corners, hence the a > img selector reapplying the focus shadow.
       I guess transparent images like this are an edge case, but it's something to keep an eye on.
   */
-  a:focus img {
-    outline: 0;
+  /*
+      1. Make sure focus is still visible in Forced Colour modes.
+          (https://www.sarasoueidan.com/blog/focus-indicators/)
+  */
+  a:focus img,
+a:focus-visible img {
+    outline: 1px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
+  }
+  /*
+      Broken images could look much better if CSS could detect if they're broken.
+      Sadly this isn't natively possible, but using JS onerror on all images can add an attribute
+      we can use for styling.
+  */
+  img[data-broken] {
+    background-color: #ddd;
+    outline: 1px solid transparent;
   }
   /*-------------------------------------------------------------------------------------------------|
 
@@ -1246,6 +1333,10 @@
     min-height: 3rem;
     margin: 0.3rem 0;
   }
+  /*
+      1. Make sure focus is still visible in Forced Colour modes.
+         (https://www.sarasoueidan.com/blog/focus-indicators/)
+  */
   input:not([type]):focus,
 [type=color]:focus,
 [type=date]:focus,
@@ -1261,8 +1352,24 @@
 [type=text]:focus,
 [type=time]:focus,
 [type=url]:focus,
-[type=week]:focus {
-    outline: 0;
+[type=week]:focus,
+input:not([type]):focus-visible,
+[type=color]:focus-visible,
+[type=date]:focus-visible,
+[type=datetime]:focus-visible,
+[type=datetime-local]:focus-visible,
+[type=file]:focus-visible,
+[type=month]:focus-visible,
+[type=number]:focus-visible,
+[type=password]:focus-visible,
+[type=search]:focus-visible,
+[type=range]:focus-visible,
+[type=tel]:focus-visible,
+[type=text]:focus-visible,
+[type=time]:focus-visible,
+[type=url]:focus-visible,
+[type=week]:focus-visible {
+    outline: 2px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   /*
@@ -1270,8 +1377,10 @@
       accessibility ...
   */
   [type=checkbox]:focus,
-[type=radio]:focus {
-    outline: 0;
+[type=radio]:focus,
+[type=checkbox]:focus-visible,
+[type=radio]:focus-visible {
+    outline: 2px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   /*
@@ -1316,6 +1425,12 @@ _::-webkit-full-page-media, _:future, :root [type=radio]:focus {
     cursor: pointer;
     touch-action: manipulation; /* 1 */
     -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    /*
+        1. Make sure focus is still visible in Forced Colour modes.
+           (https://www.sarasoueidan.com/blog/focus-indicators/)
+    */
   }
   @supports not (color: oklch(from red l c h)) {
     [type=button],
@@ -1333,10 +1448,12 @@ _::-webkit-full-page-media, _:future, :root [type=radio]:focus {
     --background-color: var(--button-background-color-alt, var(--base-ui-color-light));
     background-color: var(--background-color);
   }
-  [type=button]:focus,
+  [type=button]:focus, [type=button]:focus-visible,
 [type=reset]:focus,
-[type=submit]:focus {
-    outline: 0;
+[type=reset]:focus-visible,
+[type=submit]:focus,
+[type=submit]:focus-visible {
+    outline: 2px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   /*
@@ -1394,6 +1511,12 @@ _::-webkit-full-page-media, _:future, :root [type=radio]:focus {
     cursor: pointer;
     touch-action: manipulation; /* 1 */
     -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    /*
+        1. Make sure focus is still visible in Forced Colour modes.
+           (https://www.sarasoueidan.com/blog/focus-indicators/)
+    */
     margin: 0 0.6rem 0 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -1408,8 +1531,8 @@ _::-webkit-full-page-media, _:future, :root [type=radio]:focus {
     --background-color: var(--button-background-color-alt, var(--base-ui-color-light));
     background-color: var(--background-color);
   }
-  [type=file]::file-selector-button:focus {
-    outline: 0;
+  [type=file]::file-selector-button:focus, [type=file]::file-selector-button:focus-visible {
+    outline: 2px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   @supports (color: oklch(from red l c h)) {
@@ -1441,6 +1564,12 @@ _::-webkit-full-page-media, _:future, :root [type=radio]:focus {
     cursor: pointer;
     touch-action: manipulation; /* 1 */
     -webkit-appearance: none;
+    display: inline-flex;
+    align-items: center;
+    /*
+        1. Make sure focus is still visible in Forced Colour modes.
+           (https://www.sarasoueidan.com/blog/focus-indicators/)
+    */
     margin: 0 0.6rem 0 0;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -1455,8 +1584,8 @@ _::-webkit-full-page-media, _:future, :root [type=radio]:focus {
     --background-color: var(--button-background-color-alt, var(--base-ui-color-light));
     background-color: var(--background-color);
   }
-  [type=file]::-webkit-file-upload-button:focus {
-    outline: 0;
+  [type=file]::-webkit-file-upload-button:focus, [type=file]::-webkit-file-upload-button:focus-visible {
+    outline: 2px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   @supports (color: oklch(from red l c h)) {
@@ -1684,6 +1813,16 @@ li ol {
   |-------------------------------------------------------------------------------------------------*/
   object {
     vertical-align: middle;
+    /*
+        1. Make sure focus is still visible in Forced Colour modes.
+           (https://www.sarasoueidan.com/blog/focus-indicators/)
+    */
+  }
+  object:focus, object:focus-visible {
+    outline: 2px solid transparent; /* [1] */
+  }
+  object:focus, object:focus-visible {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   /*-------------------------------------------------------------------------------------------------|
 
@@ -1839,11 +1978,12 @@ li ol {
          appears to have a scrollbar height of 12px, so we override it with a hack.
       2. Correct the odd `em` font sizing in all browsers.
       3. Correct the inheritance and scaling of font size in all browsers.
+      4. Ensure box edges are visible in High Contrast Mode.
   */
   pre {
     overflow-x: scroll; /* 1 */
     overflow-y: auto; /* 1 */
-    padding-bottom: calc(2.4rem - 17px); /* 1 */
+    padding-bottom: calc(2.4rem - 15px); /* 1 */
     font-size: 1em; /* 2 */
     font-family: monospace, monospace; /* 3 */
     font-family: monospace, monospace; /* 3 */
@@ -1851,6 +1991,7 @@ li ol {
     background-color: var(--background-color);
     margin-top: var(--m);
     margin-bottom: var(--m);
+    outline: 1px solid transparent; /* 4 */
   }
   @supports not (color: oklch(from red l c h)) {
     pre {
@@ -1863,6 +2004,10 @@ li ol {
   }
   pre:last-child {
     margin-bottom: 0;
+  }
+  pre:focus, pre:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   /*
       1. Revert zeroed line-height (see) `code`.
@@ -2016,8 +2161,13 @@ li ol {
           padding-right: 0\0;
       }
   }*/
-  select:focus {
-    outline: 0;
+  /*
+      1. Make sure focus is still visible in Forced Colour modes.
+          (https://www.sarasoueidan.com/blog/focus-indicators/)
+  */
+  select:focus,
+select:focus-visible {
+    outline: 2px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   /*
@@ -2115,40 +2265,56 @@ li ol {
 
   |-------------------------------------------------------------------------------------------------*/
   /*
-      1. Correct display is  list-item, which adds the marker, but we're adding our own marker.
-      2. Remove the tapping delay from clickable elements.
+      1. Remove the tapping delay from clickable elements.
   */
   summary {
-    display: block; /* 1 */
-    touch-action: manipulation; /* 2 */
+    touch-action: manipulation; /* 1 */
     position: relative;
     cursor: pointer;
   }
-  summary:focus {
-    outline: 0;
+  summary:focus, summary:focus-visible {
+    outline: 2px solid transparent;
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
-  /* Hide the details marker as we're supplying our own. */
-  summary::-webkit-details-marker {
-    display: none;
-  }
-  /*
-      Add an icon.
-      Note the CSS triangle approached (commented) actually turns into a square in High Contrast
-      Mode so using a SVG data uri instead.
-  */
-  details > summary::before {
-    display: block;
-    content: "";
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 20' xml:space='preserve'%3E%3Cpath d='m0 0 18 10L0 20V0z'/%3E%3C/svg%3E");
-    position: absolute;
-    width: 0.8em;
-    height: 0.8em;
-    top: 0.3em;
-    top: 0.5ex;
-    margin-left: -1.2em;
-    transition: transform 0.2s ease;
-    transform-origin: 40% 50%;
+  @media (forced-colors: none) {
+    /*
+        1. Correct display is  list-item, which adds the marker, but we're adding our own marker.
+    */
+    summary {
+      display: block; /* 1 */
+    }
+    /*
+        Note there's a Webkit bug (https://bugs.webkit.org/show_bug.cgi?id=213349) that affects
+        Safari and prevents the marker animation on 17.3-.This is acceptable. However, in 13.1 the
+        marker doesn't rotate at all until the focus moves off the summary, so I'm cutting out
+        support for the custom marker on Safari 13.1-
+    */
+    @supports (text-orientation: mixed) {
+      /* Hide the details marker as we're supplying our own. */
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      /*
+          Add an icon.
+          Note the CSS triangle approached (commented) actually turns into a square in High Contrast
+          Mode so using a SVG data uri instead.
+      */
+      details > summary::before {
+        display: block;
+        content: "";
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 20' xml:space='preserve'%3E%3Cpath d='m0 0 18 10L0 20V0z'/%3E%3C/svg%3E");
+        position: absolute;
+        width: 0.8em;
+        height: 0.8em;
+        top: 0.5ex;
+        margin-left: -1.2em;
+        transition: transform 0.5s ease;
+        transform-origin: 40% 50%;
+      }
+      details[open] > summary::before {
+        transform: rotate(90deg);
+      }
+    }
   }
   /*
       Summary elements allow headings as children but this seems to be
@@ -2164,14 +2330,18 @@ li ol {
     font-size: inherit;
     line-height: inherit;
   }
-  details[open] > summary {
-    margin-bottom: var(--base-rem-space-unit);
+  details > summary + * {
+    margin-top: 0;
+    padding-top: 0;
   }
-  details[open] > summary::before {
-    transform: rotate(90deg);
-  }
-  details[open] :last-child {
+  details :last-child {
     margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  @supports not selector(::details-content) {
+    details[open] > summary {
+      margin-bottom: var(--base-rem-space-unit);
+    }
   }
   /*-------------------------------------------------------------------------------------------------|
 
@@ -2309,8 +2479,13 @@ li ol {
       color: var(--text-color);
     }
   }
-  textarea:focus {
-    outline: 0;
+  /*
+      1. Make sure focus is still visible in Forced Colour modes.
+          (https://www.sarasoueidan.com/blog/focus-indicators/)
+  */
+  textarea:focus,
+textarea:focus-visible {
+    outline: 2px solid transparent; /* [1] */
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
   }
   /*-------------------------------------------------------------------------------------------------|
@@ -2389,6 +2564,7 @@ li ol {
   |-------------------------------------------------------------------------------------------------*/
   /*
       1. Allow video to center if container larger than video.
+      2. Ensure box edges are visible in High Contrast Mode.
   */
   video {
     display: block; /* 1 */
@@ -2396,6 +2572,7 @@ li ol {
     height: auto;
     margin: 0 auto; /* 1 */
     background-color: #333;
+    outline: 1px solid transparent; /* 2 */
   }
   video:focus {
     outline: 0;
@@ -2415,7 +2592,7 @@ li ol {
   */
   ::selection {
     color: #fff;
-    background-color: #7cc3e1;
+    background-color: #415f8e;
     text-shadow: none;
   }
   /*
@@ -2428,10 +2605,10 @@ li ol {
   }
   @keyframes target-fade {
     0% {
-      box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0.4), 0 0 0 100vmax rgba(124, 195, 225, 0.4) inset;
+      box-shadow: 0 0 0 1.2rem rgba(240, 233, 222, 0.4), 0 0 0 100vmax rgba(240, 233, 222, 0.4) inset;
     }
     100% {
-      box-shadow: 0 0 0 1.2rem rgba(124, 195, 225, 0), 0 0 0 100vmax rgba(124, 195, 225, 0) inset;
+      box-shadow: 0 0 0 1.2rem rgba(240, 233, 222, 0), 0 0 0 100vmax rgba(240, 233, 222, 0) inset;
     }
   }
   /*
@@ -2439,6 +2616,9 @@ li ol {
   */
   [id] {
     scroll-margin-top: 4.8rem;
+  }
+  [data-fs-layout~=stack] > * + * {
+    margin-top: var(--m);
   }
   /*! Start-CSS Accessibility. See SCSS file for documentation. */
   /*-------------------------------------------------------------------------------------------------|
@@ -2625,7 +2805,8 @@ _::-webkit-full-page-media, _:future, :root [type=radio]:focus {
       NVDA announces "link page link 1". Annoying. This only happens with continuous reading but it's
       still a problem.
   */
-  [data-hidden=visually]:not(:focus):not(:active) {
+  [data-hidden=visually],
+[data-hidden=visually-revealable]:not(:focus):not(:active) {
     border: 0 !important;
     clip: rect(1px, 1px, 1px, 1px) !important;
     -webkit-clip-path: inset(50%) !important;
@@ -2678,6 +2859,12 @@ a[href].cta {
   cursor: pointer;
   touch-action: manipulation; /* 1 */
   -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  /*
+      1. Make sure focus is still visible in Forced Colour modes.
+         (https://www.sarasoueidan.com/blog/focus-indicators/)
+  */
 }
 @supports not (color: oklch(from red l c h)) {
   a[href].button,
@@ -2692,16 +2879,17 @@ a[href].cta:active {
   --background-color: var(--button-background-color-alt, var(--base-ui-color-light));
   background-color: var(--background-color);
 }
-a[href].button:focus,
-a[href].cta:focus {
-  outline: 0;
+a[href].button:focus, a[href].button:focus-visible,
+a[href].cta:focus,
+a[href].cta:focus-visible {
+  outline: 2px solid transparent; /* [1] */
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
 }
 a[href].button:hover, a[href].button:active, a[href].button:focus,
 a[href].cta:hover,
 a[href].cta:active,
 a[href].cta:focus {
-  background-color: #e4f3f9;
+  background-color: white;
 }
 
 a[href].button--has-icon,
@@ -2748,6 +2936,12 @@ a[href].cta--has-icon .icon {
   cursor: pointer;
   touch-action: manipulation; /* 1 */
   -webkit-appearance: none;
+  display: inline-flex;
+  align-items: center;
+  /*
+      1. Make sure focus is still visible in Forced Colour modes.
+         (https://www.sarasoueidan.com/blog/focus-indicators/)
+  */
 }
 @supports not (color: oklch(from red l c h)) {
   .button[data-text][aria-hidden=true] {
@@ -2759,8 +2953,8 @@ a[href].cta--has-icon .icon {
   --background-color: var(--button-background-color-alt, var(--base-ui-color-light));
   background-color: var(--background-color);
 }
-.button[data-text][aria-hidden=true]:focus {
-  outline: 0;
+.button[data-text][aria-hidden=true]:focus, .button[data-text][aria-hidden=true]:focus-visible {
+  outline: 2px solid transparent; /* [1] */
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.2rem black;
 }
 
@@ -2981,7 +3175,7 @@ p.subtitle {
 
 /* Define the checkbox :checked state: */
 .custom-input[type=checkbox]:checked + .custom-input-label::before {
-  background: #247BA0;
+  background: #d0ba98;
 }
 
 /* Define the checkbox 'tick': */
@@ -3001,7 +3195,7 @@ p.subtitle {
 /* Define the radio 'dot': */
 .custom-input[type=radio]:checked + .custom-input-label::before {
   background: #fff;
-  border-color: #247BA0;
+  border-color: #d0ba98;
   border-width: 0.25em;
   border-style: solid;
 }

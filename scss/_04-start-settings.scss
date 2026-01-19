@@ -22,6 +22,7 @@
 |-------------------------------------------------------------------------------------------------*/
 
 @use 'sass:math';
+@use 'sass:color';
 
 // Use $s__namespace to scope all body > *:not(main) styles:
 $s__namespace: '' !default;
@@ -358,7 +359,7 @@ $s__pre-background-color: lighten($s__base-ui-color, 55%) !default;
 
 // Adjust bottom margin to  take into account scrollbar height of 17px:
 $s__pre-margin-bottom: s__calc-rem-from-px(($s__base-line-height * 2) - 17px);
-$s__pre-padding-bottom: calc($s__base-rem-space-unit - 17px);
+$s__pre-padding-bottom: calc($s__base-rem-space-unit - 15px); // Was 17...
 
 // Edge has a scrollbar height of 12px:
 $s__pre-margin-bottom--edge: s__calc-rem-from-px(($s__base-line-height * 2) - 12px);
@@ -458,12 +459,13 @@ $s__video-background-color: #333 !default;
 
 // Selections:
 $s__selection-text-color: #fff;
-$s__selection-background-color: lighten($s__base-ui-color, 30%) !default;
+$s__selection-background-color: darken(color.complement($s__base-ui-color), 30%) !default;
+//$s__selection-background-color: darken($s__base-ui-color, 30%) !default;
 $s__selection-text-shadow: none;
 
 
 // Target highlights:
-$s__target-highlight-color:   lighten($s__base-ui-color, 30%) !default;
+$s__target-highlight-color:   lighten($s__base-ui-color, 20%) !default;
 $s__target-highlight-color-a: rgba($s__target-highlight-color,0.4) !default;
 $s__target-highlight-color-b: rgba($s__target-highlight-color,0) !default;
 
